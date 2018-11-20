@@ -1,4 +1,5 @@
-# I like to take notes
+I like to take notes
+====================
 
 I have a ton of notes on various linux/development-related subjects.
 
