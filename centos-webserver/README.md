@@ -7,7 +7,7 @@ with which to host my personal website.
 
 <br>
 
-> ##### Note to selfProposed process for project
+> ##### Note to self, proposed process for project
 >
 > - Set .gitignore every file until sanitized of data that could be compromising
 > - Port each section of original notes to individual files, sections separated
