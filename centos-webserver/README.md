@@ -13,8 +13,8 @@ with which to host my personal website.
 > - Port each section of original notes to individual files, sections separated
 > - Copy a file to work on, scrub it, remove the copy from .gitignore, keeping the original
 > ##### To Do
-> - [ ] gitignore
-> - [ ] port main file
+> - [x] gitignore
+> - [x] port main file
 > - [ ] break down main file (to `.md`'s)
 >     - [ ] "1. gather required items"
 >     - [ ] "2. ssh establish & ssh security"
