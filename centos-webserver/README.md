@@ -16,13 +16,13 @@ with which to host my personal website.
 > - [ ] gitignore
 > - [ ] port main file
 > - [ ] break down main file (to `.md`'s)
->     - [ ] "gather required items"
->     - [ ] "ssh establish & ssh security"
->     - [ ] "up & running, firewalld, apache basics & 3rd party DNS"
->     - [ ] "custom DNS with BIND"
->     - [ ] "SSL security with Let's Encrypt & auto-redirects"
->     - [ ] "extras - rsub"
->     - [ ] "extras - git"
->     - [ ] "extras - pretty CLI w/git integration"
+>     - [ ] "1. gather required items"
+>     - [ ] "2. ssh establish & ssh security"
+>     - [ ] "3. up & running, firewalld, apache basics & 3rd party DNS"
+>     - [ ] "4. custom DNS with BIND"
+>     - [ ] "5. SSL security with Let's Encrypt & auto-redirects"
+>     - [ ] "6. extras - rsub"
+>     - [ ] "7. extras - git"
+>     - [ ] "8. extras - pretty CLI w/git integration"
 > - [ ] organize filestructure
 > - [ ] port from github `.md` files to personal website
