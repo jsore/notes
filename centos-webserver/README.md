@@ -5,7 +5,7 @@ Starting from the ground up, from domain name registration and provisioning a VM
 a server hosting company, this is my current process in creating a secure web server
 with which to host my personal website.
 
-<br>
+<br><br>
 
 > ##### Note to self, proposed process for project
 >
