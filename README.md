@@ -13,3 +13,5 @@ with public DNS and DB server. Until now my stack has been on a local only VBox 
 New projects I've started here:
 - centos-webserver
     - my notes on spinng up a site, from server provision to custom DNS config
+- node-js
+    - notes and supportive scripts for the book `Node.js 8 the Right Way`
