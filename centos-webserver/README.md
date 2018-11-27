@@ -25,4 +25,5 @@ with which to host my personal website.
 >     - [ ] "7. extras - git"
 >     - [ ] "8. extras - pretty CLI w/git integration"
 > - [ ] organize filestructure
+> - [ ] table of contents
 > - [ ] port from github `.md` files to personal website
