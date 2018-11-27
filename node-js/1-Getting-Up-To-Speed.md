@@ -285,7 +285,7 @@ Unit testing, script deployement for making programs more robust, scalable, mana
 
 <hr>
 
-#### `file-changes/watcher.js`
+#### `./project-files/file-changes/watcher.js`
 Watches a file for changes then print something to console
 
 >Introduces:
@@ -302,7 +302,7 @@ Watches a file for changes then print something to console
 <br>
 
 
-#### `file-changes/watcher-argv.js`
+#### `./project-files/file-changes/watcher-argv.js`
 Basically `watcher.js` but accepts CLI argument
 
 >Introduces:
@@ -316,7 +316,7 @@ Basically `watcher.js` but accepts CLI argument
 <br>
 
 
-#### `file-changes/watcher-spawn.js`
+#### `./project-files/file-changes/watcher-spawn.js`
 Basically `watcher-argv.js` but spawns a child process in response to a change
 
 >Introduces:
