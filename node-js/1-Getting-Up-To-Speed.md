@@ -317,11 +317,25 @@ Basically `watcher.js` but accepts CLI argument
 
 
 #### `./project-files/file-changes/watcher-spawn.js`
-Basically `watcher-argv.js` but spawns a child process in response to a change
+Basically `watcher-argv.js` but spawns a child process in response to a change and pipes a returned
+Streaam to our command line's `stdout`
 
 >Introduces:
 > - Node.js `child-process` module
 >
 > - Node.js patterns, classes
 >
-> - Streams to pipe data around
+> - Streams to pipe data around, in this case the `stdin, stdout, stderr` properties of `ChildProcess`
+>
+> - `require('module').method;` to import only a single thing from a module, ignoring the rest
+>
+> - Arrow function with multiple lines, necessitating `{}` after the `() =>` instead of single
+> line functions, where the expression `() => console.log()` is valid instead of: 
+> `() => { console.log('1'); console.log('2'); }`
+
+
+<br>
+
+
+#### `./project-files/file-changes/watcher-spawn-parse.js`
+Continuance of `watcher-spawn.js` but captures data from a Stream instead of just passing it on
