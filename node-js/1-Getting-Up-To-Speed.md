@@ -249,3 +249,74 @@ loop ASAP for Node to work on something else.
 
 <hr>
 
+#### Practical programming
+Producing useful code (eg: filesystem interaction, establishing socket connections, serving web apps)
+
+
+<br>
+
+
+#### Node.js Core modules
+How modules shuttle information between JS application environment and the C-based event loop
+(eg: using `Buffer` to transport data between the two)
+
+
+<br>
+
+
+#### Patterns
+Callbacks, error-handling techniques, `EventEmitter` & `Stream` classes for event dispatching
+
+
+<br>
+
+
+#### Supporting code
+Unit testing, script deployement for making programs more robust, scalable, manageable
+
+
+<br>
+
+
+<hr>
+
+#### `file-changes/watcher.js`
+Watches a file for changes then print something to console
+
+>Introduces:
+> - `const` vs. `let` vs. `var`
+>
+> - JS functions are first class objects, can be assigned to variables, passed as params to functions
+>
+> - ECMA2015 arrow function expressions (fat arrow functions, arrow functions) don't create
+> new scopes for `this` & should be your go-to for function expression declaration
+>
+> - CLI command `$ node scriptName.js` to run `scriptName.js`
+
+
+<br>
+
+
+#### `file-changes/watcher-argv.js`
+Basically `watcher.js` but accepts CLI argument
+
+>Introduces:
+> - `process` global object, exception handling
+>
+> - Using backticks (template strings) around strings to denote stringified version of a `${variable}`
+>
+> - `process.argv[0,1,2,3...]`
+
+
+<br>
+
+
+#### `file-changes/watcher-spawn.js`
+Basically `watcher-argv.js` but spawns a child process in response to a change
+
+>Introduces:
+> - Node.js `child-process` module
+>
+> - Node.js patterns, classes
+>
+> - Streams to pipe data around
