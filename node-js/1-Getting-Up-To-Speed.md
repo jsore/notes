@@ -315,6 +315,8 @@ Unit testing, script deployement for making programs more robust, scalable, mana
 <br>
 
 
+<hr>
+
 #### 1.a. Watching for file changes asynchronously
 Key Node classes `EventEmitter`, `Stream`, `ChildProcess`, `Buffer`
 
@@ -335,15 +337,15 @@ Watches a file for changes then print something to console
 >
 > - `var` is no longer preffered, is scoped to <b>functions or modules</b>, NOT blocks and is <b>hoisted</b>
 >   from its declared block to the nearest function or module scope
-```javascript
-// picturing var being hoisted:
-if (true){
-    var myVar = "hellow";   // will be available outside of if(true)
-    let myLet = "world";    // will not be available outside of if(true)
-}
-console.log(myVar);  // "hello"
-console.log(myLet);  // ReferenceError
-```
+> ```javascript
+> // picturing var being hoisted:
+> if (true){
+>     var myVar = "hellow";   // will be available outside of if(true)
+>     let myLet = "world";    // will not be available outside of if(true)
+> }
+> console.log(myVar);  // "hello"
+> console.log(myLet);  // ReferenceError
+> ```
 >
 > - JS functions are first class objects, can be assigned to variables, passed as params to functions
 >
@@ -462,7 +464,7 @@ longer than necessary - Only if your program couldn't possibly succeed with a fi
 
 <hr>
 
-## Chapter 2 - Networking with TCP Sockets
+## Chapter 2 - TCP Sockets & building a TCP server program
 > <b>Node.js core modules</b><br>
 > More async techniques, extending Node.js classes (`EventEmitter`, etc), custom modules for reusability
 
@@ -478,4 +480,108 @@ longer than necessary - Only if your program couldn't possibly succeed with a fi
 <br>
 
 
-#### 2.a. Develop a TCP server program
+<hr>
+
+#### 2.a. Listening for socket connections
+Networked (socket-based) services exist to connect endpoints and transmit info between them, and regardless
+of the type of info in transmission, a connection between endpoints must first be made
+
+One endpoint <b>binds</b> to a numbered port and the other endpoint <b>connects</b> to a port
+
+
+<br><br>
+
+
+<b>Example of using `net`, a Node module for bind & connect operations, to bind a listening TCP port:</b>
+```javascript
+'use strict';
+const
+    net = require('net'),
+    server = net.createServer(connection => {
+        // use the connection object for data transfer
+    });
+server.listen(60300);
+```
+> Method `net.createServer` takes a callback and returns a `Server` object, Node invokes provided callback
+> when another endpoint connects, the `connection` parameter in the callback is a `Socket` object that
+> can be used to send or receive data via the connection between specified TCP port and the `Server`
+>
+> To picture this:
+>
+> ```
+>         .--- client    <--.
+>        /                   \
+>    TCP ----- client    <------ can be any # of clients, including Node processes
+>     |  \                   /
+>     |   '--- client    <--'
+>  ___|____
+> |        |
+> | Server |             <-- `server` object with bound TCP port
+> | ------ |
+> |  Node  |
+> | app.js |             <-- Node.js process that bound `server`
+> |________|
+> ```
+
+
+<br><br>
+
+
+<b>`./project-files/networking/net-watcher.js`</b>
+<br>
+Use code from chapter 1, specifying when a file changes, to give us some sort of data to work with
+in our connection
+
+> Note: You may need to install netcat util for this section
+>
+> I'm on CentOS 7, so: `$ sudo yum install nmap-ncat` then ensure installation with `$ nc --version`
+
+>Introduces:
+> - Writing data to a socket
+>
+> - Requires 3 terminal sessions: one for the service (.js file), the client (via netcat utility `nc`),
+>   and another to trigger changes to file being watched
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
