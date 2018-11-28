@@ -1,5 +1,5 @@
 /**
- * forwarding 
+ * forwarding stdout stream from a child process to our terminal
  */
 'use strict';
 const fs = require('fs');

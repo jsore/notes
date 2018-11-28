@@ -11,7 +11,10 @@
 - Proper code structure (module-based structures)
 - Using 3rd party NPM modules
 - ECMAScript updates
-<br>
+
+
+<br><br>
+
 
 <hr>
 
@@ -28,7 +31,7 @@
 ```
 
 
-<br>
+<br><br>
 
 
 <hr>
@@ -249,10 +252,16 @@ Your code should do what it needs to do, then hand control back to the event
 loop ASAP for Node to work on something else.
 
 
-<br>
+<br><br>
 
 
 <hr>
+
+## Aspects of Node.js development to think about while developing
+
+
+<br>
+
 
 #### Practical programming
 Producing useful code (eg: filesystem interaction, establishing socket connections, serving web apps)
@@ -276,20 +285,65 @@ Callbacks, error-handling techniques, `EventEmitter` & `Stream` classes for even
 <br>
 
 
-#### Supporting code
-Unit testing, script deployement for making programs more robust, scalable, manageable
+#### JavaScript-isms
+JS-based features and best practices ...and weirdness
 
 
 <br>
 
 
+#### Supporting code
+Unit testing, script deployement for making programs more robust, scalable, manageable
+
+
+<br><br>
+
+
 <hr>
 
-#### `./project-files/file-changes/watcher.js`
+## Chapter 1 - Filesystem access
+> <b>Node.js core modules</b><br>
+> Event loops dictating program's flow, `Buffer`s for data transport, work with core Node modules
+
+> <b>Patters</b><br>
+> Callbaks, async events, `EventEmitter` and `Stream` classes for data transport
+
+> <b>JavaScript-isms</b><br>
+> Block scoping, arrow function expressions
+
+
+<br>
+
+
+#### 1.a. Watching for file changes asynchronously
+Key Node classes `EventEmitter`, `Stream`, `ChildProcess`, `Buffer`
+
+
+<br>
+
+
+<b>`./project-files/file-changes/watcher.js`</b>
+<br>
 Watches a file for changes then print something to console
 
 >Introduces:
-> - `const` vs. `let` vs. `var`
+> - `const` vs. `let` vs. `var` for variable declarations (see next section block)
+>
+> - `const` is preferred declaration, always use if variable data won't change at runtime after declaration
+>
+> - `let` is preferred over and similiar to `var` but is scoped to <b>blocks</b>, NOT functions or modules
+>
+> - `var` is no longer preffered, is scoped to <b>functions or modules</b>, NOT blocks and is <b>hoisted</b>
+>   from its declared block to the nearest function or module scope
+```javascript
+// picturing var being hoisted:
+if (true){
+    var myVar = "hellow";   // will be available outside of if(true)
+    let myLet = "world";    // will not be available outside of if(true)
+}
+console.log(myVar);  // "hello"
+console.log(myLet);  // ReferenceError
+```
 >
 > - JS functions are first class objects, can be assigned to variables, passed as params to functions
 >
@@ -299,10 +353,11 @@ Watches a file for changes then print something to console
 > - CLI command `$ node scriptName.js` to run `scriptName.js`
 
 
+<br><br>
+
+
+<b>`./project-files/file-changes/watcher-argv.js`</b>
 <br>
-
-
-#### `./project-files/file-changes/watcher-argv.js`
 Basically `watcher.js` but accepts CLI argument
 
 >Introduces:
@@ -313,10 +368,11 @@ Basically `watcher.js` but accepts CLI argument
 > - `process.argv[0,1,2,3...]`
 
 
+<br><br>
+
+
+<b>`./project-files/file-changes/watcher-spawn.js`</b>
 <br>
-
-
-#### `./project-files/file-changes/watcher-spawn.js`
 Basically `watcher-argv.js` but spawns a child process in response to a change and pipes a returned
 Streaam to our command line's `stdout`
 
@@ -325,7 +381,8 @@ Streaam to our command line's `stdout`
 >
 > - Node.js patterns, classes
 >
-> - Streams to pipe data around, in this case the `stdin, stdout, stderr` properties of `ChildProcess`
+> - `stream`s (a type of `EventEmitter` class) to pipe data around, in this case the
+>   `stdin, stdout, stderr` properties of `ChildProcess` class
 >
 > - `require('module').method;` to import only a single thing from a module, ignoring the rest
 >
@@ -334,8 +391,91 @@ Streaam to our command line's `stdout`
 > `() => { console.log('1'); console.log('2'); }`
 
 
+<br><br>
+
+
+<b>`./project-files/file-changes/watcher-spawn-parse.js`</b>
+<br>
+Continuance of `watcher-spawn.js` but captures data from a Stream instead of just passing it on
+
+>Introduces:
+> - Node.js `EventEmitter` class (provides a channel for dispatching events and notifying listeners)
+>
+> - `Buffer` objects, passed as params from `data` events, are Node's method (outside of the JS
+>   engine) of representing binary data, must be encoded/decoded to convert to/from JS strings but it
+>   might be a better idea for performance to work with the binary data itself instead of string conversion
+>
+> - Cements understanding of key Node classes `EventEmitter`, `Stream`, `ChildProcess`, `Buffer`
+
+
+<br><br>
+
+
+<hr>
+
+#### 1.b. Reading and writing files asynchronously
+Common Node.js error handling problems: error events on `EventEmitters` and `err` callback arguments
+
 <br>
 
 
-#### `./project-files/file-changes/watcher-spawn-parse.js`
-Continuance of `watcher-spawn.js` but captures data from a Stream instead of just passing it on
+<b>`./project-files/file-changes/read-simple.js`</b>
+<br>
+<b>`./project-files/file-changes/write-simple.js`</b>
+<br>
+Simplest method of reading/writing: read/write entire file at once (good for small files)
+
+>Introduces:
+> - `err` object (Node.js uncaught exception) containing an `Error` object
+
+
+<br><br>
+
+
+<b>`./project-files/file-changes/read-stream.js`</b>
+<br>
+Working with streams, listens for `data` events from file stream
+
+>Introduces:
+> - Calling methods directly on `require()` instead of first assigning a module to a variable
+>
+> - <i>Chaining</i> handlers one after another because `on()` returns the same emitter object:
+>   `require('fs').someEvent(someArg).chainedHandler(/*do something*/).chainedHandler(/*do something*/);`
+
+
+<br><br>
+
+
+<hr>
+
+#### 1.c. Reading and writing files synchronously (not preferred for I/O in Node)
+Forcing Node to <i>block</i> processing until I/O finishes, using `*Sync` versions of async methods
+that are often provided in a module (ex: `readFileSync` in the `fs` module)
+
+Simpler to use because you're not forced to work with callbacks, synch methods either return successfully
+or throw an exception, and are okay to be used in some cases but mostly just cause programs to run
+longer than necessary - Only if your program couldn't possibly succeed with a file should a sync method be used
+
+
+<br><br>
+
+
+<hr>
+
+## Chapter 2 - Networking with TCP Sockets
+> <b>Node.js core modules</b><br>
+> More async techniques, extending Node.js classes (`EventEmitter`, etc), custom modules for reusability
+
+> <b>Patterns</b><br>
+> Two endpoints in a network connection: server and client, JSON-based protocol for server/client communication
+
+> <b>JavaScript-isms</b><br>
+> Inheritance, creating class heirarchies with Node utilities
+
+> <b>Supporting code</b><br>
+> Unit testing with npm's `Mocha`
+
+<br>
+
+
+#### 2.a. Develop a TCP server program
