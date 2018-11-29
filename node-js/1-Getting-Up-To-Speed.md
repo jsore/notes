@@ -648,7 +648,7 @@ regarding assumptions made about message boundaries
 
 <hr>
 
-#### 2.c. Messaging protocol - Unit tests
+#### 2.c.1. Unit tests - Messaging protocol
 Ensure your code does what is expected, handle network problems (ex: split inputs, broken connections,
 some bad data) gracefully
 
@@ -716,12 +716,20 @@ to `JSON.parse` in `net-watcher-json-client`, relying on `ldj-client.js` module 
 Should now have a server and client that use a custom message format to communicate
 
 
+<br><br>
+
+
+<hr>
+
+#### 2.c.2. Unit tests - Mocha
 
 
 
+<br>
 
 
-
+<b>`./project-files/networking/...`</b>
+<br>
 
 
 
