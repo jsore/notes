@@ -328,7 +328,7 @@ Key Node classes `EventEmitter`, `Stream`, `ChildProcess`, `Buffer`
 <br>
 Watches a file for changes then print something to console
 
->Introduces:
+><b>Introduces:</b>
 > - `const` vs. `let` vs. `var` for variable declarations (see next section block)
 >
 > - `const` is preferred declaration, always use if variable data won't change at runtime after declaration
@@ -362,7 +362,7 @@ Watches a file for changes then print something to console
 <br>
 Basically `watcher.js` but accepts CLI argument
 
->Introduces:
+><b>Introduces:</b>
 > - `process` global object, exception handling
 >
 > - Using backticks (template strings) around strings to denote stringified version of a `${variable}`
@@ -378,7 +378,7 @@ Basically `watcher.js` but accepts CLI argument
 Basically `watcher-argv.js` but spawns a child process in response to a change and pipes a returned
 Streaam to our command line's `stdout`
 
->Introduces:
+><b>Introduces:</b>
 > - Node.js `child-process` module
 >
 > - Node.js patterns, classes
@@ -400,7 +400,7 @@ Streaam to our command line's `stdout`
 <br>
 Continuance of `watcher-spawn.js` but captures data from a Stream instead of just passing it on
 
->Introduces:
+><b>Introduces:</b>
 > - Node.js `EventEmitter` class (provides a channel for dispatching events and notifying listeners)
 >
 > - `Buffer` objects, passed as params from `data` events, are Node's method (outside of the JS
@@ -427,7 +427,7 @@ Common Node.js error handling problems: error events on `EventEmitters` and `err
 <br>
 Simplest method of reading/writing: read/write entire file at once (good for small files)
 
->Introduces:
+><b>Introduces:</b>
 > - `err` object (Node.js uncaught exception) containing an `Error` object
 
 
@@ -438,7 +438,7 @@ Simplest method of reading/writing: read/write entire file at once (good for sma
 <br>
 Working with streams, listens for `data` events from file stream
 
->Introduces:
+><b>Introduces:</b>
 > - Calling methods directly on `require()` instead of first assigning a module to a variable
 >
 > - <i>Chaining</i> handlers one after another because `on()` returns the same emitter object:
@@ -493,34 +493,33 @@ One endpoint <b>binds</b> to a numbered port and the other endpoint <b>connects<
 
 
 <b>Example of using `net`, a Node module for bind & connect operations, to bind a listening TCP port:</b>
-```javascript
-'use strict';
-const
-    net = require('net'),
-    server = net.createServer(connection => {
-        // use the connection object for data transfer
-    });
-server.listen(60300);
-```
+> ```javascript
+> 'use strict';
+> const
+>     net = require('net'),
+>     server = net.createServer(connection => {
+>         // use the connection object for data transfer
+>     });
+> server.listen(60300);
+> ```
 > Method `net.createServer` takes a callback and returns a `Server` object, Node invokes provided callback
 > when another endpoint connects, the `connection` parameter in the callback is a `Socket` object that
 > can be used to send or receive data via the connection between specified TCP port and the `Server`
 >
 > To picture this:
->
 > ```
->         .--- client    <--.
->        /                   \
->    TCP ----- client    <------ can be any # of clients, including Node processes
->     |  \                   /
->     |   '--- client    <--'
->  ___|____
-> |        |
-> | Server |             <-- `server` object with bound TCP port
-> | ------ |
-> |  Node  |
-> | app.js |             <-- Node.js process that bound `server`
-> |________|
+> client1  client2  client3    <-- can be any # of client connections/Node processes
+>         \   |   /
+>          \  |  /
+>            TCP
+>             |
+>             |
+>         .--------.
+>         | Server |    <-- `server` object with bound TCP port
+>         | ------ |
+>         |  Node  |
+>         | app.js |    <-- Node.js process that bound `server`
+>         '--------'
 > ```
 
 
@@ -532,18 +531,86 @@ server.listen(60300);
 Use code from chapter 1, specifying when a file changes, to give us some sort of data to work with
 in our connection
 
-> Note: You may need to install netcat util for this section
+>Note: You may need to install netcat for this section, or use `telnet` instead
 >
-> I'm on CentOS 7, so: `$ sudo yum install nmap-ncat` then ensure installation with `$ nc --version`
-
->Introduces:
+><br>
+>
+><b><b>Introduces:</b></b>
 > - Writing data to a socket
 >
 > - Requires 3 terminal sessions: one for the service (.js file), the client (via netcat utility `nc`),
 >   and another to trigger changes to file being watched
+>
+> - Optional Unix socket connection information in source file
+>
+><br>
+>
+><b>Once built, to get this working:</b>
+>
+>> <b>Terminal session 1</b><br>
+>> start modifying target file<br>
+>> `$ watch -n 1 touch target.txt`<br>
+>> `>> Every 1.0s: touch target.txt`<br>
+>>
+>><br>
+>>
+>> <b>Terminal session 2</b><br>
+>> start program to create service listening @ TCP:60300<br>
+>> `$ node net-watcher.js target.txt`<br>
+>> `>> Listening for subscribers`<br>
+>> <br>
+>> someone/thing connects to the listening port?<br>
+>> `>> Subsriber connected`<br>
+>> <br>
+>> a connection gets terminated (`CTRL C` on `nc` terminal)?<br>
+>> `>> Subscriber disconnected`<br>
+>>
+>><br>
+>>
+>> <b>Terminal session 3</b><br>
+>> start netcat session to connect to the listening port<br>
+>> `$ nc localhost 60300`<br>
+>> `>> Now watching target.txt for changes...`<br>
+>> <br>
+>> the watch command from session 1 touches the target file?<br>
+>> `>> File changed: Day Mon DD YYYY HH:MM:01 GMT-0500 (EST)`<br>
+>> `>> File changed: Day Mon DD YYYY HH:MM:02 GMT-0500 (EST)`<br>
+>> `>> File changed: Day Mon DD YYYY HH:MM:03 GMT-0500 (EST)`<br>
+>> `>> File changed: Day Mon DD YYYY HH:MM:04 GMT-0500 (EST)`<br>
+>> ...repeats<br>
+>
+><br>
+>
+><b>Visualizing the setup we've created, using the previous example:</b>
+> ```
+> client terminal
+>        |
+>        |
+>  $ netcat util
+>        |
+>        |
+>  .-----------.
+>  | TCP:60300 |    <-- resource defined by net-watcher.js
+>  '-----------'
+>        |
+>        |
+>  .------------.
+>  |   Server   |
+>  | ---------  |   $ touch
+>  |    Node    |      |
+>  |   app.js   |      |
+>  |  --------  | .---------.
+>  | fs.watch() |-| txtFile |    <-- resource defined by net-watcher.js
+>  '------------' '---------'
+> ```
 
 
+<br><br>
 
+
+<b>`./project-files/networking/...`</b>
+<br>
+Transform data into a parsable format, allows for customer client applications
 
 
 
