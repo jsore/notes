@@ -722,14 +722,93 @@ Should now have a server and client that use a custom message format to communic
 <hr>
 
 #### 2.c.2. Unit tests - Mocha
-
+npm module `Mocha`, popular testing framework for Node.js, in this instance we'll use the <b>behavior driven
+development (BDD)</b> style
 
 
 <br>
 
 
-<b>`./project-files/networking/...`</b>
+<b>Installing the npm module</b>
 <br>
+npm = Node.js's built in package manager, relies on config file `package.json`, and that needs to be
+created first
+
+<br>
+
+<b>a - </b>Create a default `package` file in project's root (`./project-files/networking` in this case):
+> `$ npm init -y`
+
+<br>
+
+<b>b - </b>We're not worrying about diving deep into npm or npm configuration right now, move on to installing Mocha:
+> `$ npm install --save-dev --save-exact mocha@3.4.2`
+>
+> <b>Note: </b>You can ignore the warnings generated for now, npm is just suggesting you add info to `package.json`
+
+<br>
+
+Upon running `ls` you can see a few changes have been made.
+- `node_modules` directory created, containing Mocha and its dependencies
+- In your `package.json` file, you should see a new section `devDependencies` and Mocha should be listed therein
+- File `package-lock.json` also created, containing exact version of every module Mocha depends on (note:
+  if you don't want Node to automatically mess with the versions of whatever packages you use via its
+  semantic versioning practices, be sure to `git commmit` this file)
+
+Node provides regular dependencies, which are used at runtime (with `require`) and are installed in npm
+with a `--production` flag in `npm install`
+
+There are also dev dependencies, which are programs the project needs during development. We installed
+Mocha as a Dev-style with the `--save-dev` flag in the `npm install` command
+
+If no flags are used during package installation, both types are installed.
+
+
+<br>
+
+
+<b>Unit test for `ldj-client`</b>
+<br>
+`./project-files/networking/test/ldj-client-test.js`
+
+>Introduces:
+> - `test` directory, the place Mocha looks for by default for tests
+>
+> - Node module `assert` for easier comparison testing
+>
+> - How to run Mocha tests from npm
+
+<br>
+
+To run the Mocha test in npm:
+><b>Add an entry to `package.json` under `scripts` section</b>
+>
+>>```json
+>>"scripts": {
+>>    "test": "mocha"
+>>},
+>>```
+>
+><b>run the `npm run test` command under npm's alias `npm test`</b>
+>
+>> ```
+>> $ npm test
+>> networking@1.0.0 test /var/www/github_notes/notes/node-js/project-files/networking
+>> mocha
+>>
+>>  LDJClient
+>>    ✓ should emit a message event from a single data event
+>>
+>>  1 passing (11ms)
+>> ```
+
+
+<br>
+
+
+<b>Adding more async tests to `ldj-client`</b>
+<br>
+`./project-files/networking/test/ldj-client-test.js`
 
 
 
