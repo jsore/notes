@@ -418,6 +418,7 @@ Continuance of `watcher-spawn.js` but captures data from a Stream instead of jus
 #### 1.b. Reading and writing files asynchronously
 Common Node.js error handling problems: error events on `EventEmitters` and `err` callback arguments
 
+
 <br>
 
 
@@ -489,7 +490,7 @@ of the type of info in transmission, a connection between endpoints must first b
 One endpoint <b>binds</b> to a numbered port and the other endpoint <b>connects</b> to a port
 
 
-<br><br>
+<br>
 
 
 <b>Example of using `net`, a Node module for bind & connect operations, to bind a listening TCP port:</b>
@@ -536,7 +537,9 @@ in our connection
 ><br>
 >
 ><b><b>Introduces:</b></b>
-> - Writing data to a socket
+> - Writing data to a listening socket server
+>
+> - Sending plain-text messages for human reading
 >
 > - Requires 3 terminal sessions: one for the service (.js file), the client (via netcat utility `nc`),
 >   and another to trigger changes to file being watched
@@ -583,48 +586,134 @@ in our connection
 >
 ><b>Visualizing the setup we've created, using the previous example:</b>
 > ```
-> client terminal
->        |
->        |
->  $ netcat util
->        |
->        |
->  .-----------.
->  | TCP:60300 |    <-- resource defined by net-watcher.js
->  '-----------'
->        |
->        |
->  .------------.
->  |   Server   |
->  | ---------  |   $ touch
->  |    Node    |      |
->  |   app.js   |      |
->  |  --------  | .---------.
->  | fs.watch() |-| txtFile |    <-- resource defined by net-watcher.js
->  '------------' '---------'
+>                client terminal
+>                       |
+>                       |
+>                 $ netcat util
+>                       |
+>                       |
+>  .------------. .-----------.
+>  |   Server   |-| TCP:60300 |    <-- resource defined by net-watcher.js
+>  | ---------  | '-----------'
+>  |            |
+>  |    Node    |    $ touch
+>  |   app.js   |       |
+>  |            |       |
+>  |  --------  | .-----------.
+>  | fs.watch() |-| text file |    <-- resource defined by net-watcher.js
+>  '------------' '-----------'
 > ```
 
 
 <br><br>
 
 
-<b>`./project-files/networking/...`</b>
+<hr>
+
+#### 2.b. Design and implement an upgraded messaging protocol
+Any networked application developed in Node requires you to work with one or more protocols - rules
+that define how endpoints communicate
+
+This version will be based on passing JSON messages (JSON-serialized objects) over TCP, implementing
+client/server endpoints to accept the new protocol
+
+
 <br>
-Transform data into a parsable format, allows for customer client applications
 
 
+<b>`./project-files/networking/net-watcher-json-service.js`</b>
+<br>
+<b>`./project-files/networking/net-watcher-json-client.js`</b>
+<br>
+Transform data into a parsable format, net-watcher.js but sending JSON encoded messages to connected client
+(working with the server side of Node sockets) and receiving JSON messages (on the client side)
+
+Very basic, only listens to `data` events, not `end` or `error` events, purposefully including a bug
+regarding assumptions made about message boundaries
+
+>Introduces:
+> - JSON encoding and writing
+>
+> - Line-delimted JSON ("LDJ" - separating each JSON message with newline chars, no other whitespace)
+>
+> - JSON messages receival, pretty printing JSON into human readable format
+>
+> - Building client socket via `connect()`
+>
+> - `new Date()` using a provided Unix timestamp
 
 
+<br><br>
 
 
+<hr>
+
+#### 2.c. Messaging protocol - Unit tests
+Ensure your code does what is expected, handle network problems (ex: split inputs, broken connections,
+some bad data) gracefully
+
+Extending core Node classes (current client code doesn't buffer its inputs), creating custom modules,
+developing on top of the `EventEmitter` class
 
 
+<br>
 
 
+<b>`./project-files/networking/test-json-service.js`</b>
+<br>
+Purposefully send splits message to visualize network problem
+
+>Introduces:
+> - `clearTimeout()` to unschedule callback from `setTimeout()` because calls to `connection.write`
+>   will trigger error events after the connection is closed
 
 
+<br><br>
 
 
+<b>`./project-files/networking/lib/ldj-client.js`</b>
+<br>
+Fix client code to buffer incoming data into messages and handle each message once it arrives properly,
+while moving the buffer section of the code to a custom module, then incorporate that into network-watcher client
+
+Now, each message event, complete or not, will cause `message` events on the `LDJClient` invocation
+
+>Introduces:
+> - Separating jobs into Node.js modules, one to buffer messages, one to handle messages at arrival
+>
+> - Begin the extension of core Node modules & creating custom modules
+>
+> - Inheritance in Node
+>
+> - Creating class w/inheritance: `class CustomClass extends SomeCoreClass {constructor(stream)}`
+>
+> - Creating instance of ^^ class: `new CustomClass(stream)`
+>
+> - Using `stream` (object that emits `data` events such as a `Socket`) within `constructor(stream)`
+>
+> - Taking incoming raw data from `stream` and convert it into message events of the parsed message objects.
+>
+> - Start `constructor` with `super()` to invoke `SomeCoreClass`'s constructor (which is best practice
+>   when implementing a class that extends another)
+>
+> - <b>prototypal inheritance</b> in JS to establish relationship between extended class and the class
+>   it was extended by (hierarchies), should a property be looked for that doesn't exist on new extending class, go
+>   look at the parent that new class extends (ex: create `client` invocation of `LDJClient` and attempt
+>   to call `client.on`, even though `LDJClient`'s prototype doesn't include a `on` method, JS will
+>   go look for it (and will find it) within the `EventEmitter` class)
+>
+> - Put `CustomClass` into a Node.js module for upstream client (exposing `LDJClient` as a module)
+
+
+<br><br>
+
+
+<b>`./project-files/networking/net-watcher-ldj-client.js`</b>
+<br>
+Implement the custom module created in `./lib/ldj-client.js`, instead of sending `data` buffers straight
+to `JSON.parse` in `net-watcher-json-client`, relying on `ldj-client.js` module to produce `message` events
+
+Should now have a server and client that use a custom message format to communicate
 
 
 
