@@ -50,6 +50,10 @@ console.log('Finishing app');
 ```
 I'll explain what's happening in Node while a program runs.
 
+<br>
+
+<b>TODO: make each explaination block smaller, chunk out the 'call stack' areas per section?</b>
+
 
 <br>
 
@@ -820,17 +824,93 @@ To run the Mocha test in npm:
 
 <hr>
 
+## Chapter 3 - Connections and interactions between Node Microservices
+> <b>Node.js core modules</b><br>
+> Using pool of processes (Node.js workers) to mimic multi-threading (using Node's `cluster` module)
+
+> <b>Patterns</b><br>
+> Messaging patterns, `publish/subscribe`, `request/reply`, `push/pull`, and when or how to apply them
+
+> <b>JavaScript-isms</b><br>
+> JS `rest` parameter syntax for arbitrary function argument capture
+
+> <b>Supporting code</b><br>
+> Use and manage npm modules, with or without external depencies
+
+<br>
+
+
+<hr>
+
+#### 3.a. ØMQ (ZeroMQ)
+Alternative to working with HTTP (and the more complicated `http` module), use ØMQ to expose higher-level
+messaging patterns and low-level networking concerns
+
+<br>
+
+<b>ØMQ (ZeroMQ) advanatages:</b>
+> - Auto reconnect attempts between ØMQ endpoints
+> - Only delivers whole messages, don't have to create buffers to deal with chunked data
+> - Takes care of routing details (ex: sending responses back to correct clients)
+> - Allows for exploration of several messaging pattern types, which can be applied to HTTP practices later
+> - Patterns and approaches also apply to embedded Node.js systems (IoT, Raspberry Pi OS Raspbian)
+
+<br>
+
+<b>Installing ØMQ</b>
+
+<b>a - </b>Create an initial `package.json` file from `./package-files/microservices`<br>
+> `$ npm init -y`
+
+<br>
+
+<b>b - </b>Use <b>zeromq</b> Node.js module, the official Node.js binding for npm's ØMQ<br>
+> `$ npm install --save --save-exact zeromq@4.2.1`
+
+Note: remember, use `--save` flag to tell npm to remember this dependancy in `package.json` as a runtime dependency
+
+<br>
+
+<b>c - </b>Now you can test the installation, making sure zeromq and its depencies were downloaded to `node_modules`
+> `$ node -p -e "require('zeromq').version"`
+
+Note: `-p` flag to print output, `-e` to tell Node.js to evealuate string as JS
+
+
+<br><br>
+
+
+<hr>
+
+#### 3.b. ØMQ Messaging Patterns - `publish/subscribe` (or `PUB/SUB`)
+In previous sections, a networded file-watching service and its client was created that communicated
+with TCP by sending LDJ (Line-deliniated JSON) messages - the server <b>published</b> information in
+that format and client programs could <b>subscrive</b> to it for information
+
+While our client code safely handled the message/boundary problem, we had to create a separate module
+for buffering chunked data and emitting messages, and still had liabilities such as 'how to handle
+network interupts or server restarts'
+
+We'll demonstrate how much easier it is to just use ØMQ instead of naked TCP
+
+<br>
+
+<b>Publishing messages over TCP using zeromq</b>
 
 
 
+<br><br>
+
+
+<hr>
+
+#### 3.c. ØMQ Messaging Patterns - `request/reply` (or ` / `)
 
 
 
+<br><br>
 
 
+<hr>
 
-
-
-
-
-
+#### 3.d. ØMQ Messaging Patterns - `push/pull` (or ` / `)
