@@ -864,14 +864,14 @@ messaging patterns and low-level networking concerns
 
 <br>
 
-<b>b - </b>Use <b>zeromq</b> Node.js module, the official Node.js binding for npm's ØMQ<br>
+<b>b - </b>Use <b>`zeromq`</b> Node.js module, the official Node.js binding for npm's ØMQ<br>
 > `$ npm install --save --save-exact zeromq@4.2.1`
 
 Note: remember, use `--save` flag to tell npm to remember this dependancy in `package.json` as a runtime dependency
 
 <br>
 
-<b>c - </b>Now you can test the installation, making sure zeromq and its depencies were downloaded to `node_modules`
+<b>c - </b>Now you can test the installation, making sure `zeromq` and its depencies were downloaded to `node_modules`
 > `$ node -p -e "require('zeromq').version"`
 
 Note: `-p` flag to print output, `-e` to tell Node.js to evealuate string as JS
@@ -895,7 +895,26 @@ We'll demonstrate how much easier it is to just use ØMQ instead of naked TCP
 
 <br>
 
-<b>Publishing messages over TCP using zeromq</b>
+<b>Publishing messages over TCP using `zeromq`</b>
+<br>
+`./project-files/microservices/zmq-watcher-pub.js`
+
+>Introduces:
+> - Easy TCP port listening, example: "listen for any tcp connection over 60400":
+>>  ```javascript
+>>  publisher.bind('tcp://60400', err => {
+>>      //take err argument if found....
+>>      if (err) { throw err; }
+>>      //...or, if no error...
+>>      console.log('listening...');
+>>  });
+>>  ```
+>
+> - Uses single call to filesystem with `fs.watch` instead of invoking `watch` for each connected client
+>
+> - This ØMQ server requires an ØMQ client, can't just use `nc` or `telnet` for the client
+
+
 
 
 
