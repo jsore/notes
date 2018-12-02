@@ -792,7 +792,7 @@ To run the Mocha test in npm:
 ><b>run the `npm run test` command under npm's alias `npm test`</b>
 >
 >> ```
->> $ npm test
+>> path/to/project $ npm test
 >> networking@1.0.0 test /var/www/github_notes/notes/node-js/project-files/networking
 >> mocha
 >>
@@ -806,13 +806,19 @@ To run the Mocha test in npm:
 <br>
 
 
-<b>Adding more async tests to `ldj-client`</b>
+<b>Upgrading `test-json-service.js` into a Mocha test</b>
 <br>
 `./project-files/networking/test/ldj-client-test.js`
 
+>Introduces:
+> - Adding multiple tests to one test framework, each within its own `it()` clause within the test
+>   file's `describe` block
 
 
+<br><br>
 
+
+<hr>
 
 
 

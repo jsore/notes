@@ -9,7 +9,9 @@ const assert = require('assert');
 const EventEmitter = require('events').EventEmitter;
 const LDJClient = require('../lib/ldj-client.js');
 
-/** Mocha method to create a named context for our LDJClient tests */
+/**
+ * Mocha's `describe` method to create a named context for our LDJClient tests
+ */
 describe('LDJClient', () => {
     /** inside the 2nd argument to 'describe' method, the test content */
 
@@ -24,6 +26,7 @@ describe('LDJClient', () => {
     });
 
     /** testing a specific class behavior */
+    /** test 1, emit message for message received as 1 event */
     it('should emit a message event from a single data event', done => {
         /** invoking done() callback that Mocha provides when test is done... */
 
@@ -36,5 +39,17 @@ describe('LDJClient', () => {
 
         /** make the synthetic stream emit a data event, will fire the message handler */
         stream.emit('data', '{"foo":"bar"}\n');
+    });
+
+    /** test 1, emit message for message received as multiple events */
+    it('should emit a message event from split data events', done => {
+        client.on('message', message => {
+            assert.deepEqual(message, {foo: 'bar'});
+            done();
+        });
+        stream.emit('data', '{"foo":');
+
+        /** similar to setTimeout(0) */
+        process.nextTick(() => stream.emit('data', '"bar"}\n'));
     });
 });
