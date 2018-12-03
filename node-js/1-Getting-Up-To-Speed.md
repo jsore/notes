@@ -895,11 +895,16 @@ We'll demonstrate how much easier it is to just use ØMQ instead of naked TCP
 
 <br>
 
-<b>Publishing messages over TCP using `zeromq`</b>
+<b>Publishing (PUB) messages over TCP using `zeromq`</b>
 <br>
 `./project-files/microservices/zmq-watcher-pub.js`
 
 >Introduces:
+> - The publisher, `zmq.socket('pub');`
+>
+> - Because `zmq.socket` is used, either a `bind` method (typically for the publisher) or a `connect` method (
+>   typically for the subscriber) can be used, but either can be used interchangeably for each PUB/SUB pair
+>
 > - Easy TCP port listening, example: "listen for any tcp connection over 60400":
 >>  ```javascript
 >>  publisher.bind('tcp://60400', err => {
@@ -914,8 +919,23 @@ We'll demonstrate how much easier it is to just use ØMQ instead of naked TCP
 >
 > - This ØMQ server requires an ØMQ client, can't just use `nc` or `telnet` for the client
 
+<br>
 
+<b>Subscribing (SUB) to a publisher</b>
+<br>
+`./project-files/microservices/zmq-watcher-sub.js`
 
+>Introduces:
+> - The subscriber, `zmq.socket('sub');`
+>
+> - `zmq.socket('sub').subscribe('');` will subscribe you to every message, replace the empty string with
+>   a string to filter results, but either way, `subscribe()` must be called at some point or you'll never
+>   recieve messages at all
+>
+> - The `subscriber` object inherits from `EventEmitter`, emits a `message` event when it receives one from a publisher
+>
+> - ØMQ doesn't care which boots first, the PUB or SUB, it'll automatically establish and reestablish connection
+>   when either endpoint comes online 
 
 
 <br><br>
@@ -923,7 +943,7 @@ We'll demonstrate how much easier it is to just use ØMQ instead of naked TCP
 
 <hr>
 
-#### 3.c. ØMQ Messaging Patterns - `request/reply` (or ` / `)
+#### 3.c. ØMQ Messaging Patterns - `request/reply` (or `REQ/REP`)
 
 
 
