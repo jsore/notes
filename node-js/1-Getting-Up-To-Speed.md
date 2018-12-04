@@ -1074,7 +1074,43 @@ Forking (`fork` is a method on the `cluster` module and is a special case of `sp
 1's usage of `child_process` module's `spawn` method - ) will be used to spin up copies of the same
 Node.js program
 
+<br>
+
 Each call to `cluster`'s `fork` creates a worker process that runs the same script as the original
+>   ```javascript
+>   const cluster = require('cluster');
+>   // is the current process the master?
+>   if (cluster.isMaster) {
+>       // fork some worker processes
+>       for (let i = 0; i < 10; i++) {
+>           cluster.fork();
+>       }
+>   } else {
+>       // this is a worker (forked) process...
+>       // ...do something with it
+>   }
+>   ```
+
+<br>
+
+Want the master to listen for workers coming online?
+>   ```javascript
+>   // look for new worker objects, which get passed as params
+>   //   when the `cluster` module emits and `online` event
+>   cluster.on('online', worker =>
+>       console.log(`Worker ${worker.process.pid} is online`));
+>   ```
+
+<br>
+
+<b>Distributing requests to a pool of worker processes</b><br>
+`./project-files/microservices/zmq-filer-rep-cluster.js`<br>
+Master Node process creates `ROUTER` and `DEALER` sockets then spin up the workers, with each worker
+creating a `REP` socket connecting back to `DEALER`
+
+>Introduces:
+> - Rule of thumb for count of workers: one worker per CPU
+
 
 
 <br><br>
@@ -1083,3 +1119,21 @@ Each call to `cluster`'s `fork` creates a worker process that runs the same scri
 <hr>
 
 #### 3.f. ØMQ Messaging Patterns - `PUSH` and `PULL`
+Useful for when theres a queue of jobs that you'd like to assign among a pool of available workers
+
+Unlike in a PUB/SUB pair where all subscribers get all messages sent by PUB, only one puller will
+receive each message sent by the pusher
+
+<br>
+
+<b>Common pitfalls</b><br>
+- Node/ØMQ operate quick enough that a puller may spin through available messages before the connection
+  is fully established
+    - Fix: make the pusher wait until all the pullers are ready to receive before pushing messages
+
+- The OS dictates how many resources (file descriptors) Node can use at any one time, possibly causing
+  connection and/or job failures (`EMFILE` or `ECONRESET` error messages under load)
+    - Fix 1: keep a counter of the number of tasks the Node process is engaged in, adding or decrementing
+      as appropriate, pausing the listener from obtaining new tasks once some threshold is reached and
+      resuming when a task task ends
+    - Fix 2: Use an existing module to offload handling this (ex: `graceful-fs`)
