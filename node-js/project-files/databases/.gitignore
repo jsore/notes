@@ -1,0 +1,13 @@
+# ignore everything you see here...
+data/cache/epub/*
+
+# ...except for...
+#!.gitignore
+#!bashrc
+
+# ...even if they're in subdirectories
+#!*/
+
+# should we need a file in a lower directory:
+# !*/path/to/file.txt
+# !*/path/to/some/other/file.txt
