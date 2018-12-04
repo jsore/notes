@@ -829,7 +829,8 @@ To run the Mocha test in npm:
 > Using pool of processes (Node.js workers) to mimic multi-threading (using Node's `cluster` module)
 
 > <b>Patterns</b><br>
-> Messaging patterns, `publish/subscribe`, `request/reply`, `push/pull`, and when or how to apply them
+> Messaging patterns, `publish/subscribe`, `request/reply`, `ROUTER` & `DEALER`, `push/pull`, and
+> when or how to apply them
 
 > <b>JavaScript-isms</b><br>
 > JS `rest` parameter syntax for arbitrary function argument capture
@@ -845,6 +846,9 @@ To run the Mocha test in npm:
 #### 3.a. ØMQ (ZeroMQ)
 Alternative to working with HTTP (and the more complicated `http` module), use ØMQ to expose higher-level
 messaging patterns and low-level networking concerns
+
+Uses the ZeroMQ Message Transport Protocol (ZMTP) for message exchange, which uses frames for message
+composure
 
 <br>
 
@@ -944,7 +948,34 @@ We'll demonstrate how much easier it is to just use ØMQ instead of naked TCP
 <hr>
 
 #### 3.c. ØMQ Messaging Patterns - `request/reply` (or `REQ/REP`)
+Very common pattern in Node networked programming, plays into the 'Q' portion of ØMQ
 
+`REQ/REP` pairs communicate in lockstep - request comes in, replies go out and additional request are
+queued and later dispatched by ØMQ, leaving your application aware of only one request at a time
+
+Synchronous (operates sequentially), no parallelism with requests/replies, probably not great for
+a high performance requirement but is easy to code
+
+<br>
+
+<b>The responder (REP)</b>
+<br>
+`./project-files/microservices/zmq-filer-rep.js`<br>
+Will wait for a request for file data then serves up the content when asked
+
+>Introduces:
+> - Locking down the stable listener endpoint of the pair to localhost for security reasons:
+>   `responder.bind('tcp://127.0.0.1...`
+>
+> - Listening to Unix signal `SIGINT` (signal interrupt) events, which signify a process receving an
+>   interupt signal from the user (ie, hitting `CTRL` + `c` to kill a terminal process), then handle
+>   the event cleanly by asking the responder to gracefully close any outstanding connections
+
+<br>
+
+<b>The request (REQ)</b>
+<br>
+`./project-files/microservices/zmq-filer-req.js`<br>
 
 
 <br><br>
@@ -952,4 +983,86 @@ We'll demonstrate how much easier it is to just use ØMQ instead of naked TCP
 
 <hr>
 
-#### 3.d. ØMQ Messaging Patterns - `push/pull` (or ` / `)
+#### 3.d. ØMQ Messaging Patterns - `ROUTER` and `DEALER`
+Advanced socket types for parallel messaging
+
+<br>
+
+<b>The `ROUTER` socket type</b><br>
+Are essentially parallell `REP` sockets, can handle multiple requests simultaneously by remembering
+which connection each request came from and route the replies accordingly (by using ZMTP frames)
+
+The simpler socket types only need one frame per message and the handlers use `data` parameters, `ROUTER`
+sockets use multiple frames and its handlers take an array of frames instead of `data`
+
+An example implementation:
+>   ```javascript
+>   // create the socket
+>   const router = zmq.socket('router');
+>   // on message event...
+>   router.on('message', (...frames) => {
+>       // ...do something with the frames, then:
+>       dealer.send(frames);
+>   });
+>   ```
+
+> <b>Note: </b>the `...` is ES5 syntax called <b>rest parameters</b>, when used in function declarations
+> the syntax will collect any number of arguments passed into the function as an array
+
+<br>
+
+<b>The `DEALER` socket type</b><br>
+Basically a parallelt `REQ` socket, can send multiple requests in parallel
+
+Using the `DEALER` socket is almost the same as the `ROUTER` implementation, except `router` gets
+swapped with `dealer`:
+>   ```javascript
+>   //const router = zmq.socket('router');
+>   const dealer = zmq.socket('dealer');
+>   //router.on('message', (...frames) => {
+>   dealer.on('message', (...frames) => {
+>       //dealer.send(frames);
+>       router.send(frames);
+>   });
+>   ```
+
+There is a passthrough relationship between the `DEALER` and `ROUTER` sockets; requests to the router
+get passed off to the dealer to send out to its connections and replies to the dealer will be forwarded
+back to the router to direct each reply to the connections that requested it
+
+<br>
+
+<b>Picturing the `DEALER/ROUTER` relationship</b>
+>```
+>                 .--------------------.
+>                 |      .------>.     |
+> REQ socket ---> | ROUTER      DEALER | <-- REP socket
+>                 |      '<------'     |
+>                 '--------------------'
+>
+> - An incoming REQ socket connects to ROUTER
+> - REQ socket issues a request, ROUTER passes it to DEALER
+> - DEALER picks the next REP socket connected to it & forwards the request
+>
+> - REP socket produces a reply, DEALER passes it to ROUTER
+> - ROUTER reviews the message's frames to determine origin
+> - ROUTER passes the message to the REQ that sent the initial request
+>```
+
+
+<br><br>
+
+
+<hr>
+
+#### 3.e. ØMQ Messaging Patterns - Clustering Node.js processes
+Node's event loop is single threaded, clustering is spinning up more Node processes, which is synonymous
+with using more threads when needed in a multithreaded system, and is managed with Node's `cluster` module
+
+
+<br><br>
+
+
+<hr>
+
+#### 3.f. ØMQ Messaging Patterns - `PUSH` and `PULL`
