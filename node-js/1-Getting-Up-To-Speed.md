@@ -1059,6 +1059,19 @@ back to the router to direct each reply to the connections that requested it
 Node's event loop is single threaded, clustering is spinning up more Node processes, which is synonymous
 with using more threads when needed in a multithreaded system, and is managed with Node's `cluster` module
 
+Clustering is useful for scaling an app up when theres unused CPU capacity available
+
+<br>
+
+<b>Demonstration of clustering processes</b><br>
+Goal: to manage a pool of worker processes to respond to ØMQ requests, using `ROUTER`, `DEALER`, `REP`
+sockets to distribute requests to workers for a cluster-based multiprocess work distribution and
+load-balanced message-passing program
+
+Forking (`fork` is a method on the `cluster` module and is a special case of `spawn` - see chapter
+1's usage of `child_process` module's `spawn` method - ) will be used to spin up copies of the same
+Node.js program
+
 
 <br><br>
 
