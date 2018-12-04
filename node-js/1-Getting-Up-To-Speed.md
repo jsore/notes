@@ -1,8 +1,7 @@
 # Part 1 - Getting Up To Speed With Node.js
 
 
-> Note: any files quoted here can be found in the project-files directory
->
+> Note: any files quoted here can be found in the project-files directory<br>
 > https://github.com/jsore/notes/tree/master/node-js/project-files/file-changes
 
 
@@ -268,7 +267,7 @@ loop ASAP for Node to work on something else.
 
 
 #### Practical programming
-Producing useful code (eg: filesystem interaction, establishing socket connections, serving web apps)
+Producing useful code ( eg: filesystem interaction, establishing socket connections, serving web apps )
 
 
 <br>
@@ -276,7 +275,7 @@ Producing useful code (eg: filesystem interaction, establishing socket connectio
 
 #### Node.js Core modules
 How modules shuttle information between JS application environment and the C-based event loop
-(eg: using `Buffer` to transport data between the two)
+( eg: using `Buffer` to transport data between the two )
 
 
 <br>
@@ -333,7 +332,7 @@ Key Node classes `EventEmitter`, `Stream`, `ChildProcess`, `Buffer`
 Watches a file for changes then print something to console
 
 ><b>Introduces:</b>
-> - `const` vs. `let` vs. `var` for variable declarations (see next section block)
+> - `const` vs. `let` vs. `var` for variable declarations ( see next section block )
 >
 > - `const` is preferred declaration, always use if variable data won't change at runtime after declaration
 >
@@ -353,7 +352,7 @@ Watches a file for changes then print something to console
 >
 > - JS functions are first class objects, can be assigned to variables, passed as params to functions
 >
-> - ECMA2015 arrow function expressions (fat arrow functions, arrow functions) don't create
+> - ECMA2015 arrow function expressions ( fat arrow functions, arrow functions ) don't create
 > new scopes for `this` & should be your go-to for function expression declaration
 >
 > - CLI command `$ node scriptName.js` to run `scriptName.js`
@@ -369,7 +368,7 @@ Basically `watcher.js` but accepts CLI argument
 ><b>Introduces:</b>
 > - `process` global object, exception handling
 >
-> - Using backticks (template strings) around strings to denote stringified version of a `${variable}`
+> - Using backticks ( template strings ) around strings to denote stringified version of a `${variable}`
 >
 > - `process.argv[0,1,2,3...]`
 
@@ -387,7 +386,7 @@ Streaam to our command line's `stdout`
 >
 > - Node.js patterns, classes
 >
-> - `stream`s (a type of `EventEmitter` class) to pipe data around, in this case the
+> - `stream`s ( a type of `EventEmitter` class ) to pipe data around, in this case the
 >   `stdin, stdout, stderr` properties of `ChildProcess` class
 >
 > - `require('module').method;` to import only a single thing from a module, ignoring the rest
@@ -405,10 +404,10 @@ Streaam to our command line's `stdout`
 Continuance of `watcher-spawn.js` but captures data from a Stream instead of just passing it on
 
 ><b>Introduces:</b>
-> - Node.js `EventEmitter` class (provides a channel for dispatching events and notifying listeners)
+> - Node.js `EventEmitter` class ( provides a channel for dispatching events and notifying listeners )
 >
-> - `Buffer` objects, passed as params from `data` events, are Node's method (outside of the JS
->   engine) of representing binary data, must be encoded/decoded to convert to/from JS strings but it
+> - `Buffer` objects, passed as params from `data` events, are Node's method ( outside of the JS
+>   engine ) of representing binary data, must be encoded/decoded to convert to/from JS strings but it
 >   might be a better idea for performance to work with the binary data itself instead of string conversion
 >
 > - Cements understanding of key Node classes `EventEmitter`, `Stream`, `ChildProcess`, `Buffer`
@@ -430,10 +429,10 @@ Common Node.js error handling problems: error events on `EventEmitters` and `err
 <br>
 <b>`./project-files/file-changes/write-simple.js`</b>
 <br>
-Simplest method of reading/writing: read/write entire file at once (good for small files)
+Simplest method of reading/writing: read/write entire file at once ( good for small files )
 
 ><b>Introduces:</b>
-> - `err` object (Node.js uncaught exception) containing an `Error` object
+> - `err` object ( Node.js uncaught exception ) containing an `Error` object
 
 
 <br><br>
@@ -455,9 +454,9 @@ Working with streams, listens for `data` events from file stream
 
 <hr>
 
-#### 1.c. Reading and writing files synchronously (not preferred for I/O in Node)
+#### 1.c. Reading and writing files synchronously ( not preferred for I/O in Node )
 Forcing Node to <i>block</i> processing until I/O finishes, using `*Sync` versions of async methods
-that are often provided in a module (ex: `readFileSync` in the `fs` module)
+that are often provided in a module ( ex: `readFileSync` in the `fs` module )
 
 Simpler to use because you're not forced to work with callbacks, synch methods either return successfully
 or throw an exception, and are okay to be used in some cases but mostly just cause programs to run
@@ -471,7 +470,7 @@ longer than necessary - Only if your program couldn't possibly succeed with a fi
 
 ## Chapter 2 - TCP Sockets & building a TCP server program
 > <b>Node.js core modules</b><br>
-> More async techniques, extending Node.js classes (`EventEmitter`, etc), custom modules for reusability
+> More async techniques, extending Node.js classes ( `EventEmitter`, etc ), custom modules for reusability
 
 > <b>Patterns</b><br>
 > Two endpoints in a network connection: server and client, JSON-based protocol for server/client communication
@@ -488,7 +487,7 @@ longer than necessary - Only if your program couldn't possibly succeed with a fi
 <hr>
 
 #### 2.a. Listening for socket connections
-Networked (socket-based) services exist to connect endpoints and transmit info between them, and regardless
+Networked ( socket-based ) services exist to connect endpoints and transmit info between them, and regardless
 of the type of info in transmission, a connection between endpoints must first be made
 
 One endpoint <b>binds</b> to a numbered port and the other endpoint <b>connects</b> to a port
@@ -545,7 +544,7 @@ in our connection
 >
 > - Sending plain-text messages for human reading
 >
-> - Requires 3 terminal sessions: one for the service (.js file), the client (via netcat utility `nc`),
+> - Requires 3 terminal sessions: one for the service ( .js file) , the client ( via netcat utility `nc` ),
 >   and another to trigger changes to file being watched
 >
 > - Optional Unix socket connection information in source file
@@ -569,7 +568,7 @@ in our connection
 >> someone/thing connects to the listening port?<br>
 >> `>> Subsriber connected`<br>
 >> <br>
->> a connection gets terminated (`CTRL C` on `nc` terminal)?<br>
+>> a connection gets terminated ( `CTRL C` on `nc` terminal )?<br>
 >> `>> Subscriber disconnected`<br>
 >>
 >><br>
@@ -618,7 +617,7 @@ in our connection
 Any networked application developed in Node requires you to work with one or more protocols - rules
 that define how endpoints communicate
 
-This version will be based on passing JSON messages (JSON-serialized objects) over TCP, implementing
+This version will be based on passing JSON messages ( JSON-serialized objects ) over TCP, implementing
 client/server endpoints to accept the new protocol
 
 
@@ -630,7 +629,7 @@ client/server endpoints to accept the new protocol
 <b>`./project-files/networking/net-watcher-json-client.js`</b>
 <br>
 Transform data into a parsable format, net-watcher.js but sending JSON encoded messages to connected client
-(working with the server side of Node sockets) and receiving JSON messages (on the client side)
+( working with the server side of Node sockets ) and receiving JSON messages ( on the client side )
 
 Very basic, only listens to `data` events, not `end` or `error` events, purposefully including a bug
 regarding assumptions made about message boundaries
@@ -638,7 +637,7 @@ regarding assumptions made about message boundaries
 >Introduces:
 > - JSON encoding and writing
 >
-> - Line-delimted JSON ("LDJ" - separating each JSON message with newline chars, no other whitespace)
+> - Line-delimted JSON ( "LDJ" - separating each JSON message with newline chars, no other whitespace )
 >
 > - JSON messages receival, pretty printing JSON into human readable format
 >
@@ -653,10 +652,10 @@ regarding assumptions made about message boundaries
 <hr>
 
 #### 2.c.1. Unit tests - Messaging protocol
-Ensure your code does what is expected, handle network problems (ex: split inputs, broken connections,
-some bad data) gracefully
+Ensure your code does what is expected, handle network problems ( ex: split inputs, broken connections,
+some bad data ) gracefully
 
-Extending core Node classes (current client code doesn't buffer its inputs), creating custom modules,
+Extending core Node classes ( current client code doesn't buffer its inputs ), creating custom modules,
 developing on top of the `EventEmitter` class
 
 
@@ -693,20 +692,20 @@ Now, each message event, complete or not, will cause `message` events on the `LD
 >
 > - Creating instance of ^^ class: `new CustomClass(stream)`
 >
-> - Using `stream` (object that emits `data` events such as a `Socket`) within `constructor(stream)`
+> - Using `stream` ( object that emits `data` events such as a `Socket` ) within `constructor(stream)`
 >
 > - Taking incoming raw data from `stream` and convert it into message events of the parsed message objects.
 >
-> - Start `constructor` with `super()` to invoke `SomeCoreClass`'s constructor (which is best practice
->   when implementing a class that extends another)
+> - Start `constructor` with `super()` to invoke `SomeCoreClass`'s constructor ( which is best practice
+>   when implementing a class that extends another )
 >
 > - <b>prototypal inheritance</b> in JS to establish relationship between extended class and the class
->   it was extended by (hierarchies), should a property be looked for that doesn't exist on new extending class, go
->   look at the parent that new class extends (ex: create `client` invocation of `LDJClient` and attempt
+>   it was extended by ( hierarchies ), should a property be looked for that doesn't exist on new extending class, go
+>   look at the parent that new class extends ( ex: create `client` invocation of `LDJClient` and attempt
 >   to call `client.on`, even though `LDJClient`'s prototype doesn't include a `on` method, JS will
->   go look for it (and will find it) within the `EventEmitter` class)
+>   go look for it ( and will find it ) within the `EventEmitter` class )
 >
-> - Put `CustomClass` into a Node.js module for upstream client (exposing `LDJClient` as a module)
+> - Put `CustomClass` into a Node.js module for upstream client ( exposing `LDJClient` as a module )
 
 
 <br><br>
@@ -727,7 +726,7 @@ Should now have a server and client that use a custom message format to communic
 
 #### 2.c.2. Unit tests - Mocha
 npm module `Mocha`, popular testing framework for Node.js, in this instance we'll use the <b>behavior driven
-development (BDD)</b> style
+development ( BDD )</b> style
 
 
 <br>
@@ -740,7 +739,7 @@ created first
 
 <br>
 
-<b>a - </b>Create a default `package` file in project's root (`./project-files/networking` in this case):
+<b>a - </b>Create a default `package` file in project's root ( `./project-files/networking` in this case ):
 > `$ npm init -y`
 
 <br>
@@ -759,7 +758,7 @@ Upon running `ls` you can see a few changes have been made.
   if you don't want Node to automatically mess with the versions of whatever packages you use via its
   semantic versioning practices, be sure to `git commmit` this file)
 
-Node provides regular dependencies, which are used at runtime (with `require`) and are installed in npm
+Node provides regular dependencies, which are used at runtime ( with `require` ) and are installed in npm
 with a `--production` flag in `npm install`
 
 There are also dev dependencies, which are programs the project needs during development. We installed
@@ -826,7 +825,7 @@ To run the Mocha test in npm:
 
 ## Chapter 3 - Connections and interactions between Node Microservices
 > <b>Node.js core modules</b><br>
-> Using pool of processes (Node.js workers) to mimic multi-threading (using Node's `cluster` module)
+> Using pool of processes ( Node.js workers ) to mimic multi-threading ( using Node's `cluster` module )
 
 > <b>Patterns</b><br>
 > Messaging patterns, `publish/subscribe`, `request/reply`, `ROUTER` & `DEALER`, `push/pull`, and
@@ -844,20 +843,20 @@ To run the Mocha test in npm:
 <hr>
 
 #### 3.a. ØMQ (ZeroMQ)
-Alternative to working with HTTP (and the more complicated `http` module), use ØMQ to expose higher-level
+Alternative to working with HTTP ( and the more complicated `http` module ), use ØMQ to expose higher-level
 messaging patterns and low-level networking concerns
 
-Uses the ZeroMQ Message Transport Protocol (ZMTP) for message exchange, which uses frames for message
+Uses the ZeroMQ Message Transport Protocol ( ZMTP ) for message exchange, which uses frames for message
 composure
 
 <br>
 
-<b>ØMQ (ZeroMQ) advanatages:</b>
+<b>ØMQ ( ZeroMQ ) advanatages:</b>
 > - Auto reconnect attempts between ØMQ endpoints
 > - Only delivers whole messages, don't have to create buffers to deal with chunked data
-> - Takes care of routing details (ex: sending responses back to correct clients)
+> - Takes care of routing details ( ex: sending responses back to correct clients )
 > - Allows for exploration of several messaging pattern types, which can be applied to HTTP practices later
-> - Patterns and approaches also apply to embedded Node.js systems (IoT, Raspberry Pi OS Raspbian)
+> - Patterns and approaches also apply to embedded Node.js systems ( IoT, Raspberry Pi OS Raspbian )
 
 <br>
 
@@ -887,9 +886,9 @@ Note: `-p` flag to print output, `-e` to tell Node.js to evealuate string as JS
 
 <hr>
 
-#### 3.b. ØMQ Messaging Patterns - `publish/subscribe` (or `PUB/SUB`)
+#### 3.b. ØMQ Messaging Patterns - `publish/subscribe` ( or `PUB/SUB` )
 In previous sections, a networded file-watching service and its client was created that communicated
-with TCP by sending LDJ (Line-deliniated JSON) messages - the server <b>published</b> information in
+with TCP by sending LDJ ( Line-deliniated JSON ) messages - the server <b>published</b> information in
 that format and client programs could <b>subscrive</b> to it for information
 
 While our client code safely handled the message/boundary problem, we had to create a separate module
@@ -900,15 +899,15 @@ We'll demonstrate how much easier it is to just use ØMQ instead of naked TCP
 
 <br>
 
-<b>Publishing (PUB) messages over TCP using `zeromq`</b>
+<b>Publishing ( PUB ) messages over TCP using `zeromq`</b>
 <br>
 `./project-files/microservices/zmq-watcher-pub.js`
 
 >Introduces:
 > - The publisher, `zmq.socket('pub');`
 >
-> - Because `zmq.socket` is used, either a `bind` method (typically for the publisher) or a `connect` method (
->   typically for the subscriber) can be used, but either can be used interchangeably for each PUB/SUB pair
+> - Because `zmq.socket` is used, either a `bind` method ( typically for the publisher ) or a `connect` method
+>   ( typically for the subscriber ) can be used, but either can be used interchangeably for each PUB/SUB pair
 >
 > - Easy TCP port listening, example: "listen for any tcp connection over 60400":
 >>  ```javascript
@@ -926,7 +925,7 @@ We'll demonstrate how much easier it is to just use ØMQ instead of naked TCP
 
 <br>
 
-<b>Subscribing (SUB) to a publisher</b>
+<b>Subscribing ( SUB ) to a publisher</b>
 <br>
 `./project-files/microservices/zmq-watcher-sub.js`
 
@@ -949,18 +948,18 @@ We'll demonstrate how much easier it is to just use ØMQ instead of naked TCP
 
 <hr>
 
-#### 3.c. ØMQ Messaging Patterns - `request/reply` (or `REQ/REP`)
+#### 3.c. ØMQ Messaging Patterns - `request/reply` ( or `REQ/REP` )
 Very common pattern in Node networked programming, plays into the 'Q' portion of ØMQ
 
 `REQ/REP` pairs communicate in lockstep - request comes in, replies go out and additional request are
 queued and later dispatched by ØMQ, leaving your application aware of only one request at a time
 
-Synchronous (operates sequentially), no parallelism with requests/replies, probably not great for
+Synchronous ( operates sequentially ), no parallelism with requests/replies, probably not great for
 a high performance requirement but is easy to code
 
 <br>
 
-<b>The responder (REP)</b>
+<b>The responder ( REP )</b>
 <br>
 `./project-files/microservices/zmq-filer-rep.js`<br>
 Will wait for a request for file data then serves up the content when asked
@@ -969,13 +968,13 @@ Will wait for a request for file data then serves up the content when asked
 > - Locking down the stable listener endpoint of the pair to localhost for security reasons:
 >   `responder.bind('tcp://127.0.0.1...`
 >
-> - Listening to Unix signal `SIGINT` (signal interrupt) events, which signify a process receving an
->   interupt signal from the user (ie, hitting `CTRL` + `c` to kill a terminal process), then handle
+> - Listening to Unix signal `SIGINT` ( signal interrupt ) events, which signify a process receving an
+>   interupt signal from the user ( ie, hitting `CTRL` + `c` to kill a terminal process ), then handle
 >   the event cleanly by asking the responder to gracefully close any outstanding connections
 
 <br>
 
-<b>The request (REQ)</b>
+<b>The request ( REQ )</b>
 <br>
 `./project-files/microservices/zmq-filer-req.js`<br>
 
@@ -992,7 +991,7 @@ Advanced socket types for parallel messaging
 
 <b>The `ROUTER` socket type</b><br>
 Are essentially parallell `REP` sockets, can handle multiple requests simultaneously by remembering
-which connection each request came from and route the replies accordingly (by using ZMTP frames)
+which connection each request came from and route the replies accordingly ( by using ZMTP frames )
 
 The simpler socket types only need one frame per message and the handlers use `data` parameters, `ROUTER`
 sockets use multiple frames and its handlers take an array of frames instead of `data`
@@ -1070,8 +1069,8 @@ Goal: to manage a pool of worker processes to respond to ØMQ requests, using `R
 sockets to distribute requests to workers for a cluster-based multiprocess work distribution and
 load-balanced message-passing program
 
-Forking (`fork` is a method on the `cluster` module and is a special case of `spawn` - see chapter
-1's usage of `child_process` module's `spawn` method - ) will be used to spin up copies of the same
+Forking ( `fork` is a method on the `cluster` module and is a special case of `spawn` - see chapter
+1's usage of `child_process` module's `spawn` method ) will be used to spin up copies of the same
 Node.js program
 
 <br>
@@ -1131,9 +1130,9 @@ receive each message sent by the pusher
   is fully established
     - Fix: make the pusher wait until all the pullers are ready to receive before pushing messages
 
-- The OS dictates how many resources (file descriptors) Node can use at any one time, possibly causing
-  connection and/or job failures (`EMFILE` or `ECONRESET` error messages under load)
+- The OS dictates how many resources ( file descriptors ) Node can use at any one time, possibly causing
+  connection and/or job failures ( `EMFILE` or `ECONRESET` error messages under load )
     - Fix 1: keep a counter of the number of tasks the Node process is engaged in, adding or decrementing
       as appropriate, pausing the listener from obtaining new tasks once some threshold is reached and
       resuming when a task task ends
-    - Fix 2: Use an existing module to offload handling this (ex: `graceful-fs`)
+    - Fix 2: Use an existing module to offload handling this ( ex: `graceful-fs` )
