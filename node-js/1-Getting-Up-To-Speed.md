@@ -875,7 +875,8 @@ Note: remember, use `--save` flag to tell npm to remember this dependancy in `pa
 
 <br>
 
-<b>c - </b>Now you can test the installation, making sure `zeromq` and its depencies were downloaded to `node_modules`
+<b>c - </b>Now you can test the installation, making sure `zeromq` and its depencies were downloaded
+to `node_modules`
 > `$ node -p -e "require('zeromq').version"`
 
 Note: `-p` flag to print output, `-e` to tell Node.js to evealuate string as JS
@@ -936,7 +937,8 @@ We'll demonstrate how much easier it is to just use ØMQ instead of naked TCP
 >   a string to filter results, but either way, `subscribe()` must be called at some point or you'll never
 >   recieve messages at all
 >
-> - The `subscriber` object inherits from `EventEmitter`, emits a `message` event when it receives one from a publisher
+> - The `subscriber` object inherits from `EventEmitter`, emits a `message` event when it receives
+>   one from a publisher
 >
 > - ØMQ doesn't care which boots first, the PUB or SUB, it'll automatically establish and reestablish connection
 >   when either endpoint comes online 
@@ -1071,6 +1073,8 @@ load-balanced message-passing program
 Forking (`fork` is a method on the `cluster` module and is a special case of `spawn` - see chapter
 1's usage of `child_process` module's `spawn` method - ) will be used to spin up copies of the same
 Node.js program
+
+Each call to `cluster`'s `fork` creates a worker process that runs the same script as the original
 
 
 <br><br>
