@@ -104,7 +104,49 @@ through it for an understanding
 
 <br>
 
-<b>Exploring the Behavior Driven Development pattern</b>
+<b>Exploring the Behavior Driven Development pattern while testing</b><br>
+In testing, denote the behavior you expect out of a program before running or even implementing the tests
+
+<br>
+
+Demonstration of testing while implementing BDD and Chai's `expect` syntax assertion style:
+>   ```javascript
+>   // "book should have authors, which should be an array of 2 members"
+>   expect(book).to.have.a.property('authors')
+>       .that.is.an('array').with.lengthOf(2);
+>
+>   // or, using Node's `assert` module instead:
+>   assert.ok(book.authors, 'book should have authors');
+>   assert.ok(Array.isArray(book.authors), 'authors should be an array');
+>   assert.equal(book.authors.length, 2, 'authors length should be 2');
+>   ```
+
+<br>
+
+To use Mocha and Chai, install them as development dependencies:
+> <b>`./project-files/databases`</b>                                    <br>
+> `$ npm init -y`                                                       <br>
+> `$ npm install --save-dev --save-exact mocha@2.4.5 chai@3.5.0`        <br>
+
+Then update the `scripts` section of your `package.json` file, making `test` invoke Mocha with default arguments:
+>   ```JSON
+>   "scripts": {
+>       "test": "mocha"
+>   }
+>   ```
+
+<br>
+
+
+
+
+
+
+
+
+
+
+
 
 
 <br><br>
