@@ -15,6 +15,9 @@ const fs = require('fs');
 /** use the expect method as the basis of all assertions */
 const expect = require('chai').expect;
 
+/** grab the anon func assigned to module.exports in our lib */
+const parseRDF = require('../lib/parse-rdf.js');
+
 /** load our content ('The Art of War') */
 const rdf = fs.readFileSync(`${__dirname}/pg132.rdf`);
 
@@ -26,10 +29,6 @@ describe('parseRDF', () => {
         expect(parseRDF).to.be.a('function');
     });
 });
-
 /**
  * until parseRDF is defined as a function, this test will fail
- *
- * the above `describe` block will be commented out and moved
- *   below this comment block after that is done
  */

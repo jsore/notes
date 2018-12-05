@@ -73,7 +73,7 @@ When working with external data, break down the process of handling/storing the 
 
 <hr>
 
-#### 1.a. Getting the data
+#### 1.a. Getting the data + establishing initial tests
 Start off by getting a feel for the data you obtain ( in this case, from Project Gutenberg ), pick
 through it for an understanding
 
@@ -88,13 +88,13 @@ through it for an understanding
 > - Supportive, raw data files to work with:<br>
 >       `./project-files/databases/data...`
 
-<br>
+<br><br>
 
 <b>Download and unzip the data files</b><br>
 > `$ curl -O http://www.gutenberg.org/cache/epub/feeds/rdf-files.tar.bz2`<br>
 > `$ tar -xvjf rdf-files.tar.bz2`
 
-<br>
+<br><br>
 
 <b>Fields of importance within any RDF file</b>
 - The Gutenberg ID ( ex: 132 for the file `data/cache/epub/132/pg132.rdf` )
@@ -102,7 +102,7 @@ through it for an understanding
 - The list of authors
 - The list of subjects
 
-<br>
+<br><br>
 
 <b>Exploring the Behavior Driven Development pattern while testing</b><br>
 In testing, denote the behavior you expect out of a program before running or even implementing the tests
@@ -135,13 +135,21 @@ Then update the `scripts` section of your `package.json` file, making `test` inv
 >   }
 >   ```
 
-<br>
+<br><br>
 
-<b>First test with Chai</b><br>
+<b>First (failing) test with Chai</b><br>
 `./project-files/databases/test/parse-rdf-test.js`<br>
 
+>Introduces:
+> - `expect` method on the Chai module
 
+<br>
 
+<b>Setting up Continuous Testing</b><br>
+`./project-files/databases/lib/parse-rdf.js`<br>
+
+>Introduces:
+> 
 
 
 
