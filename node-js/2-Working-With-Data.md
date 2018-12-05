@@ -88,13 +88,13 @@ through it for an understanding
 > - Supportive, raw data files to work with:<br>
 >       `./project-files/databases/data...`
 
-<br><br>
+<br>
 
 <b>Download and unzip the data files</b><br>
 > `$ curl -O http://www.gutenberg.org/cache/epub/feeds/rdf-files.tar.bz2`<br>
 > `$ tar -xvjf rdf-files.tar.bz2`
 
-<br><br>
+<br>
 
 <b>Fields of importance within any RDF file</b>
 - The Gutenberg ID ( ex: 132 for the file `data/cache/epub/132/pg132.rdf` )
@@ -102,7 +102,7 @@ through it for an understanding
 - The list of authors
 - The list of subjects
 
-<br><br>
+<br>
 
 <b>Exploring the Behavior Driven Development pattern while testing</b><br>
 In testing, denote the behavior you expect out of a program before running or even implementing the tests
@@ -135,7 +135,7 @@ Then update the `scripts` section of your `package.json` file, making `test` inv
 >   }
 >   ```
 
-<br><br>
+<br>
 
 <b>First (failing) test with Chai</b><br>
 `./project-files/databases/test/parse-rdf-test.js`<br>
@@ -143,26 +143,34 @@ Then update the `scripts` section of your `package.json` file, making `test` inv
 >Introduces:
 > - `expect` method on the Chai module
 
-<br>
-
-<b>Setting up Continuous Testing</b><br>
-`./project-files/databases/lib/parse-rdf.js`<br>
-
->Introduces:
-> 
-
-
-
-
-
-
-
 
 <br><br>
 
 
 #### 1.b. Wireframing an infrastructure that continuously runs Mocha tests
 Approach the tests using BDD & Chai
+
+<br>
+
+<b>Setting up Continuous Testing</b><br>
+`./project-files/databases/lib/parse-rdf.js`<br>
+
+>Introduces:
+> - Establishing a good development pattern:        <br>
+>>      1. add criteria to test                     <br>
+>>      2. run the test to see failures             <br>
+>>      3. modify code being tested                 <br>
+>>      4. run test again and see what happens      <br>
+>
+> - Invoking Mocha with `--watch` to have it continuously monitor `.js` files when they change <br>
+>>      "../databases/package.json"
+>>
+>>      "scripts": {
+>>          "test": "mocha",
+>>          "test:watch": "mocha --watch --reporter min"
+>>      }
+>>
+>>      "$ npm run test:watch"
 
 
 <br><br>

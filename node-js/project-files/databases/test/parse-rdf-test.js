@@ -23,10 +23,18 @@ const rdf = fs.readFileSync(`${__dirname}/pg132.rdf`);
 
 /** typical Mocha `describe` block... */
 describe('parseRDF', () => {
+
     /** ...typical Mocha `it` block... */
     it('should be a function', () => {
         /** ...but, `it` uses Chai's `expect` */
         expect(parseRDF).to.be.a('function');
+    });
+
+    /** begin setting things up for Continuous Testing */
+    it('should parse RDF content', () => {
+        /** asserts "when parseRDF is called, get an obj back" */
+        const book = parseRDF(rdf);
+        expect(book).to.be.an('object');
     });
 });
 /**
