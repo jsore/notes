@@ -137,7 +137,8 @@ Then update the `scripts` section of your `package.json` file, making `test` inv
 
 <br>
 
-
+<b>First test with Chai</b><br>
+`./project-files/databases/test/parse-rdf-test.js
 
 
 
