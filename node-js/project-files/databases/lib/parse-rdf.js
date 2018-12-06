@@ -1,7 +1,7 @@
 /**
  * ../databases/lib/parse-rdf.js
  *
- * Library to define parseRDF function
+ * Library to define parseRDF function for RDF >> JSON conversion
  */
 'use strict';
 
