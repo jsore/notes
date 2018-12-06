@@ -319,15 +319,6 @@ bulk insert API (which is faster than importing one file at a time)
 
 
 
-
-
-<br><br>
-
-
-#### 1.d. Parsing raw data & producing newly formatted data
-Getting the data ready for database insertion by combing through the already procured data and
-reformatting it into an acceptable style
-
 <br><br>
 
 <hr>
