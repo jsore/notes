@@ -290,7 +290,25 @@ Book subjects:
 > ```
 
 
+<br><br>
 
+
+#### 1.d. Grabbing all data instead of a specific file
+We need to dig through the collection of RDF files, read each one, pass it through `parseRDF` then
+grab the JSON objects into a single file for DB insertion, which will be inserted using Elasticsearch's
+bulk insert API (which is faster than importing one file at a time)
+
+<br>
+
+<b>Grabbing all items within a directory</b><br>
+`./project-files/databases/rdf-to-bulk.js`<br>
+
+>Introduces:
+> - `node-dir` module, includes tools to walk a directory tree (`npm install --save --save-exact node-dir@0.1.16`)
+>
+> - `node-dir`'s `readFiles` method, sequentially operates on files as it encounters them
+>
+> - `options` object for `readFiles` and its `match` and `exclude` properties
 
 
 
