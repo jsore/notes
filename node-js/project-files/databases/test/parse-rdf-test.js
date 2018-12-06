@@ -1,4 +1,6 @@
 /**
+ * ../databases/test/parse-rdf-test.js
+ *
  * Unit test with Mocha + Chai module's `expect` test method
  *
  * Note: the content (file) we're testing has been copy/pasted
@@ -32,9 +34,28 @@ describe('parseRDF', () => {
 
     /** begin setting things up for Continuous Testing */
     it('should parse RDF content', () => {
+
         /** asserts "when parseRDF is called, get an obj back" */
         const book = parseRDF(rdf);
         expect(book).to.be.an('object');
+
+        /** test for book id */
+        expect(book).to.have.a.property('id', 132);
+
+        /** test for book title */
+        expect(book).to.have.a.property('title', 'The Art of War');
+
+        /** test for array of book authors */
+        expect(book).to.have.a.property('authors')
+            .that.is.an('array').with.lengthOf(2)
+            .and.contains('Sunzi, active 6th century B.C.')
+            .and.contains('Giles, Lionel');
+
+        /** test for array of authors */
+        expect(book).to.have.a.property('subjects')
+            .that.is.an('array').with.lengthOf(2)
+            .and.contains('Military art and science -- Early works to 1800')
+            .and.contains('War -- Early works to 1800');
     });
 });
 /**

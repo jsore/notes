@@ -156,20 +156,20 @@ Approach the tests using BDD & Chai
 `./project-files/databases/lib/parse-rdf.js`<br>
 
 >Introduces:
-> - Establishing a good development pattern:        <br>
->>      1. add criteria to test                     <br>
->>      2. run the test to see failures             <br>
->>      3. modify code being tested                 <br>
->>      4. run test again and see what happens      <br>
+> - Establishing a good development pattern:                            <br>
+>>      1. add criteria to test                                         <br>
+>>      2. run the test to see failures                                 <br>
+>>      3. modify code being tested                                     <br>
+>>      4. run test again and see what happens                          <br>
 >
 > - Invoking Mocha with `--watch` to have it continuously monitor `.js` files when they change <br>
 >>      "../databases/package.json"
->>
+>
 >>      "scripts": {
 >>          "test": "mocha",
 >>          "test:watch": "mocha --watch --reporter min"
 >>      }
->>
+>
 >>      "$ npm run test:watch"
 
 
@@ -177,7 +177,130 @@ Approach the tests using BDD & Chai
 
 
 #### 1.c. Querying raw XML with Cheerio & CSS selectors
-Using Cheerio, a module that uses CSS selectors for finding elements in HTML and XML
+Using Cheerio, a module that uses CSS selectors for finding elements in HTML and XML in a manner similar
+to jQuery's API, parse our RDF files, implement more test and relevant libraries
+
+<br>
+
+<b>Specifying XML extraction options</b><br>
+RDF/XML: rich data format, popularly preferred to be converted to JSON if being worked with (or
+JSON-LD: JSON for Linked Data, best for preserving the data's relationship structure)
+
+Cheerio                                                                 <br>
+> - Fast, for smaller files                                             <br>
+> - DOM-like XML parser without the browser (sees the doc as a whole)   <br>
+> - CSS selectors, jQuery similarities for working HTML/XML docs        <br>
+> - Similar popular options: `xmldom`, `jsdom`                          <br>
+> - Does <b>not</b> allow for extracting remote data                    <br>
+
+<br>
+
+Streaming SAX parsers                                                   <br>
+> - "Simple API for XML"                                                <br>
+> - Sees XML as a stream of tokens (chunks the doc)                     <br>
+> - Programs must keep track of doc structure while running             <br>
+> - Example: `sax` Node module                                          <br>
+
+<br>
+
+<b>Cheerio</b><br>
+<br>
+Install:
+> `$ npm install --save --save-exact cheerio@0.22.0`
+
+<br>
+
+We want Cheerio to pull out four 'Fields of importance'
+
+<br>
+
+Book ID:
+> The XML
+> ```XML
+> <pgterms:ebook rdf:about=​"ebooks/132"​>
+> ```
+> The JS
+> ```javascript
+> /** "use Cheerio's API to extract book ID then format it..." */
+> //book.id = +$('pgterms\\:ebook').attr('rdf:about').replace('ebooks/', '');
+> book.id =                     // set the ID property
+>     +                         // unary to cast final result as int
+>     $('pgterms\\:ebook')      // query for this tag, escaping JS literals and CSS selectors
+>     .attr('rdf:about')        // get value of this attribute
+>     .replace('ebooks/', '');  // strip off this substring
+> ```
+
+<br>
+
+Book title:
+> The XML
+> ```XML
+> <dcterms:title>The Art of War</dcterms:title>
+> ```
+> The JS
+> ```javascript
+> /** "...and to extract book title" */
+> book.title = $('dcterms\\:title').text();
+> ```
+
+<br>
+
+Book authors:
+> The XML
+> ```XML
+> <pgterms:agent rdf:about=​"2009/agents/4349"​>
+>    <pgterms:name>Sunzi, active 6th century B.C.</pgterms:name>
+> </pgterms:agent>
+> <pgterms:agent rdf:about=​"2009/agents/5101"​>
+>    <pgterms:name>Giles, Lionel</pgterms:name>
+> </pgterms:agent>
+> ```
+> The JS
+> ```javascript
+> /** "...and to extract the book's authors" */
+> book.authors = $('pgterms\\:agent pgterms\\:name')  // find child :name> under :agents>
+>     .toArray().map(elem => $(elem).text());         // convert to array of text strings
+> ```
+
+<br>
+
+Book subjects:
+> The XML
+> ```XML
+> <dcterms:subject>
+>     <rdf:Description rdf:nodeID=​"N26bb21da0c924e5abcd5809a47f231e7"​>
+>         <dcam:memberOf rdf:resource=​"http://purl.org/dc/terms/LCSH"​/>
+>         <rdf:value>Military art and science -- Early works to 1800</rdf:value>
+>     </rdf:Description>
+> </dcterms:subject>
+> 
+> <dcterms:subject>
+>     <rdf:Description rdf:nodeID=​"N269948d6ecf64b6caf1c15139afd375b"​>
+>         <rdf:value>War -- Early works to 1800</rdf:value>
+>         <dcam:memberOf rdf:resource=​"http://purl.org/dc/terms/LCSH"​/>
+>     </rdf:Description>
+> </dcterms:subject>
+> ```
+> The JS
+> ```javascript
+> /** "...and to extract the book's subject(s)" */
+> book.subjects = $('[rdf\\:resource$="/LCSH"]')  // select tag with CSS attribute selector
+>     .parent().find('rdf\\:value')               // review parent, find all of matching childs
+>     .toArray().map(elem => $(elem).text());     // convert to array of text strings
+> ```
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 <br><br>
