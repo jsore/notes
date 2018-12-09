@@ -333,25 +333,51 @@ When working with external data, break down the process of handling/storing the 
 
 <br>
 
-> <b>Node.js core modules</b><br>
->
+Elasticsearch is a <b>RESTful</b> NoSQL database that indexes JSON documents over HTTP, parsing JSON
+files into JSON objects and storing those objects
 
-> <b>Patterns</b><br>
->
+This chapter focuses on building a CLI utitity for interaction with this service
 
-> <b>JavaScript-isms</b><br>
->
+<br>
 
-> <b>Supporting code</b><br>
+<b>Node.js core modules</b><br>
+> - Data streams
 >
+>     - pipe streams to remote services over HTTP
+>
+> - Diving deeper into `package.json` files
 
+<br>
+
+<b>Patterns</b><br>
+> - `Commander` module
+>
+>     - building CLI programs with this module's method-chaining pattern
+>
+> - `Request` module
+>
+>     - performing HTTP requests
+
+<br>
+
+<b>JavaScript-isms</b><br>
+> - Defining default parameters for JS function calls
+>
+> - Array methods `filter` and `join`
+
+<br>
+
+<b>Supporting code</b><br>
+> - Elasticsearch, a JSON doc datastore
+>
+> - `jq`, a CLI tool for JSON manipulation
 
 <br>
 
 
 <hr>
 
-#### 2.a. 
+#### 2.a. Elasticsearch introduction
 
 
 <br>
