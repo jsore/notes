@@ -474,7 +474,7 @@ Then make it executable
 `./project-files/esclu/index.js`
 
 >Introduces:
-> - ...a lot
+> - ...a lot `      <-- TODO`
 
 <br>
 
@@ -514,3 +514,7 @@ Another example, extracting keys of an object as an array:
 >   "books"
 > ]
 > ```
+
+<br>
+
+See source file for more example usages

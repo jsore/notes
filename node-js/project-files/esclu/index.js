@@ -1,5 +1,8 @@
 /**
- * Runs when esclu executable is called
+ * ./program-files/esclu/index.js
+ *
+ * Runs when esclu executable is called, for interacting with the
+ *   Elasticsearch RESTful API for JSON doc storage over HTTP
  */
 
 'use strict';
@@ -16,7 +19,39 @@ const program = require('commander');
 const pkg = require('./package.json');
 
 
-/** begin creating appropriate URL for grabbing resources */
+/**
+ * ----------  Program help  ----------
+ *
+ * '$ ./esclu'
+ *
+ *  Usage: esclu [options] <command> [...]
+ *
+ *
+ *  Commands:
+ *
+ *    url [path]            generate the URL for the options and path (default is /)
+ *    get [path]            perform an HTTP GET request for path (default is /)
+ *    create-index          create an index
+ *    list-indices|li       get a list of indices in this cluster
+ *    bulk <file>           read and perform bulk options from the specified file
+ *    query|q [queries...]  perform an Elasticsearch query
+ *
+ *  Elasticsearch Command Line Utility
+ *
+ *  Options:
+ *
+ *    -h, --help             output usage information
+ *    -V, --version          output the version number
+ *    -o, --host <hostname>  hostname [localhost]
+ *    -p, --port <number>    port number [9200]
+ *    -j, --json             format output as JSON
+ *    -i, --index <name>     which index to use
+ *    -t, --type <type>      default type for bulk operations
+ *    -f, --filter <filter>  source filter for query results
+ */
+
+
+/*----------  URL creation  ----------*/
 const fullUrl = (path = '') => {
     /** takes `path` and return URL to Elasticsearch based on params */
     let url = `http://${program.host}:${program.port}/`;
@@ -31,7 +66,7 @@ const fullUrl = (path = '') => {
 };
 
 
-/** commander CL program creation */
+/*----------  Commander CL program creation  ----------*/
 program
     .version(pkg.version)
     .description(pkg.description)
@@ -40,10 +75,11 @@ program
     .option('-p, --port <number>', 'port number [9200]', '9200')
     .option('-j, --json', 'format output as JSON')
     .option('-i, --index <name>', 'which index to use')
-    .option('-t, --type <type>', 'default type for bulk operations');
+    .option('-t, --type <type>', 'default type for bulk operations')
+    .option('-f, --filter <filter>', 'source filter for query results');
 
 
-/** command: log the URL to console */
+/*----------  Command - log URL to console  ----------*/
 program
     /** command name, paramaters */
     .command('url [path]')
@@ -53,10 +89,20 @@ program
     .action((path = '/') => console.log(fullUrl(path)));
 
 
-/** command: GET a resource, the URL and requested JSON file */
+/*----------  Command - GET resource (URL and requested JSON file)  ----------*/
 program
     .command('get [path]')
     .description('perform an HTTP GET request for path (default is /)')
+    /**
+     * Note: Usage
+     *
+     *      // use this command and _search API for querying items
+     *      $ ./esclu get '_search' | jq '.' | head -n 20
+     *      // query string syntax to search for specific items
+     *      $ ./esclu get '_search?q=authors:Twain' | jq '.' | head -n 30
+     *      // query string while omitting items in _source object
+     *      $ ./esclu get '_search?q=authors:Twain&_source=title' | jq '.' | head -n 30
+     */
     .action((path ='/') => {
         /** what request module is looking for */
         const options = {
@@ -77,8 +123,8 @@ program
     });
 
 
-/** command: PUT (create) an Elasticsearch index  */
-/** wrap our request into a reausable function */
+/*----------  Command - PUT (create) Elasticsearch index  ----------*/
+/** wrap our request command into a reausable function */
 const handleResponse = (err, res, body) => {
     if (program.json) {
         console.log(JSON.stringify(err || body));
@@ -112,7 +158,7 @@ program
     });
 
 
-/** command: easier method of listing Elasticsearch indices */
+/*----------  Command - easy list Elasticsearch indices  ----------*/
 program
     .command('list-indices')
     .alias('li')
@@ -124,22 +170,23 @@ program
     });
 
 
-/** command: bulk add file tool */
-/**
- * Note: Usage
- *
- *     // build the file
- *     $ ./esclu bulk actual_bulk_result.json -i books -t book > actual_bulk_result_2.json
- *     // see some content
- *     $ cat actual_bulk_result_2.json | jq '.' | head -n 20
- *     // how many operations there were
- *     $ cat actual_bulk_result_2.json | jq '.items | length'
- *     // use list-indices to check how many docs the books index has
- *     $ ./esclu li
- */
+/*----------  Command - bulk add file tool  ----------*/
+/** don't neccesarily know full URL, so POST instead of PUT */
 program
     .command('bulk <file>')
     .description('read and perform bulk options from the specified file')
+    /**
+     * Note: Usage
+     *
+     *     // build the file
+     *     $ ./esclu bulk actual_bulk_result.json -i books -t book > actual_bulk_result_2.json
+     *     // see some content
+     *     $ cat actual_bulk_result_2.json | jq '.' | head -n 20
+     *     // how many operations there were
+     *     $ cat actual_bulk_result_2.json | jq '.items | length'
+     *     // use list-indices to check how many docs the books index has
+     *     $ ./esclu li
+     */
     .action(file => {
         /** asynch-ly check on existing and reachable file */
         fs.stat(file, (err, stats) => {
@@ -172,6 +219,54 @@ program
     });
 
 
+/*----------  Command - query Elasticsearch  ----------*/
+program
+    /** tell Commander to accept any number of queries, even 0 */
+    .command('query [queries...]')
+    .alias('q')
+    .description('perform an Elasticsearch query')
+    /**
+     * Note: Usage
+     *
+     *      // basic search, an empty search to match all items
+     *      $ ./esclu q | jq '.' | head -n 30
+     *      // more advanced
+     *      $ ./esclu q authors:Twain AND subjsects:children
+     *      // with a filter
+     *      $ ./esclu​​ ​​q​​ ​​-f​​ ​​title,authors​​ ​​|​​ ​​jq​​ ​​'.'​​ ​​|​​ ​​head​​ ​​-n​​ ​​30​
+     *      // using .join for complex queries
+     *      $ ./esclu q authors:Shakespeare AND subjects:Drama -f title | jq '.hits.hits[],_source.title'
+     */
+    .action((queries = []) => {
+        const options = {
+            url: fullUrl('_search'),
+            json: program.json,
+            qs: {},
+        };
+        /** build URL for options.qs object */
+        if (queries && queries.length) {
+            /** concat any provided params with spaces */
+            options.qs.q = queries.join(' ');
+            /**
+             * ex:
+             * $ esclu -q "Mark" "Twain"
+             * - q param is "Mark Twain"
+             * - request encodes as ?q=Mark%20Twain
+             */
+        }
+        if (program.filter) {
+            /** also make request encode any filters if provided */
+            options.qs_source = program.filter;
+            /**
+             * ex:
+             * $ esclu -q "Mark" "Twain" -f title
+             * request encoded: ?q=Mark%20Twain&_source=title
+             */
+        }
+        request(options, handleResponse);
+    });
+
+
 /** what commander evaluates */
 program.parse(process.argv);
 
@@ -181,21 +276,3 @@ if (!program.args.filter(arg => typeof arg === 'object').length) {
     /** if theres anything that commander doesn't recognize... */
     program.help();
 }
-
-/**
- * '$ ./esclu'
- *
- *  Usage: esclu [options] <command> [...]
- *
- *  Elasticsearch Command Line Utility
- *
- *  Options:
- *
- *    -h, --help             output usage information
- *    -V, --version          output the version number
- *    -o, --host <hostname>  hostname [localhost]
- *    -p, --port <number>    port number [9200]
- *    -j, --json             format output as JSON
- *    -i, --index <name>     which index to use
- *    -t, --type <type>      default type for bulk operations
- */
