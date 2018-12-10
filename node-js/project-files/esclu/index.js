@@ -3,6 +3,12 @@
  *
  * Runs when esclu executable is called, for interacting with the
  *   Elasticsearch RESTful API for JSON doc storage over HTTP
+ *
+ * Note to self:
+ *     CRUD POST:   create
+ *     CRUD GET:    read
+ *     CRUD PUT:    update (or create if full URL is known)
+ *     CRUD DELETE: delete
  */
 
 'use strict';
@@ -171,7 +177,7 @@ program
 
 
 /*----------  Command - bulk add file tool  ----------*/
-/** don't neccesarily know full URL, so POST instead of PUT */
+/** we're adding stuff, so POST instead of PUT */
 program
     .command('bulk <file>')
     .description('read and perform bulk options from the specified file')
@@ -265,6 +271,14 @@ program
         }
         request(options, handleResponse);
     });
+
+
+/**
+ * TODO's
+ * - delete a record
+ * - add a single document ($ ./esclu put ../art_of_war.json -i books -t book --id pg132)
+ * - retrieval via ID ($ ./esclu get pg132 --index books --type book | jq '.')
+ */
 
 
 /** what commander evaluates */

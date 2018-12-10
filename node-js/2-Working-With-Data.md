@@ -518,3 +518,7 @@ Another example, extracting keys of an object as an array:
 <br>
 
 See source file for more example usages
+
+<br><br>
+
+## TODO: elaborate in final section 2.b.
