@@ -336,6 +336,11 @@ When working with external data, break down the process of handling/storing the 
 Elasticsearch is a <b>RESTful</b> NoSQL database that indexes JSON documents over HTTP, parsing JSON
 files into JSON objects and storing those objects
 
+RESTful API's are HTTP-based with resources identified as URLs, HTTP requests (ex: `GET`, `PUT`) must
+be made to change or retrieve a resource
+
+Elasticsearch's RESTful resources are JSON docs, each doc living in an index with a type for doc class definition
+
 This chapter focuses on building a CLI utitity for interaction with this service
 
 <br>
@@ -442,7 +447,28 @@ Now, get the `package.json` file started from `./project-files/esclu` with an ap
 
 <b>Modules `Commander` and `Request`</b><br>
 (for easier CL program creation, for easier HTTP request issuance and response handling)
+> `$ npm install --save --save-exact commander@2.9.0 request@2.79.0`
 
+
+<br><br>
+
+
+<hr>
+
+#### 2.b. `Commander`-based command line program
+Commander: enforces required parameters, parses CL options, interprets aliases for flags, and more
+
+Goal: create `esclu` file as an extensionless executable
 
 <br>
 
+<b>Executable to run separated JS</b><br>
+`./project-files/esclu/esclu`
+
+Then make it executable
+> `$ chmod +x esclu`
+
+<br>
+
+<b>The JS to run when exe is called</b><br>
+`./project-files/esclu/index.js`
