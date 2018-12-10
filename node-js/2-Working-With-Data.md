@@ -377,9 +377,72 @@ This chapter focuses on building a CLI utitity for interaction with this service
 
 <hr>
 
-#### 2.a. Elasticsearch introduction
+#### 2.a. Project configuration
 
+<b>Elasticsearch</b><br>
+Elasticsearch runs on Java, it's recommended to use Oracle's Java Development Kit (JDK) v1.8.0_73 or higher
+> `$ yum install java-1.8.0-openjdk-devel`
 
 <br>
 
+Then, download and install Elasticsearch itself (v5.2 for this book)
+> Create `elasticsearch.repo` in `/etc/yum.repos.d/` and enter this:
+>>  ```
+>>  [elasticsearch-6.x]
+>>  name=Elasticsearch repository for 6.x packages
+>>  baseurl=https://artifacts.elastic.co/packages/6.x/yum
+>>  gpgcheck=1
+>>  gpgkey=https://artifacts.elastic.co/GPG-KEY-elasticsearch
+>>  enabled=1
+>>  autorefresh=1
+>>  type=rpm-md
+>>  ```
+>
+> Get Elasticsearch started and confirm installation/process status
+>> `$ /bin/systemctl daemon-reload`                                                                         <br>
+>>
+>> `$ /bin/systemctl enable elasticsearch.service`                                                          <br>
+>> `> Created symlink from /etc/systemd/system/multi-user.target.wants/elasticsearch.service to`            <br>
+>> `> /usr/lib/systemd/system/elasticsearch.service.`                                                       <br>
+>>
+>> `$ systemctl start elasticsearch.service`                                                                <br>
+>>
+>> `$ systemctl status elasticsearch.service`                                                               <br>
+>> `> ● elasticsearch.service - Elasticsearch`                                                              <br>
+>> `>   Loaded: loaded (/usr/lib/systemd/system/elasticsearch.service; enabled; vendor preset: disabled)`   <br>
+>> `>   Active: active (running) since Mon 2018-12-10 13:04:24 EST; 2s ago`
+
+<br>
+
+<b>File `package.json`</b><br>
+Now, get the `package.json` file started from `./project-files/esclu` with an appropriate `description`
+> `$ npm init`                                                                                  <br>
+> ...                                                                                           <br>
+> `> package name: (esclu)`                                                                     <br>
+> `> version: (1.0.0)`                                                                          <br>
+> `> description: Elasticsearch Command Line Utility`                                           <br>
+> ...                                                                                           <br>
+> `> About to write to /var/www/github_notes/notes/node-js/project-files/esclu/package.json:`   <br>
+> `>`                                                                                           <br>
+> `> {`                                                                                         <br>
+> `>   "name": "esclu",`                                                                        <br>
+> `>   "version": "1.0.0",`                                                                     <br>
+> `>   "description": "Elasticsearch Command Line Utility",`                                    <br>
+> `>   "main": "index.js",`                                                                     <br>
+> `>   "scripts": {`                                                                            <br>
+> `>     "test": "echo \"Error: no test specified\" && exit 1"`                                 <br>
+> `>   },`                                                                                      <br>
+> `>   "author": "",`                                                                           <br>
+> `>   "license": "ISC"`                                                                        <br>
+> `> }`                                                                                         <br>
+> `>`
+> `> Is this OK? (yes) yes`
+
+<br>
+
+<b>Modules `Commander` and `Request`</b><br>
+(for easier CL program creation, for easier HTTP request issuance and response handling)
+
+
+<br>
 
