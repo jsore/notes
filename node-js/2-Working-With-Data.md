@@ -472,3 +472,45 @@ Then make it executable
 
 <b>The JS to run when exe is called</b><br>
 `./project-files/esclu/index.js`
+
+>Introduces:
+> - ...a lot
+
+<br>
+
+<b>Using `jq` program for pretty-fying JSON data</b><br>
+Install:
+> `$ yum install jq -y`
+
+Example usage, using simplest query of `'.'`:
+> `$ ./esclu li -j | jq '.'`
+
+> ```
+> {
+>   "books": {
+>     "aliases": {},
+>     "mappings": {},
+>     "settings": {
+>       "index": {
+>         "creation_date": "1544471974796",
+>         "number_of_shards": "5",
+>         "number_of_replicas": "1",
+>         "uuid": "7P9by0wmRF6S4HI7VhYDOQ",
+>         "version": {
+>           "created": "6050299"
+>         },
+>         "provided_name": "books"
+>       }
+>     }
+>   }
+> }
+> ```
+
+Another example, extracting keys of an object as an array:
+> `$ ./esclu li -j | jq 'keys'`
+
+> ```
+> [
+>   "books"
+> ]
+> ```

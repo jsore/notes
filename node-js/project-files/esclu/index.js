@@ -124,6 +124,54 @@ program
     });
 
 
+/** command: bulk add file tool */
+/**
+ * Note: Usage
+ *
+ *     // build the file
+ *     $ ./esclu bulk actual_bulk_result.json -i books -t book > actual_bulk_result_2.json
+ *     // see some content
+ *     $ cat actual_bulk_result_2.json | jq '.' | head -n 20
+ *     // how many operations there were
+ *     $ cat actual_bulk_result_2.json | jq '.items | length'
+ *     // use list-indices to check how many docs the books index has
+ *     $ ./esclu li
+ */
+program
+    .command('bulk <file>')
+    .description('read and perform bulk options from the specified file')
+    .action(file => {
+        /** asynch-ly check on existing and reachable file */
+        fs.stat(file, (err, stats) => {
+            if (err) {
+                if (program.json) {
+                    console.log(JSON.stringify(err));
+                    return;
+                }
+                throw err;
+            }
+            const options = {
+                /** use Elasticsearch's _bulk API */
+                url: fullUrl('_bulk'),
+                /** _bulk expects JSON, so make sure data is formatted */
+                json: true,
+                headers: {
+                    'content-length': stats.size,
+                    'content-type': 'application/json',
+                }
+            };
+            /** store returned object from HTTP POST request to Elasticsearch here */
+            const req = request.post(options);
+            /** open a read stream to the file... */
+            const stream = fs.createReadStream(file);
+            /** ...pipe the stream into our request... */
+            stream.pipe(req);
+            /** ...and upon server response, pipe output of request object to console */
+            req.pipe(process.stdout);
+        });
+    });
+
+
 /** what commander evaluates */
 program.parse(process.argv);
 
