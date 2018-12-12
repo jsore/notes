@@ -76,3 +76,24 @@
 <hr>
 
 #### 2.a. Express
+Express: web app framework for simplifying the running of web servers
+
+<br>
+
+Some - a very few - example usages:
+- URL paths for routing
+- Sessions via cookies
+- Parsing incoming requests (ie: JSON, form data)
+- Rejection of bad requests
+
+<br>
+
+<b>Short example of `http` usage - A basic web server</b><br>
+`./project-files/web-services/server.js`<br>
+
+<br>
+
+<b>Short example of Express usage - Hello World</b><br>
+`./project-files/web-services/express-hello/server.js`<br>
+
+Before building above file, install Express and Morgan (logging utility)
