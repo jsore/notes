@@ -234,14 +234,14 @@ program
     /**
      * Note: Usage
      *
-     *      // basic search, an empty search to match all items
-     *      $ ./esclu q | jq '.' | head -n 30
-     *      // more advanced
-     *      $ ./esclu q authors:Twain AND subjsects:children
-     *      // with a filter
-     *      $ ./esclu​​ ​​q​​ ​​-f​​ ​​title,authors​​ ​​|​​ ​​jq​​ ​​'.'​​ ​​|​​ ​​head​​ ​​-n​​ ​​30​
-     *      // using .join for complex queries
-     *      $ ./esclu q authors:Shakespeare AND subjects:Drama -f title | jq '.hits.hits[],_source.title'
+     *   // basic search, an empty search to match all items
+     *   $ ./esclu q | jq '.' | head -n 30
+     *   // more advanced
+     *   $ ./esclu q authors:Twain AND subjsects:children
+     *   // with a filter
+     *   $ ./esclu​​ ​​q​​ ​​-f​​ ​​title,authors​​ ​​|​​ ​​jq​​ ​​'.'​​ ​​|​​ ​​head​​ ​​-n​​ ​​30​
+     *   // using .join for complex queries
+     *   $ ./esclu q authors:Shakespeare AND subjects:Drama -f title | jq '.hits.hits[],_source.title'
      */
     .action((queries = []) => {
         const options = {
