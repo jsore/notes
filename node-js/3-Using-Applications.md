@@ -93,7 +93,18 @@ Some - a very few - example usages:
 
 <br>
 
-<b>Short example of Express usage - Hello World</b><br>
+<b>Short example of Express usage - Hello World REST/JSON service</b><br>
 `./project-files/web-services/express-hello/server.js`<br>
 
-Before building above file, install Express and Morgan (logging utility)
+>Introduces:
+> - Express' usage of <b>middleware</b>, functions to manipulate `request` and `response` objects
+>
+> - Named route parameters, ex: `:name` in `/hello/:name` path, when the API is hit Express yoinks
+>   that chunk of the URL and makes it available in `req.params`
+
+<br>
+
+Before building above file, install Express and Morgan (HTTP request logging utility):
+> `$ npm install express@4.14.1 morgan@1.8.1`
+
+Then, like always, bring them into your project with `require()` statements
