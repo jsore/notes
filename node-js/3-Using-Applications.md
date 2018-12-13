@@ -192,9 +192,43 @@ Now we can test our options thus far to ensure Express can connect properly
 <br>
 
 <b>Explaining `nconf` order of precedence</b><br>
-Depends on where they appear - later values don't overwrite earlier values
+The `nconf` module manages config details in a hierarchy of config files, env variables and CLI args,
+setting precedence via source load order - later values don't overwrite earlier values
+
+`web-services/express-b4/server.js`:
 > ```javascript
+> /**
+>  * allows for 'es' options in 'config.json' to be over-ridden
+>  *   when program is invoked
+>  *
+>  * example over-ride invocations:
+>  *   $ node server.js --es:host=a.different.host    // CLI args
+>  *   $ es__host=a.different.host node server.js     // env var
+>  *
+>  * load arg variables first, then environemnt variables, and
+>  *   use two underscores (__) to identify object hierarchy
+>  *   within environment variables
+>  */
 > nconf.argv().env('__');
+> ```
+
+> ```javascript
+> /**
+>  * specify the config.json file for options not over-ridden at
+>  *   invocation, using the file located within the current
+>  *   directory if that path isn't over-ridden at invocation
+>  *
+>  * example over-ride invocation:
+>  *   $ node server.js --conf=/path/to/different/config.json
+>  */
 > nconf.defaults({conf: `${__dirname}/config.json`});
+> ```
+
+> ```javascript
+> /**
+>  * finally, load whatever file is specified within the path
+>  *   inside our `conf` object for non-over-ridden values
+>  */
 > nconf.file(nconf.get('conf'));
 > ```
+

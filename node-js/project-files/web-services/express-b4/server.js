@@ -6,16 +6,18 @@
 
 'use strict';
 
-/** begin npm modules with Express... */
+/*----------  npm modules, cusom modules  ----------*/
+/** big dog... */
 const express = require('express');
 /** ...HTTP logging util... */
 const morgan = require('morgan');
-/** ...connection settings... */
+/** ...connection settings */
 const nconf = require('nconf');
-/** ...hooking into our package file for references to app version */
+
+/** hook into our package file for references to app version */
 const pkg = require('./package.json');
 
-/**  */
+/*----------  nconf config settings  ----------*/
 nconf.argv().env('__');
 nconf.defaults({conf: `${__dirname}/config.json`});
 nconf.file(nconf.get('conf'));
