@@ -232,3 +232,27 @@ setting precedence via source load order - later values don't overwrite earlier 
 > nconf.file(nconf.get('conf'));
 > ```
 
+<br>
+
+<b>Using `nodemon` ("Node Monitor") to auto restart app</b><br>
+From `web-services/express-b4`:
+> `$ npm install --save --save-exact nodemon@1.11.0`    <br>
+
+From `web-services/express-b4/package.json` add to `scripts:start`:
+> ```JSON
+>   "scripts": {
+>       "start": "nodemon server.js",
+>       "test": "echo \"Error: no test specified\" && exit 1"
+>   },
+> ```
+
+Then start `nodemon` on `server.js` (as specified within `package.json`):
+> `$ npm start`                                     <br>
+> `> express-b4@1.0.0 start /path/to/__dirname`     <br>
+> `> nodemon server.js`                             <br>
+>                                                   <br>
+> `[nodemon] 1.11.0`                                <br>
+> `[nodemon] to restart at any time, enter 'rs'`    <br>
+> `[nodemon] watching: *.*`                         <br>
+> `[nodemon] starting 'node server.js'`             <br>
+> `Ready...`                                        <br>
