@@ -75,7 +75,7 @@
 
 <hr>
 
-#### 2.a. Express
+#### 2.a. Express - Intro
 Express: web app framework for simplifying the running of web servers
 
 <br>
@@ -108,3 +108,93 @@ Before building above file, install Express and Morgan (HTTP request logging uti
 > `$ npm install express@4.14.1 morgan@1.8.1`
 
 Then, like always, bring them into your project with `require()` statements
+
+
+<br><br>
+
+
+<hr>
+
+#### 2.b. Express - RESTful modular Express services ("B4")
+<b>"Better Book Bundle Builder (B4)"</b> to manage <b>book bundles</b>
+> `example book bundle`
+> ```
+> {
+>     "name": "light reading",          // user-defined identifier
+>     "books": [{                       // field containing books in this bundle
+>         "id": "pg132:",
+>         "title": "The Art of War"
+>     },{
+>         "id": "pg2680",
+>         "title": "Meditations",
+>     },{
+>         "id": "pg6456",
+>         "title": "Public Opinion"
+>     }]
+> }
+> ```
+
+
+This app will use two Elasticsearch indexes...
+> - Index `books` from `./project-files/databases` section
+> - Index for `b4` (this app)
+
+...to do
+> - Communicates with indices `books` and `b4`
+> - For B4 app, `books` is read-only
+> - User data including book bundles goes into `b4`
+
+<br>
+
+<b>Create new index for this app</b><br>
+Make sure Elastic search is running:
+> ```
+> $ curl 'http://localhost:9200/?pretty'
+> > {
+> >   "name" : "sqJNKn-",
+> >   "cluster_name" : "elasticsearch",
+> >   "cluster_uuid" : "NQzPZQmhSr-t5CvMXdwdGg",
+> >   "version" : {
+> >     "number" : "6.5.2",
+> >     ...
+> ```
+
+From `./project-files/esclu` issue command to `index.js` via `esclu` executable:
+> ```
+> $ ./esclu create-index -i b4
+> > {"acknowledged":true,"shards_acknowledged":true,"index":"b4"}
+> ```
+
+<br>
+
+<b>Create or bring in necessary items</b>
+> `./project-files/web-services/express-b4/`
+> ```
+> // for package.json (use defaults for now)
+> $ npm init
+>
+> // Express, Morgan for HTTP logging, nconf for config management
+> $ npm install --save --save-exact express@4.14.1 morgan@1.8.1 nconf@0.8.4
+> ```
+> `/express-b4/config.json` for some config options for nconf
+>
+> `/express-b4/server.js` for the main entry point
+
+Now we can test our options thus far to ensure Express can connect properly
+> ```
+> $ npm start
+> > express-b4@1.0.0 start /var/www/github_notes/notes/node-js/project-files/web-services/express-b4
+> > node server.js
+> >
+> > Ready...
+> ```
+
+<br>
+
+<b>Explaining `nconf` order of precedence</b><br>
+Depends on where they appear - later values don't overwrite earlier values
+> ```javascript
+> nconf.argv().env('__');
+> nconf.defaults({conf: `${__dirname}/config.json`});
+> nconf.file(nconf.get('conf'));
+> ```
