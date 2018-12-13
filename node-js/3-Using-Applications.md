@@ -256,3 +256,29 @@ Then start `nodemon` on `server.js` (as specified within `package.json`):
 > `[nodemon] watching: *.*`                         <br>
 > `[nodemon] starting 'node server.js'`             <br>
 > `Ready...`                                        <br>
+
+<br>
+
+<b>API's for searching</b><br>
+`./project-files/web-services/express-b4/lib/search.js`<br>
+
+>Introduces:
+> - `require`ing a module with passed args ( `server.js`: `require('search.js')(app, nconf.get('es'));` )
+>
+> - <b>Computed property names</b> in object literal keys ( `[req.params.field]` ) which are computed
+>   at runtime to determine what that object key should be
+>
+> - <b>Destructuring assignments</b> in function parameters ( `function({_source})` ) tells the function
+>   to expect an object that has a property with the same name as the value in the `{}` and that it
+>   should create a local variable with the same name and same value
+>
+>   You can also use the same destructuring assignment technique for naming variables:
+>   ```javascript
+>   resBody.hits.hits.map(aVar => {
+>       const {_source} = aVar;
+>       return _source;         // returns the new const
+>       });
+>
+>   // ^^ is the same as saying:
+>   esResBody.hits.hits.map(({_source}) => _source);
+>   ```

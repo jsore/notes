@@ -1,7 +1,7 @@
 /**
  * ./project-files/web-services/express-b4/server.js
  *
- * Main entry point for B4 app
+ * Main entry point for B4 Express app
  */
 
 'use strict';
@@ -28,11 +28,20 @@ const app = express();
 /** specify middleware for request/response objects */
 app.use(morgan('dev'));
 
+/*----------  GET requests  ----------*/
 /**
  * what will Express do with HTTP GET requests when API endpoint
  *   '/api/version' is hit (ex: $ curl -s "http://localhost:60702/api/version")
  */
 app.get('/api/version', (req, res) => res.status(200).send(pkg.version));
+
+/**
+ * bring in search module, passing app object and nconf.get()
+ *
+ * nconf will return all settings from es section which gets
+ *   stored in 2nd function paramater
+ */
+require('./lib/search.js')(app, nconf.get('es'));
 
 /** log when listening on port :60702 as sepcified in config.json */
 app.listen(nconf.get('port'), () => console.log('Ready...'));
