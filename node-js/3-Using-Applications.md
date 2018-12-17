@@ -386,4 +386,50 @@ To quote from the book, regarding considerations for handling async failures and
 
 <hr>
 
-#### 2.c. Express - B4
+#### 2.c. Express - B4 - async/await functions
+Benefit of using Promises for simplifying code flow while structuring code in a more readable way
+
+Async functions can be suspended to wait on a Promise to be settled, unblocking the event loop to
+await a Promise - note, this does not violate JS's single-threaded nature
+
+Will use them to perform functions without having to hit Elasticsearch directly
+
+<b>Previous usage, adding then reviewing a book bundle:</b><br>
+Create a document within b4 index for a bundle of books titled 'light reading', then pipe the
+output from .express-b4/lib/bundle.js to console:
+> ```
+> $ curl -s -X POST localhost:60702/api/bundle?name=light%20reading | jq '.'
+> > {
+> >   "_index": "b4",
+> >   "_type": "bundle",
+> >   "_id": "FtDUvWcBI5eETnsx9d0j",      <-- NOTE: auto created by Elasticsearch for new docs
+> >   "_version": 1,
+> >   "result": "created",
+> >   "_shards": {
+> >     "total": 2,
+> >     "successful": 1,
+> >     "failed": 0
+> >   },
+> >   "_seq_no": 0,
+> >   "_primary_term": 1
+> > }
+> ```
+Copying the _id field from above, create an environment variable for easier use:
+> ```
+> $ BUNDLE_ID=FtDUvWcBI5eETnsx9d0j
+> $ echo $BUNDLE_ID
+> > FtDUvWcBI5eETnsx9d0j
+> $ curl -s localhost:9200/b4/bundle/$BUNDLE_ID | jq '.'
+> > {
+> >   "_index": "b4",
+> >   "_type": "bundle",
+> >   "_id": "FtDUvWcBI5eETnsx9d0j",
+> >   "_version": 1,
+> >   "found": true,
+> >   "_source": {
+> >     "name": "light reading",
+> >     "books": []
+> >   }
+> > }
+> ```
+

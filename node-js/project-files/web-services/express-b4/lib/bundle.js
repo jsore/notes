@@ -44,30 +44,4 @@ module.exports = (app, es) => {
         .catch(({error}) => res.status(error.status || 502).json(error));
     });
 
-    /**
-     * Note: Usage
-     *
-     *      $ curl -s -X POST localhost:60702/api/bundle?name=light%20reading | jq '.'
-     *      > {
-     *      >   "_index": "b4",
-     *      >   "_type": "bundle",
-     *      >   "_id": "FtDUvWcBI5eETnsx9d0j",      <-- NOTE: auto created by Elasticsearch for new docs
-     *      >   "_version": 1,
-     *      >   "result": "created",
-     *      >   "_shards": {
-     *      >     "total": 2,
-     *      >     "successful": 1,
-     *      >     "failed": 0
-     *      >   },
-     *      >   "_seq_no": 0,
-     *      >   "_primary_term": 1
-     *      > }
-     *
-     *      // copying the _id field from above, create an environment
-     *      //   variable for easier use:
-     *      $ BUNDLE_ID=FtDUvWcBI5eETnsx9d0j
-     *      $ echo $BUNDLE_ID
-     *      > FtDUvWcBI5eETnsx9d0j
-     *      $ curl -s localhost:9200/b4/bundle/$BUNDLE_ID | jq '.'
-     */
 };
