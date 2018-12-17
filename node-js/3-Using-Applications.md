@@ -291,11 +291,38 @@ Then start `nodemon` on `server.js` (as specified within `package.json`):
 <b>API's - suggestions, Promises & JS code flow</b><br>
 ( adding on to `./lib/search.js` )
 
+>Introduces:
+> - Elasticsearch's <b>Suggest</b> API and <b>Suggester</b> feature
+>
+> - Using `request` module with Promises instead of callbacks
+
 Node.js callbacks use two arguments - `err`, `data` - to reflect JS code successes or failures, while
 EventEmitters use two types (`data`, `error`) to distinguish between the two modes
 
 Promises are another method of async result management - objects that encapsulates success/failure results,
-using `resolved` or `rejected` for the results, each calling callback functions (`.then()`, `.catch()` )
+using `resolve` or `reject` for the results, each calling callback functions (`.then()`, `.catch()` )
+
+Example:
+> ```javascript
+> // create a new Promise, invoking a callback immediately
+> const promise = new Promise((resolve, reject) => {
+>     // passing, resolve the Promise, and
+>     // send a value to .then()
+>     resolve(aSuccessValue);
+>     // failure, reject the Promise, and
+>     // or send a value to .catch()
+>     reject(anErrorValue);
+> });
+>
+> // after promise has been settled...
+> promise.then(aSuccessValue => { /* do something */ });
+> promise.catch(anErrorValue => { /* do something */ });
+>```
+
+The pass/fail handlers will either be called immediately upon the Promise being settled or will be
+called later once it's been settled, regardless of where those handlers are attached, versuses
+`.on('error')` handlers for EventEmitters where there is a specific place where that handler needs
+to exist in order to be used
 
 
 <br><br>
