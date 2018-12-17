@@ -344,10 +344,46 @@ An example book bundle to manage (each bundle has a name & maintains collections
 > }
 > ```
 
+<br>
+
+<b>Manipulating book bundles (documents) RESTfully</b><br>
+`./project-files/web-services/express-b4/lib/bundle.js`<br>
+
+>Introduces:
+> - Using `request-promise`'s Promise factory method for Promise creation
+>
+> - HTTP POST usage
+>
+> - How Elasticsearch auto creates an `_id` field for POST requests
+>
+> - Creating and using environment variables
+
+To quote from the book, regarding considerations for handling async failures and responses:
+> Consider an API to update the name of a bundle.
+> Roughly speaking, yourNode.js code will need to
+> do the following:
+>
+>   - Retrieve the bundle from Elasticsearch.
+>   - Update the name field on the object in memory.
+>   - Put the updated object back into Elasticsearch.
+>
+> In addition to handling these asynchronously and
+> in order, you’ll have to deal with various failure
+> modes:
+>
+>   - What if Elasticsearch is down?
+>   - What if the bundle doesn’t exist?
+>   - What if the bundle changed between the time Node.js
+>     downloaded it and the time it reuploaded it?
+>   - What if Elasticsearch fails to update for some
+>     other reason?
+>   - What HTTP code most closely explains the situation?
+>   - What kind of error message should you present?
+
 
 <br><br>
 
 
 <hr>
 
-2.c.
+#### 2.c. Express - B4

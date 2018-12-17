@@ -43,6 +43,9 @@ app.get('/api/version', (req, res) => res.status(200).send(pkg.version));
  */
 require('./lib/search.js')(app, nconf.get('es'));
 
+/** bring in bundle management API */
+require('./lib/bundle.js')(app, nconf.get('es'));
+
 /** log when listening on port :60702 as sepcified in config.json */
 app.listen(nconf.get('port'), () => console.log('Ready...'));
 
