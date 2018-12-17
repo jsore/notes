@@ -8,6 +8,7 @@
 
 /** npm module, be sure to install first */
 const request = require('request');
+const rp = require('request-promise');
 
 /**
  * export function that takes two parameters, app (the

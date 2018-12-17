@@ -324,6 +324,26 @@ called later once it's been settled, regardless of where those handlers are atta
 `.on('error')` handlers for EventEmitters where there is a specific place where that handler needs
 to exist in order to be used
 
+<br>
+
+<b>API's - manage book bundles, `request-promise`</b><br>
+An example book bundle to manage (each bundle has a name & maintains collections of books)
+> ```JSON
+> {
+>   ​"name"​: ​"light reading"​,
+>   ​"books"​: [{
+>     ​"id"​: ​"pg132"​,
+>     ​"title"​: ​"The Art of War"​
+>   },{
+>     ​"id"​: ​"pg2680"​,
+>     ​"title"​: ​"Meditations"​,
+>   },{
+>     ​"id"​: ​"pg6456"​,
+>     ​"title"​: ​"Public Opinion"​
+>   }]
+> }
+> ```
+
 
 <br><br>
 
