@@ -259,7 +259,7 @@ Then start `nodemon` on `server.js` (as specified within `package.json`):
 
 <br>
 
-<b>API's for searching</b><br>
+<b>API's - searches</b><br>
 `./project-files/web-services/express-b4/lib/search.js`<br>
 
 >Introduces:
@@ -282,3 +282,25 @@ Then start `nodemon` on `server.js` (as specified within `package.json`):
 >   // ^^ is the same as saying:
 >   esResBody.hits.hits.map(({_source}) => _source);
 >   ```
+>
+> - <b>Promises</b> to manage async flow instead of callbacks, used in `./lib/search.js` for a
+>   `/suggest` API to hit Elasticsearch cluster for more info (see next section)
+
+<br>
+
+<b>API's - suggestions, Promises & JS code flow</b><br>
+( adding on to `./lib/search.js` )
+
+Node.js callbacks use two arguments - `err`, `data` - to reflect JS code successes or failures, while
+EventEmitters use two types (`data`, `error`) to distinguish between the two modes
+
+Promises are another method of async result management - objects that encapsulates success/failure results,
+using `resolved` or `rejected` for the results, each calling callback functions (`.then()`, `.catch()` )
+
+
+<br><br>
+
+
+<hr>
+
+2.c.
