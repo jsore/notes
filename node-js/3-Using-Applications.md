@@ -262,7 +262,7 @@ Then start `nodemon` on `server.js` (as specified within `package.json`):
 <b>API's - searches</b><br>
 `./project-files/web-services/express-b4/lib/search.js`<br>
 
->Introduces:
+Introduces:
 > - `require`ing a module with passed args ( `server.js`: `require('search.js')(app, nconf.get('es'));` )
 >
 > - <b>Computed property names</b> in object literal keys ( `[req.params.field]` ) which are computed
@@ -291,7 +291,7 @@ Then start `nodemon` on `server.js` (as specified within `package.json`):
 <b>API's - suggestions, Promises & JS code flow</b><br>
 ( adding on to `./lib/search.js` )
 
->Introduces:
+Introduces:
 > - Elasticsearch's <b>Suggest</b> API and <b>Suggester</b> feature
 >
 > - Using `request` module with Promises instead of callbacks
@@ -349,7 +349,7 @@ An example book bundle to manage (each bundle has a name & maintains collections
 <b>Manipulating book bundles (documents) RESTfully</b><br>
 `./project-files/web-services/express-b4/lib/bundle.js`<br>
 
->Introduces:
+Introduces:
 > - Using `request-promise`'s Promise factory method for Promise creation
 >
 > - HTTP POST usage
@@ -435,10 +435,10 @@ Copying the _id field from above, create an environment variable for easier use:
 
 <br>
 
-<b>Async handler for Express</b><br>
+<b>API's - retrieve book bundles</b><br>
 ( adding on to `./lib/bundle.js` )
 
->Introduces:
+Introduces:
 > - Using `async` and `await` in a GET request (through Express)
 >
 > - Bad vs good implementation of `async` Express handler, Always provide a `try/catch` block when
@@ -455,4 +455,24 @@ Copying the _id field from above, create an environment variable for easier use:
 >>     res.status(200).json(esResBody);
 >> });
 >> ```
->
+
+<br>
+
+<b>API's - changing bundle name</b><br>
+( adding on to `./lib/bundle.js` )
+
+Introduces:
+> - Complex expression usage of results of an await'ed Promise
+>> ```javascript
+>> const bundle = (await rp({url: bundleUrl, json: true}))._source;
+>> ```
+
+<br>
+
+<b>API's - adding book to bundle</b><br>
+( adding on to `./lib/bundle.js` )
+
+Introduces:
+- Complex route handlers
+
+- Managing concurrent unsettled Promises for simultaneous async requests

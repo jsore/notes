@@ -18,6 +18,7 @@ module.exports = (app, es) => {
      *   will reside)
      */
 
+
     /*----------  bundle create API  ----------*/
 
     // $ curl -X POST http://<host>:<port>/api/bundle?name=<name>
@@ -46,6 +47,7 @@ module.exports = (app, es) => {
         .catch(({error}) => res.status(error.status || 502).json(error));
     });
 
+
     /*----------  bundle retrieve API  ----------*/
 
     // $ curl http://<host>:<port>/api/bundle/<id>
@@ -62,8 +64,8 @@ module.exports = (app, es) => {
             json: true,
         };
         /**
-         * Elasticsearch request, use await to suspend async
-         *   function until Promise settles
+         * Elasticsearch request and response, use await to
+         *    suspend async function until Promise settles
          */
         try {
             /**
@@ -81,6 +83,48 @@ module.exports = (app, es) => {
              *   properties referencing failure reasons, use
              *   its .statusCode and .error props to close
              *   the Express response
+             */
+            res.status(esResErr.statusCode || 502).json(esResErr.error);
+        }
+    });
+
+
+    /*----------  bundle name change API  ----------*/
+
+    // $ curl -X PUT http://<host>:<port>/api/bundle/<id>/name/<name>
+    // $ curl -s -X PUT localhost:60702/api/bundle/$BUNDLE_ID/name/foo | jq '.'
+    // confirm change, use GET API to retrieve bundle:
+    // $ curl -s localhost:60702/api/bundle/$BUNDLE_ID | jq '._source'
+
+    app.put('/api/bundle/:id/name/:name', async (req, res) => {
+        /** build appropriate url based on input */
+        const bundleUrl = `${url}/${req.params.id}`;
+        /**
+         * Elasticsearch request and response
+         */
+        try {
+            /**
+             * bundle object is in _id._source, get just it
+             *   from Elasticsearch's response with the
+             *   async/await expression, store it here...
+             */
+            const bundle = (await rp({url: bundleUrl, json: true}))._source;
+            /**
+             * ...then overwrite the name properpty currently
+             *   set with the value provided in url (:name)
+             */
+            bundle.name = req.params.name;
+            /**
+             * build Express response from Elasticsearch's
+             *   response, PUT'ing the updated name property
+             *   back into Elasticsearch through Express...
+             */
+            const esResBody = await rp.put({url: bundleUrl, body: bundle, json: true});
+            res.status(200).json(esResBody);
+        } catch (esResErr) {
+            /**
+             * ...or, catch Elasticsearch response error and
+             *   send it back through Express's response instead
              */
             res.status(esResErr.statusCode || 502).json(esResErr.error);
         }
