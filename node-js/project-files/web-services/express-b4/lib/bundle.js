@@ -224,4 +224,54 @@ module.exports = (app, es) => {
             res.status(esResErr.statusCode || 502).json(esResErr.error);
         }
     });
+
+
+    /*----------  delete a book from bundle API  ----------*/
+
+    // $ curl -X DELETE http://<host>:<port>/api/bundle/<id>/book/<pgid>
+
+    app.delete('/api/bundle/:id/book/:pgid', async (req, res) => {
+        const bundleUrl = `${url}/${req.params.id}`;
+
+        try {
+            const {_source: bundle, _version: version} = await rp({url: bundleUrl, json: true});
+
+            const idx = bundle.books.findIndex(book => book.id === req.params.pgid);
+            if (idx === -1) {
+                throw {
+                    statusCode: 409,
+                    error: {
+                        reason: 'Conflict - Bundle does not contain that book',
+                    }
+                };
+            }
+
+            bundle.books.splice(idx, 1);
+
+            const esResBody = await rp.put({
+                url: bundleUrl,
+                qs: { version },
+                body: bundle,
+                json: true,
+            });
+            res.status(200).json(esResBody);
+        } catch (esResErr) {
+            res.status(esResErr.statusCode || 502).json(esResErr.error);
+        }
+    });
+
+
+    /*----------  delete entire bundle API  ----------*/
+
+    // $ curl -X DELETE http://<host>:<port>/api/bundle/<id>
+
+    app.delete('/api/bundle/:id', async (req, res) => {
+        const bundleUrl = `${url}/${req.params.id}`;
+        try {
+            const esResBody = await rp.delete({url: bundleUrl, json: true});
+            res.status(200).json(esResBody);
+        } catch (esResErr) {
+            res.status(esResErr.statusCode || 502).json(esResErr.error);
+        }
+    });
 };

@@ -489,3 +489,21 @@ Introduces:
 >> ```
 >
 > - Using version number to detect race conditions on doc update
+>
+> - Method `Array.findIndex` to determine if book is already in the index
+
+<br>
+
+<b>API's - delete a bundle</b><br>
+( adding on to `./lib/bundle.js` )
+
+Introduces:
+> - HTTP DELETE
+
+<br>
+
+<b>API's - delete a book from a bundle</b><br>
+( adding on to `./lib/bundle.js` )
+
+Introduces:
+> - `array.splice`

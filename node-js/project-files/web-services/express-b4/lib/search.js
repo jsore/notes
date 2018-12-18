@@ -277,4 +277,36 @@ module.exports = (app, es) => {
      *      > "lehman"
      */
     });
+
+
+    // suggest-field
+    //app.get('/api/search/field/:field/:query', (req, res) => {
+    //const esReqBody = {
+    //    size: 1000,
+    //    query: {
+    //        match_phrase_prefix: {
+    //            [req.params.field]: req.params.query,
+    //        },
+    //    },
+    //};
+    //rp({url, json: true, body: esReqBody})
+    //    .then(esResBody => {
+    //        // Collect results.
+    //        const query = req.params.query.toLowerCase();
+    //        const results = new Set();
+    //        esResBody.hits.hits.forEach(({_source}) => {
+    //            const values = _source[req.params.field];
+    //            if (values) {
+    //                (Array.isArray(values) ? values : [values]).forEach(value => {
+    //                    if (value.toLowerCase().includes(query)) {
+    //                        results.add(value);
+    //                    }
+    //                });
+    //            }
+    //        });
+    //        res.status(200).json([...results].sort());
+    //    })
+    //    .catch(({error}) => res.status(error.status || 502).json(error));
+    //});
+
 };
