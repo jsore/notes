@@ -473,6 +473,19 @@ Introduces:
 ( adding on to `./lib/bundle.js` )
 
 Introduces:
-- Complex route handlers
-
-- Managing concurrent unsettled Promises for simultaneous async requests
+> - Complex route handlers
+>
+> - Managing concurrent unsettled Promises for simultaneous async requests ( `Promise.all([]);` method )
+>> ```javascript
+>> // async'ly requesting
+>> const [bundleRes, bookRes] = await Promise.all([
+>>     rp({url: bundleUrl, json: true}),
+>>     rp({url: bookUrl, json: true}),
+>> ]);
+>>
+>> // still works, but book is only grabbed after bundle
+>> const bundleRes = rp({url: bundleUrl, json: true});
+>> const bookRes = rp({url: bookUrl, json: true});
+>> ```
+>
+> - Using version number to detect race conditions on doc update

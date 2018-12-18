@@ -11,7 +11,7 @@
 const express = require('express');
 /** ...HTTP logging util... */
 const morgan = require('morgan');
-/** ...connection settings */
+/** ...connection & Elasticsearch settings */
 const nconf = require('nconf');
 
 /** hook into our package file for references to app version */
