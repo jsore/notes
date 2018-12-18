@@ -433,3 +433,26 @@ Copying the _id field from above, create an environment variable for easier use:
 > > }
 > ```
 
+<br>
+
+<b>Async handler for Express</b><br>
+( adding on to `./lib/bundle.js` )
+
+>Introduces:
+> - Using `async` and `await` in a GET request (through Express)
+>
+> - Bad vs good implementation of `async` Express handler, Always provide a `try/catch` block when
+>   using async functions as Express route handlers
+>> ```javascript
+>> // BAD - no try/catch block, any rejections won't
+>> //   get handled properly
+>> app.get('/api/bundle/:id', async (req, res) => {
+>>     const options = {
+>>         url: `${url}/${req.params.id}`,
+>>         json: true,
+>>     };
+>>     const esResBody = await rp(options);
+>>     res.status(200).json(esResBody);
+>> });
+>> ```
+>
