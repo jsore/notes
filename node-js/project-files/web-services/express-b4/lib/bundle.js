@@ -232,10 +232,14 @@ module.exports = (app, es) => {
 
     app.delete('/api/bundle/:id/book/:pgid', async (req, res) => {
         const bundleUrl = `${url}/${req.params.id}`;
-
         try {
+            /**
+             * const bundle = _source, version = _version
+             * rp(object with props)
+             */
             const {_source: bundle, _version: version} = await rp({url: bundleUrl, json: true});
 
+            /** does the book even exist in this bundle?... */
             const idx = bundle.books.findIndex(book => book.id === req.params.pgid);
             if (idx === -1) {
                 throw {
@@ -246,8 +250,10 @@ module.exports = (app, es) => {
                 };
             }
 
+            /** ...if it does, splice() it out... */
             bundle.books.splice(idx, 1);
 
+            /** ...then PUT the bundle back with a 200 OK... */
             const esResBody = await rp.put({
                 url: bundleUrl,
                 qs: { version },
@@ -256,6 +262,7 @@ module.exports = (app, es) => {
             });
             res.status(200).json(esResBody);
         } catch (esResErr) {
+            /** ...or fail gracefully */
             res.status(esResErr.statusCode || 502).json(esResErr.error);
         }
     });
