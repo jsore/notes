@@ -75,7 +75,7 @@
 
 <hr>
 
-#### 1.a. Express - Intro
+#### 2.a. Express - Intro
 Express: web app framework for simplifying the running of web servers
 
 <br>
@@ -115,7 +115,7 @@ Then, like always, bring them into your project with `require()` statements
 
 <hr>
 
-#### 1.b. Express - RESTful modular Express services ("B4")
+#### 2.b. Express - RESTful modular Express services ("B4")
 <b>"Better Book Bundle Builder (B4)"</b> to manage <b>book bundles</b>
 > `example book bundle`
 > ```
@@ -386,7 +386,7 @@ To quote from the book, regarding considerations for handling async failures and
 
 <hr>
 
-#### 1.c. Express - B4 - async/await functions
+#### 2.c. Express - B4 - async/await functions
 Benefit of using Promises for simplifying code flow while structuring code in a more readable way
 
 Async functions can be suspended to wait on a Promise to be settled, unblocking the event loop to
@@ -506,6 +506,7 @@ Introduces:
 ( adding on to `./lib/bundle.js` )
 
 Introduces:
+<<<<<<< HEAD
 > - `array.splice`
 
 
@@ -639,3 +640,6 @@ And allow the project to use `webpack` through a `config` file:
 > ```
 
 > ```
+=======
+> - `array.splice`
+>>>>>>> parent of 5b8bffc... Chapter 2 begin, webpack section begin
