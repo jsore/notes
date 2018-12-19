@@ -514,7 +514,7 @@ Introduces:
 
 <hr>
 
-## Chapter 2 - UI
+## Chapter 2 - UX
 #### Giving users a friendly method of app interaction
 
 
@@ -589,10 +589,10 @@ https://medium.com/@vovabilonenko/licenses-of-npm-dependencies-bacaa00c8c65
 <br>
 
 <b>Front-end project root setup</b><br>
-New directory: `./web-services/express-b4/b4-app`
+New directory: `./project-files/ux/b4-app`
 
 Begin building our app as a Node.js project
-> `./express-b4/b4-app/package.json`<br>
+> `./project-files/ux/b4-app/package.json`<br>
 > ```
 > $ npm init
 > > {
@@ -608,3 +608,34 @@ Begin building our app as a Node.js project
 > > }
 > ```
 
+Normally, bundling would occur before deployment to production, but we'll use a `webpack` plugin, the
+`webpack-dev-server`, for on demand bundling during the development process and a look into using
+<b>peer dependencies</b>
+
+Peer dependencies are for plugins, which add functionality into a large unit or framework and to
+augment libriaries (commonly found in frontend tech), whereas regular dependencies support smaller
+units of functionality
+
+Peer dependencies operate at a 'sibling' level to their related module - rather than the 'child'
+relationship of other dependencies, where they're nested into subdirectories of `node_modules`,
+they instead must reside at the same level of the module
+
+Install the dependency:
+> `$ npm install --save-dev --save-exact webpack-dev-server@2.9.1`
+
+Add a `start` script to `package.json`:
+> ```JSON
+> "scripts": {
+>     "start": "webpack-dev-server",
+>     "test": "echo \"Error: no test specified\" && exit 1"
+>   },
+> ```
+
+Then install `webpack`
+> `$ npm install --save --save-exact webpack@3.6.0`
+
+And allow the project to use `webpack` through a `config` file:
+> `./project-files/ux/b4-app/package.json`<br>
+> ```
+
+> ```
