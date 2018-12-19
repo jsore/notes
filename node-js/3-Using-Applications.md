@@ -75,7 +75,7 @@
 
 <hr>
 
-#### 2.a. Express - Intro
+#### 1.a. Express - Intro
 Express: web app framework for simplifying the running of web servers
 
 <br>
@@ -115,7 +115,7 @@ Then, like always, bring them into your project with `require()` statements
 
 <hr>
 
-#### 2.b. Express - RESTful modular Express services ("B4")
+#### 1.b. Express - RESTful modular Express services ("B4")
 <b>"Better Book Bundle Builder (B4)"</b> to manage <b>book bundles</b>
 > `example book bundle`
 > ```
@@ -386,7 +386,7 @@ To quote from the book, regarding considerations for handling async failures and
 
 <hr>
 
-#### 2.c. Express - B4 - async/await functions
+#### 1.c. Express - B4 - async/await functions
 Benefit of using Promises for simplifying code flow while structuring code in a more readable way
 
 Async functions can be suspended to wait on a Promise to be settled, unblocking the event loop to
@@ -507,3 +507,104 @@ Introduces:
 
 Introduces:
 > - `array.splice`
+
+
+<br><br>
+
+
+<hr>
+
+## Chapter 2 - UI
+#### Giving users a friendly method of app interaction
+
+
+<br>
+
+
+<b>Node.js core modules</b><br>
+> - <b>Peer dependencies</b>, a new module dependancy type for framework/plugin relationship descriptors
+
+
+<br>
+
+
+<b>Patterns</b><br>
+> - Examples of framework-and-plugin usage for front end JS
+>
+> - <b>Typescript</b>, code transpilation to work with other languages and type-checking code
+
+
+<br>
+
+
+<b>JavaScript-isms</b><br>
+> - Promise producer `fetch` method for async requests between browser and server
+>
+> - DOM API's for user interaction and navigation
+
+
+<br>
+
+
+<b>Supporting code</b><br>
+> - <b>Bootstrap</b> (from Twitter) for styles
+>
+> - Dynamic HTML rendering with <b>Handlebars</b> library
+
+
+<br>
+
+
+<hr>
+
+#### 1.a. Webpack intro
+Webpack takes front end code and its related dependencies then bundles it up
+
+Example: taking a few JS files and related libraries, sqishing them together to allow for just a
+single packaged file to be sent across to the browser
+
+Web pages/apps of course can be thrown up without bundling assets together, but it's becoming
+common practice to do so (ex: for JS version control, reduced latency)
+
+Typical prod/dev deployment routine:
+
+> 1.a. Development
+>
+> 1.b. Locally - make changes
+>
+> 1.c. Locally - bundle assets & push to production repo branch within version manager of choice
+>
+> 3.a. Deployment
+>
+> 3.b. Remote server - pull down changes from production branch
+>
+> 3.c. Remote server - Run package manager (npm) to install the appropriate versions of packages
+
+
+<br>
+
+<b>Regarding licenses and public app licenses...</b><br>
+https://medium.com/@vovabilonenko/licenses-of-npm-dependencies-bacaa00c8c65
+
+<br>
+
+<b>Front-end project root setup</b><br>
+New directory: `./web-services/express-b4/b4-app`
+
+Begin building our app as a Node.js project
+> `./express-b4/b4-app/package.json`<br>
+> ```
+> $ npm init
+> > {
+> >   "name": "b4",
+> >   "version": "1.0.0",
+> >   "description": "Better Book Bundle Builder front-end app",
+> >   "main": "index.js",
+> >   "scripts": {
+> >     "test": "echo \"Error: no test specified\" && exit 1"
+> >   },
+> >   "author": "",
+> >   "license": "ISC"
+> > }
+> ```
+
