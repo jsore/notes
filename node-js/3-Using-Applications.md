@@ -75,7 +75,7 @@
 
 <hr>
 
-#### 2.a. Express - Intro
+#### 1.a. Express - Intro
 Express: web app framework for simplifying the running of web servers
 
 <br>
@@ -115,7 +115,7 @@ Then, like always, bring them into your project with `require()` statements
 
 <hr>
 
-#### 2.b. Express - RESTful modular Express services ("B4")
+#### 1.b. Express - RESTful modular Express services ("B4")
 <b>"Better Book Bundle Builder (B4)"</b> to manage <b>book bundles</b>
 > `example book bundle`
 > ```
@@ -386,7 +386,7 @@ To quote from the book, regarding considerations for handling async failures and
 
 <hr>
 
-#### 2.c. Express - B4 - async/await functions
+#### 1.c. Express - B4 - async/await functions
 Benefit of using Promises for simplifying code flow while structuring code in a more readable way
 
 Async functions can be suspended to wait on a Promise to be settled, unblocking the event loop to
@@ -506,7 +506,6 @@ Introduces:
 ( adding on to `./lib/bundle.js` )
 
 Introduces:
-<<<<<<< HEAD
 > - `array.splice`
 
 
@@ -636,10 +635,23 @@ Then install `webpack`
 > `$ npm install --save --save-exact webpack@3.6.0`
 
 And allow the project to use `webpack` through a `config` file:
-> `./project-files/ux/b4-app/package.json`<br>
+> `./project-files/ux/b4-app/webpack.config.js`<br>
+> ```
+> 'use strict';
+> module.exports = {
+>     entry: './entry.js',
+> };
 > ```
 
-> ```
-=======
-> - `array.splice`
->>>>>>> parent of 5b8bffc... Chapter 2 begin, webpack section begin
+Set up an empty file for testing purposes, start npm and verify page loads in browser
+> `$ touch entry.js`    <br>
+> `$ npm start`         <br>
+
+Finally, install a module to generate the HTML
+> `$ npm install --save-dev --save-exact html-webpack-plugin@2.30.1`
+
+<br>
+
+<b>Generate a webpack bundle</b><br>
+`./ux/b4-app/webpack.config.js`<br>
+> - HTML file generation through `HtmlWebpackPlugin` class
