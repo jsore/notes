@@ -48,13 +48,17 @@ module.exports = {
     //    //hot: true,
     //    //open: true
     //},
+    //devServer: {
+    //    contentBase: distDir,
+    //    host: '0.0.0.0',
+    //    disableHostCheck: true,
+    //    //port: 60800,
+    //    //public: 'apachetestserver.com:80',
+    //    useLocalIp: true,
+    //},
     devServer: {
         contentBase: distDir,
-        host: '0.0.0.0',
-        disableHostCheck: true,
-        //port: 60800,
-        //public: 'apachetestserver.com:80',
-        useLocalIp: true,
+        port: 60800,
     },
 
     /** bring in plugin for HTML generation */

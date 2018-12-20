@@ -1,16 +1,23 @@
 {
   "name": "b4",
-  "version": "1.0.0",
-  "description": "Better Book Bundle Builder front-end app",
+  "version": "1.2.0",
+  "description": "Better Book Bundle Builder frontend application",
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jsore/notes.git"
+  },
   "author": "",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jsore/notes/issues"
+  },
+  "homepage": "https://github.com/jsore/notes#readme",
   "devDependencies": {
-    "html-webpack-plugin": "2.30.1",
     "webpack-dev-server": "2.9.1"
   },
   "dependencies": {
