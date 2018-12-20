@@ -666,13 +666,20 @@ Git `master` branch has now been branched to reflect this migration, new branch:
 
 For the sake of my sanity, this was the process of getting everything back up and running locally <br>
 (mainly dealing with Elasticsearch)
-> - cli pretty config (benign)
+> - cli pretty config, alias addition for `ls=ls -Gp` (benign)
+>
 > - project root create
+>
 > - `git clone`
+>
 > - rebuilt the `webpack` files and verified connection success
+>
 > - re-downloaded epub files for `databases/data` since `.gitignore` was set to ignore them
+>
 > - test Elasticsearch connection....failed
+>
 > - test Elasticsearch installation....failed (duh)
+>
 > - install (for mac) then run Elasticsearch
 >> `./project-files/esclu`
 >> ```
@@ -699,4 +706,33 @@ For the sake of my sanity, this was the process of getting everything back up an
 >> >   "tagline" : "You Know, for Search"
 >> > }
 >> ```
-> - connection test successfull, moving on
+>
+> - test Elasticsearch connection again....success
+>
+> - make sure `esclu` still executable ( `chmod +x esclue` )
+>
+> - refamiliarize myself with `esclu` CL program ( `$ ./esclu -h` )
+>
+>   Note: use `$ ./esclu get '_cat'` for non-JSON'ed API cluster details
+>
+> - recreate index ( `$ ​​./esclu​​ ​​create-index​​ ​​--index​​ ​​books​` )
+>
+> - list indices to verify the addition ( `$ ​​./esclu​​ ​​get​​ ​​'_cat/indices?v'​` ) <br>
+>   another method: `$ ./esclu get _stats | jq '.indices' | head -n 20`
+>
+> - re-installed `jq` at this point
+>
+> - bulk add the books to index, this time putting the result file into `databases/data`  <br>
+>   `$ ./esclu bulk ../data/bulk_pg.ldj -i books -t book > ../data/bulk_result.json`
+>
+> - verify data import....failed:
+>> ```
+>> cat ../databases/data/bulk_result.json | jq '.' | head -n 20
+>> {
+>>   "error": {
+>>     "root_cause": [
+>>       {
+>>         "type": "json_parse_exception",
+>> ```
+>>   error: there was a line at the top of `bulk_pg.ldj`, the file I'm trying to import using `bulk` <br>
+>>   ....removed it, tried `bulk` again, tested....success
