@@ -176,6 +176,22 @@ program
     });
 
 
+/*----------  Command - delete an index  ----------*/
+program
+  .command('delete-index')
+  .description('delete an index')
+  .action(() => {
+    if (!program.index) {
+      const msg = 'No index specified! Use --index <name>';
+      if (!program.json) throw Error(msg);
+      console.log(JSON.stringify({error: msg}));
+      return;
+    }
+
+    request.del(fullUrl(), handleResponse);
+  });
+
+
 /*----------  Command - bulk add file tool  ----------*/
 /** we're adding stuff, so POST instead of PUT */
 program
