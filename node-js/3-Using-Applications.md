@@ -661,3 +661,5 @@ Finally, install a module to generate the HTML
 Because of issues with VirtualBox and webpack, I've given up fighting the two of them and will be moving
 files within `project-files` locally onto my Macbokk and continuing the project there. However, these
 notes will still record my progress and thoughts throughout the remainder of this side project.
+
+Git `master` branch has now been branched to reflect this migration, new branch: `mac-notes`
