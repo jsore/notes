@@ -655,3 +655,9 @@ Finally, install a module to generate the HTML
 <b>Generate a webpack bundle</b><br>
 `./ux/b4-app/webpack.config.js`<br>
 > - HTML file generation through `HtmlWebpackPlugin` class
+
+
+#### Note - Project changes
+Because of issues with VirtualBox and webpack, I've given up fighting the two of them and will be moving
+files within `project-files` locally onto my Macbokk and continuing the project there. However, these
+notes will still record my progress and thoughts throughout the remainder of this side project.
