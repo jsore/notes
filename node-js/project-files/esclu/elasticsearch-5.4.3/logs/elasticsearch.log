@@ -1,0 +1,29 @@
+[2018-12-20T16:17:02,177][INFO ][o.e.n.Node               ] [] initializing ...
+[2018-12-20T16:17:02,328][INFO ][o.e.e.NodeEnvironment    ] [S8imSB6] using [1] data paths, mounts [[/ (/dev/disk1s1)]], net usable_space [321.7gb], net total_space [465.7gb], spins? [unknown], types [apfs]
+[2018-12-20T16:17:02,329][INFO ][o.e.e.NodeEnvironment    ] [S8imSB6] heap size [1.9gb], compressed ordinary object pointers [true]
+[2018-12-20T16:17:02,332][INFO ][o.e.n.Node               ] node name [S8imSB6] derived from node ID [S8imSB6xTgeGDUqn2XjEpA]; set [node.name] to override
+[2018-12-20T16:17:02,332][INFO ][o.e.n.Node               ] version[5.4.3], pid[27238], build[eed30a8/2017-06-22T00:34:03.743Z], OS[Mac OS X/10.13.4/x86_64], JVM[Oracle Corporation/Java HotSpot(TM) 64-Bit Server VM/1.8.0_191/25.191-b12]
+[2018-12-20T16:17:02,333][INFO ][o.e.n.Node               ] JVM arguments [-Xms2g, -Xmx2g, -XX:+UseConcMarkSweepGC, -XX:CMSInitiatingOccupancyFraction=75, -XX:+UseCMSInitiatingOccupancyOnly, -XX:+DisableExplicitGC, -XX:+AlwaysPreTouch, -Xss1m, -Djava.awt.headless=true, -Dfile.encoding=UTF-8, -Djna.nosys=true, -Djdk.io.permissionsUseCanonicalPath=true, -Dio.netty.noUnsafe=true, -Dio.netty.noKeySetOptimization=true, -Dio.netty.recycler.maxCapacityPerThread=0, -Dlog4j.shutdownHookEnabled=false, -Dlog4j2.disable.jmx=true, -Dlog4j.skipJansi=true, -XX:+HeapDumpOnOutOfMemoryError, -Des.path.home=/Users/jsorensen/Desktop/DevProjects/node-dev/notes/node-js/project-files/esclu/elasticsearch-5.4.3]
+[2018-12-20T16:17:03,702][INFO ][o.e.p.PluginsService     ] [S8imSB6] loaded module [aggs-matrix-stats]
+[2018-12-20T16:17:03,702][INFO ][o.e.p.PluginsService     ] [S8imSB6] loaded module [ingest-common]
+[2018-12-20T16:17:03,702][INFO ][o.e.p.PluginsService     ] [S8imSB6] loaded module [lang-expression]
+[2018-12-20T16:17:03,702][INFO ][o.e.p.PluginsService     ] [S8imSB6] loaded module [lang-groovy]
+[2018-12-20T16:17:03,702][INFO ][o.e.p.PluginsService     ] [S8imSB6] loaded module [lang-mustache]
+[2018-12-20T16:17:03,703][INFO ][o.e.p.PluginsService     ] [S8imSB6] loaded module [lang-painless]
+[2018-12-20T16:17:03,703][INFO ][o.e.p.PluginsService     ] [S8imSB6] loaded module [percolator]
+[2018-12-20T16:17:03,703][INFO ][o.e.p.PluginsService     ] [S8imSB6] loaded module [reindex]
+[2018-12-20T16:17:03,703][INFO ][o.e.p.PluginsService     ] [S8imSB6] loaded module [transport-netty3]
+[2018-12-20T16:17:03,703][INFO ][o.e.p.PluginsService     ] [S8imSB6] loaded module [transport-netty4]
+[2018-12-20T16:17:03,704][INFO ][o.e.p.PluginsService     ] [S8imSB6] no plugins loaded
+[2018-12-20T16:17:05,703][INFO ][o.e.d.DiscoveryModule    ] [S8imSB6] using discovery type [zen]
+[2018-12-20T16:17:06,243][INFO ][o.e.n.Node               ] initialized
+[2018-12-20T16:17:06,243][INFO ][o.e.n.Node               ] [S8imSB6] starting ...
+[2018-12-20T16:17:06,593][INFO ][o.e.t.TransportService   ] [S8imSB6] publish_address {127.0.0.1:9300}, bound_addresses {[fe80::1]:9300}, {[::1]:9300}, {127.0.0.1:9300}
+[2018-12-20T16:17:09,667][INFO ][o.e.c.s.ClusterService   ] [S8imSB6] new_master {S8imSB6}{S8imSB6xTgeGDUqn2XjEpA}{1jUKGqUGQfeOrtUP0vZ6uw}{127.0.0.1}{127.0.0.1:9300}, reason: zen-disco-elected-as-master ([0] nodes joined)
+[2018-12-20T16:17:09,693][INFO ][o.e.h.n.Netty4HttpServerTransport] [S8imSB6] publish_address {127.0.0.1:9200}, bound_addresses {[fe80::1]:9200}, {[::1]:9200}, {127.0.0.1:9200}
+[2018-12-20T16:17:09,699][INFO ][o.e.n.Node               ] [S8imSB6] started
+[2018-12-20T16:17:09,702][INFO ][o.e.g.GatewayService     ] [S8imSB6] recovered [0] indices into cluster_state
+[2018-12-20T16:26:25,327][INFO ][o.e.n.Node               ] [S8imSB6] stopping ...
+[2018-12-20T16:26:25,364][INFO ][o.e.n.Node               ] [S8imSB6] stopped
+[2018-12-20T16:26:25,365][INFO ][o.e.n.Node               ] [S8imSB6] closing ...
+[2018-12-20T16:26:25,378][INFO ][o.e.n.Node               ] [S8imSB6] closed

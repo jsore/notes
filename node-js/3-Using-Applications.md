@@ -663,3 +663,40 @@ files within `project-files` locally onto my Macbokk and continuing the project 
 notes will still record my progress and thoughts throughout the remainder of this side project.
 
 Git `master` branch has now been branched to reflect this migration, new branch: `mac-notes`
+
+For the sake of my sanity, this was the process of getting everything back up and running locally <br>
+(mainly dealing with Elasticsearch)
+> - cli pretty config (benign)
+> - project root create
+> - `git clone`
+> - rebuilt the `webpack` files and verified connection success
+> - re-downloaded epub files for `databases/data` since `.gitignore` was set to ignore them
+> - test Elasticsearch connection....failed
+> - test Elasticsearch installation....failed (duh)
+> - install (for mac) then run Elasticsearch
+>> `./project-files/esclu`
+>> ```
+>> $ curl -L -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.4.3.zip
+>> $ unzip elasticsearch-5.4.3.zip
+>> $ cd elasticsearch-5.4.3
+>> $ ./bin/elasticsearch
+>> > ...running...
+>> $ ./bin/elasticsearch
+>>
+>> // different terminal
+>> $ curl http://127.0.0.1:9200
+>> > {
+>> >   "name" : "S8imSB6",
+>> >   "cluster_name" : "elasticsearch",
+>> >   "cluster_uuid" : "eHW1OjVHQSqO3rtGxbpk6w",
+>> >   "version" : {
+>> >     "number" : "5.4.3",
+>> >     "build_hash" : "eed30a8",
+>> >     "build_date" : "2017-06-22T00:34:03.743Z",
+>> >     "build_snapshot" : false,
+>> >     "lucene_version" : "6.5.1"
+>> >   },
+>> >   "tagline" : "You Know, for Search"
+>> > }
+>> ```
+> - connection test successfull, moving on
