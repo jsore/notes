@@ -736,3 +736,10 @@ For the sake of my sanity, this was the process of getting everything back up an
 >> ```
 >>   error: there was a line at the top of `bulk_pg.ldj`, the file I'm trying to import using `bulk` <br>
 >>   ....removed it, tried `bulk` again, tested....success
+>
+> - remainder of files checked for usability....failed<br>
+>   need to build "B4" index
+>
+> -
+>
+> - remainder of files checked for usability....
