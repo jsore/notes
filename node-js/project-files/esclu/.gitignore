@@ -1,2 +1,4 @@
-elasticsearch-5.4.3/data/*
-elasticsearch-5.4.3/logs/*
+# elasticsearch-5.4.3/data/*
+elasticsearch-5.4.3/data
+# elasticsearch-5.4.3/logs/*
+elasticsearch-5.4.3/logs

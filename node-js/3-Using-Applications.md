@@ -740,6 +740,6 @@ For the sake of my sanity, this was the process of getting everything back up an
 > - remainder of files checked for usability....failed<br>
 >   need to build "B4" index
 >
-> -
+> - 
 >
 > - remainder of files checked for usability....
