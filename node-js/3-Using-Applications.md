@@ -652,11 +652,6 @@ Finally, install a module to generate the HTML
 
 <br>
 
-<b>Generate a webpack bundle</b><br>
-`./ux/b4-app/webpack.config.js`<br>
-> - HTML file generation through `HtmlWebpackPlugin` class
-
-
 #### Note - Project changes
 Because of issues with VirtualBox and webpack, I've given up fighting the two of them and will be moving
 files within `project-files` locally onto my Macbokk and continuing the project there. However, these
@@ -772,4 +767,31 @@ For the sake of my sanity, this was the process of getting everything back up an
 >>  > "The Tragedy of Macbeth"
 >>  ```
 >
-> - remainder of files checked for usability....
+> - book bundle `Light Reading` re-added to b4 index, `$BUNDLE_ID` set in `./express-b4`
+>>  ```
+>>  $ curl -s -X POST localhost:60702/api/bundle?name=Light%20Reading | jq '.'
+>>  $ BUNDLE_ID=AWfczkDIf7nyNwJluzYW
+>>  $ curl -s localhost:9200/b4/bundle/$BUNDLE_ID | jq '.'
+>>  ```
+>
+> - put book into index and test
+>>  ```
+>>  curl -s -X PUT localhost:60702/api/bundle/$BUNDLE_ID/book/pg132 | jq '.'
+>>  curl -s localhost:60702/api/bundle/$BUNDLE_ID | jq '._source'
+>>  ```
+>
+> - remainder of files checked for usability....success
+
+
+<br><br>
+
+
+Okay, back on track
+
+
+<br><br>
+
+
+<b>Generate a webpack bundle</b><br>
+`./ux/b4-app/webpack.config.js`<br>
+> - HTML file generation through `HtmlWebpackPlugin` class
