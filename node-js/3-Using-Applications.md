@@ -795,3 +795,42 @@ Okay, back on track
 <b>Generate a webpack bundle</b><br>
 `./ux/b4-app/webpack.config.js`<br>
 > - HTML file generation through `HtmlWebpackPlugin` class
+
+Now, after `$ npm start`'ing the app, the project should be reachable in a browser at `localhost:60800`
+
+<br>
+
+<b>Generate a webpack bundle</b><br>
+( adding on to `./ux/b4-app/webpack.config.js` )
+
+>Introduces:
+> - CSS dependencies for webpack to work with CSS and for assets CSS will reference (images, fonts, etc)<br>
+>   ex: `style-loader`, `css-loader` plugins for webpack, `url-loader`, `file-loader` plugins for CSS
+>> ```
+>> $ npm install --save-dev --save-exact \
+>> > style-loader@0.19.0 \
+>> > css-loader@0.28.7 \
+>> > url-loader@0.6.2 \
+>> > file-loader@1.1.5
+>> ```
+>> Then load these into `webpack.config.js.exports.module[]`
+>
+> - Bootstrap ( `$ npm install --save-dev --save-exact bootstrap@3.3.7` )
+>
+> - Using Bootstrap components
+>
+> - `import`'ing based on rules set in `webpack.config.js_module.rules`
+>
+> - Bootstrap JS (via jQuery) for dynamic Bootsrap behaviors<br>
+>   `$ npm install --save-dev --save-exact jquery@3.2.1`
+>>  ```javascript
+>>  // ./ux/b4-app/webpack.config.js
+>>  const webpack = require('webpack');
+>>  new webpack.ProvidePlugin({
+>>      $: 'jquery',
+>>      jQuery: 'jquery'
+>>  }),
+>>
+>>  // ./ux/b4-app/entry.js
+>>  import 'bootstrap';
+>>  ```
