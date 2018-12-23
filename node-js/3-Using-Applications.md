@@ -740,6 +740,36 @@ For the sake of my sanity, this was the process of getting everything back up an
 > - remainder of files checked for usability....failed<br>
 >   need to build "B4" index
 >
-> - 
+> - b4 index built <br>
+>>  ```
+>>  // ( from ./project-files/web-services/express-b4 )
+>>
+>>  // create
+>>  $ ../../esclu/esclu create-index -i b4
+>>
+>>  // verify
+>>  $ ../../esclu/esclu list-indices
+>>
+>>  // ./project-files/web-services/express-b4
+>>  $ npm start
+>>  > [nodemon] 1.11.0
+>>  > [nodemon] to restart at any time, enter `rs`
+>>  > [nodemon] watching: *.*
+>>  > [nodemon] starting `node server.js`
+>>  > Ready...
+>>  $ curl -s 'http://localhost:60702/api/version'
+>>  > 1.0.0
+>>  $ curl -s http://localhost:60702/api/search/books/authors/Shakespeare | jq '.[].title'
+>>  > "Venus and Adonis"
+>>  > "The Second Part of King Henry the Sixth"
+>>  > "King Richard the Second"
+>>  > "The Tragedy of Romeo and Juliet"
+>>  > "A Midsummer Night's Dream"
+>>  > "Much Ado about Nothing"
+>>  > "The Tragedy of Julius Caesar"
+>>  > "As You Like It"
+>>  > "The Tragedy of Othello, Moor of Venice"
+>>  > "The Tragedy of Macbeth"
+>>  ```
 >
 > - remainder of files checked for usability....
