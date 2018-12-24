@@ -557,7 +557,7 @@ Introduces:
 
 <hr>
 
-#### 1.a. Webpack intro
+#### 2.a. Webpack intro
 Webpack takes front end code and its related dependencies then bundles it up
 
 Example: taking a few JS files and related libraries, sqishing them together to allow for just a
@@ -841,15 +841,39 @@ Now, after `$ npm start`'ing the app, the project should be reachable in a brows
 
 <b>TypeScript</b><br>
 `./ux/b4-app/tsconfig.json`<br>
+`./ux/b4-app/templates.ts`<br>
 
 >Introduces:
 > - Transpiling JS with TypeScript for browser compability ( install with npm --save-dev and install
 >   `ts-loader` plugin for webpack to use TypeScript )
 >
 > - `tsconfig.json` for transpiling TypeScript >> JS
+>
+> - ES6 `export` keyword instead of `module.exports` because we're using TS now
+>
+> - `import * as <name> from '<../path/to/file.ts';`
 
-Breaking down the `compilerOptions` object in this file:
 
+<br>
+
+<b>Handlebars - secure & dynamic HTML templating</b><br>
+Goal: render HTML for dynamic strings
+
+Continuing to use template strings to inject values into strings leaves the app vulnerable to XSS
+> ```javascript
+> // example: render items dynamically per user
+>
+> // what not to do:
+> export const bundleName = name => `<h2>${name}</h2>`;
+>
+> // or, even worse using an <img> tag where it's
+> //   possible someone may inject an image you
+> //   didn't put there, or an onload event, which
+> //   could allow for arbitrary JS to run on the page
+> ```
+
+Handlebars is a lightweight templating library to help with this, running client-side or at build-time
+with Node and webpack ( via the `handlebars-loader` webpack plugin )
 
 
 

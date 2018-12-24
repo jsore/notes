@@ -5,28 +5,26 @@
  *
  * Bootstrap components: https://getbootstrap.com/docs/3.3/components/
  */
-'use strict';
+//'use strict';
+
+
+/*----------  webpack imports  ----------*/
 
 /**
  * bring in minified bootstrap CSS module, using rule from
  *   webpack.config.js_module.rules to match and load
  *   appropriate plugin for it (css-loader)...
  */
-import './node_modules/bootstrap/dist/css/bootstrap.min.css';
+//import './node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 /** bootstrap jQuery functionality */
-import 'bootstrap';
-
-    /**
-     * note: import isn't a Node feature, it's found in ES5
-     *   & is managed by Webpack, resolving these dependencies
-     */
-
-//document.body.innerHTML = `<p>${new Date()}</p>`;
+//import 'bootstrap';
 
 
 /*----------  moved HTML to ./app/index.ts  ----------*/
 
+// document.body.innerHTML = `<p>${new Date()}</p>`;
+//
 // /**
 //  * ... then manually bring some HTML in, referencing Bootstrap
 //  *   via classnames, specifying any classes beginning with 'b4-'
