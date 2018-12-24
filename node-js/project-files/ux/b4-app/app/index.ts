@@ -104,6 +104,15 @@ const listBundles = bundles => {
         const name = form.querySelector('input').value;
         addBundle(name);
     });
+
+    /** delete bundle functionality */
+    const deleteButtons = mainElement.querySelectorAll('button.delete');
+    for (let i = 0; i < deleteButtons.length; i++) {
+        const deleteButton = deleteButtons[i];
+        deleteButton.addEventListener('click', event => {
+            deleteBundle(deleteButton.getAttribute('data-id'));
+        });
+    }
 };
 
 /** helper function to show alerts */
@@ -136,6 +145,27 @@ const addBundle = async (name) => {
 
         /** ...then handle user notification */
         showAlert(`Bundle "${name}" created!`, 'success');
+    } catch (err) {
+        showAlert(err);
+    }
+};
+
+
+/*----------  delete a bundle, then list them  ----------*/
+
+const deleteBundle = async (id) => {
+    try {
+        const bundles = await getBundles();
+        const idx = bundles.findIndex(bundle => bundle.id === id);
+        if (idx === -1) {
+            alert(`id ${id} idx ${idx}`);
+
+            throw Error(`No bundle with ID of "${id}" found`);
+        }
+        await fetch(`/api/bundle/${encodeURIComponent(id)}`, {method: 'DELETE'});
+        bundles.splice(idx, 1);
+        await listBundles(bundles);
+        showAlert(`Bundle deleted!`, 'success');
     } catch (err) {
         showAlert(err);
     }

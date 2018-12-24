@@ -15,6 +15,9 @@ const distDir = path.resolve(__dirname, 'dist');
 /** grab our class from the module */
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+/** for css */
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+
 /** bring in webpack module for its plugin's namespace */
 const webpack = require('webpack');
 
@@ -80,20 +83,6 @@ module.exports = {
         },
     },
 
-    /** bring in plugin for HTML generation */
-    plugins: [
-        /** html generator */
-        new HtmlWebpackPlugin({
-            title: 'Better Book Bundle Builder',
-        }),
-
-        /** webpack's jquery for bootstrap */
-        new webpack.ProvidePlugin({
-            $: 'jquery',
-            jQuery: 'jquery'
-        }),
-    ],
-
     /**
      * CSS plugins, "which file is handled by which plugins"
      *
@@ -122,10 +111,30 @@ module.exports = {
             loader: 'ts-loader',
         },{
             test: /\.css$/,
-            use: ['style-loader', 'css-loader']
+            //use: ['style-loader', 'css-loader']
+            use: ExtractTextPlugin.extract({
+                use: 'css-loader',
+                fallback: 'style-loader',
+            }),
         },{
             test: /\.(png|woff|woff2|eot|ttf|svg)$/,
             loader: 'url-loader?limit=100000',
         }],
     },
+
+    /** bring in plugin for HTML generation */
+    plugins: [
+        /** html generator */
+        new HtmlWebpackPlugin({
+            title: 'Better Book Bundle Builder',
+        }),
+
+        new ExtractTextPlugin('styles.css'),
+
+        /** webpack's jquery for bootstrap */
+        new webpack.ProvidePlugin({
+            $: 'jquery',
+            jQuery: 'jquery'
+        }),
+    ]
 };

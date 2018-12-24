@@ -983,6 +983,15 @@ Add a bundle: `curl -s -X POST localhost:60702/api/bundle/?name=Heavy%20Reading 
 >> listBundles(bundles);
 >> ```
 >   You always want to maintain content locally *first*, then mirror the changes async'ly upstream
+>
+> - Webpack plugin `extract-text-webpack-plugin` for CSS text
+
+
+
+
+
+
+
 
 <br><br><br><br>
 

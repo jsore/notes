@@ -66,17 +66,19 @@ export const listBundles = Handlebars.compile(`
         <div class="panel-heading">Your Book Bundles</div>
         {{#if bundles.length}}
             <table class="table">
-                <tr>
-                    <th>Bundle Name</th>
-                    <th>Actions</th>
-                </tr>
+                <thead>
+                    <tr>
+                        <th>Bundle Name</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
                 {{#each bundles}}
                 <tr>
                     <td>
-                        <a href="#view-bundle/{{id}}">{{name}}</a>
+                        <a href="#view-bundle/{{this.id}}">{{this.name}}</a>
                     </td>
                     <td>
-                        <button class="btn delete" data-bundle-id="{{id}}">Delete</button>
+                        <button class="btn delete" data-id="{{this.id}}">Delete</button>
                     </td>
                 </tr>
                 {{/each}}
