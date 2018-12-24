@@ -842,6 +842,7 @@ Now, after `$ npm start`'ing the app, the project should be reachable in a brows
 <b>TypeScript</b><br>
 `./ux/b4-app/tsconfig.json`<br>
 `./ux/b4-app/templates.ts`<br>
+`./ux/b4-app/index.ts`<br>
 
 >Introduces:
 > - Transpiling JS with TypeScript for browser compability ( install with npm --save-dev and install
@@ -857,6 +858,9 @@ Now, after `$ npm start`'ing the app, the project should be reachable in a brows
 <br>
 
 <b>Handlebars - secure & dynamic HTML templating</b><br>
+( adding on to `./ux/b4-app/templates.ts` )<br>
+( adding on to `./ux/b4-app/index.ts`) <br>
+
 Goal: render HTML for dynamic strings
 
 Continuing to use template strings to inject values into strings leaves the app vulnerable to XSS
@@ -875,9 +879,60 @@ Continuing to use template strings to inject values into strings leaves the app 
 Handlebars is a lightweight templating library to help with this, running client-side or at build-time
 with Node and webpack ( via the `handlebars-loader` webpack plugin )
 
+Instead of referencing a DOM element and passing in a string of values, run all your HTML items
+through `Handlebars.compile()` to sanitize and validate items then get the returned computed string
+from `compile()` by calling your DOM elements with method calls
 
+Example:
+> ```javascript
+> /*----------  templates.ts  ----------*/
+>
+> // instead of...
+> export const alert = `
+> <div class="alert alert-success alert-dismissible fade in" role="alert">
+>     <button class="close" data-dismiss="alert" aria-label="Close">
+>         <span aria-hidden="true">&times;</span>
+>     </button>
+>     <strong>Success!</strong> Bootstrap is working.
+> </div>
+> `;
+>
+> // ...do this:
+> export const alert = Handlebars.compile(`
+>     <div class="alert alert-{{type}} alert-dismissible fade in" role="alert">
+>         <button class="close" data-dismiss="alert" aria-label="Close">
+>             <span aria-hidden="true">&times;</span>
+>         </button>
+>         {{message}}
+>     </div>
+> `);
+>
+>
+> /*----------  index.ts  ----------*/
+>
+> // instead of...
+> alertsElement.innerHTML = templates.alert;
+>
+> // ...do this:
+> alertsElement.innerHTML = templates.alert({
+>     type: 'info',
+>     message: 'Handlebars is working!',
+> });
+> ```
 
+<br>
 
+<b>Hash-based navigation</b><br>
+( adding on to `./ux/b4-app/index.ts`) <br>
+
+Instead of requesting new pages from the server that live at different URLs, this app is essentially
+a single-page application, with the user requesting a single page and all the content at once, forcing
+us to come up with a method of tracking navigation...
+
+...which brings us to hash (#) based navigation, each section of the URL after the # providing a <b>view</b>
+
+>Introduces:
+> - `window.location.hash.split('/')`
 
 
 <br><br><br><br>

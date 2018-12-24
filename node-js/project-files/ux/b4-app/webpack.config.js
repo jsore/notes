@@ -23,7 +23,9 @@ module.exports = {
      * point at root of where all other dependencies can be
      *   sourced from
      */
+    ////
     //entry: './entry.js',
+    ////
     /** use TypeScript instead */
     entry: './app/index.ts',
 
@@ -43,6 +45,7 @@ module.exports = {
      * config parameters for webpack-dev-server, specifies root
      *   directory for content and overrides default TCP port
      */
+    ////
     //devServer: {
     //    contentBase: distDir,
     //    host: '10.0.3.15',
@@ -61,6 +64,7 @@ module.exports = {
     //    //public: 'apachetestserver.com:80',
     //    useLocalIp: true,
     //},
+    ////
     devServer: {
         contentBase: distDir,
         port: 60800,
