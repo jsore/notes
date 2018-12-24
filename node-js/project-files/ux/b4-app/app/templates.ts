@@ -51,3 +51,59 @@ export const alert = Handlebars.compile(`
         {{message}}
     </div>
 `);
+
+/**
+ * bundle lister, takes advantage of Handlebar's version
+ *   of if/else statements to render a table of bundles
+ *   or a message and its version of forEach to iterate
+ *   over an array or object
+ *
+ * href="#view-bundle/{{id}}" to link to a single bundle
+ * data-bundle-id="{{id}}" to identify which bundle to del
+ */
+export const listBundles = Handlebars.compile(`
+    <div class="panel panel-default">
+        <div class="panel-heading">Your Book Bundles</div>
+        {{#if bundles.length}}
+            <table class="table">
+                <tr>
+                    <th>Bundle Name</th>
+                    <th>Actions</th>
+                </tr>
+                {{#each bundles}}
+                <tr>
+                    <td>
+                        <a href="#view-bundle/{{id}}">{{name}}</a>
+                    </td>
+                    <td>
+                        <button class="btn delete" data-bundle-id="{{id}}">Delete</button>
+                    </td>
+                </tr>
+                {{/each}}
+            </table>
+        {{else}}
+            <div class="panel-body">
+                <p>No bundles found!</p>
+            </div>
+        {{/if}}
+    </div>
+`);
+
+/**
+ * bundle adder, using input form
+ */
+export const addBundleForm = Handlebars.compile(`
+<div class="panel panel-default">
+    <div class="panel-heading">Create a new Book Bundle</div>
+    <div class="panel-body">
+        <form>
+            <div class="input-group">
+                <input class="form-control" placeholder="Bundle Name" />
+                <span class="input-group-btn">
+                    <button class="btn btn-primary" type="submit">Create</button>
+                </span>
+            </div>
+        </form>
+    </div>
+</div>
+`);

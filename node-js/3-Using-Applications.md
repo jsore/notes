@@ -934,6 +934,55 @@ us to come up with a method of tracking navigation...
 >Introduces:
 > - `window.location.hash.split('/')`
 
+There's also a need to update `webpack.config.js` to use proxies for service access and redirection
+
+<br>
+
+<b>Retrieving data - Bundle viewer</b>
+( adding on to `./ux/b4-app/index.ts`) <br>
+( adding on to `./ux/b4-app/templates.ts`) <br>
+
+>Introduces:
+> - Promise-producing method `fetch()` to issue HTTP requests
+>
+> - Hitting API endpoints that get served by webpack-dev-server via proxies
+
+Add a bundle: `curl -s -X POST localhost:60702/api/bundle/?name=Heavy%20Reading | jq '.'`
+
+<br>
+
+<b>Saving data with forms - Bundle adder</b>
+( adding on to `./ux/b4-app/index.ts`) <br>
+( adding on to `./ux/b4-app/templates.ts`) <br>
+
+>Introduces:
+> - `<form>` for input capture
+>
+> - `element.insertAdjacentHTML('beforeend', content);`
+>
+> - `POST`'ing via `fetch()`
+>
+> - Handling <b>eventual consistency</b> properly, an artifact related to databases and probable delays
+>   between adding content to a DB and having that content showing up in a query<br>
+>   Example:
+>> ```javascript
+>> // bad - POST'ing first then querying for bundles
+>> const url = `/api/bundle?name=${encodeURIComponent(name)}`;
+>> const res = await fetch(url, {method: 'POST'});
+>> const resBody = await res.json();
+>> // failure point:
+>> const bundles = await getBundles();
+>> listBundles(bundles);    // oops, new one not not found
+>>
+>> // good - querying, editing local copy, then POST'ing
+>> const bundles = await getBundles();
+>> const url = `/api/bundle?name=${encodeURIComponent(name)}`;
+>> const res = await fetch(url, {method: 'POST'});
+>> const resBody = await res.json();
+>> bundles.push({id: resBody._id, name});
+>> listBundles(bundles);
+>> ```
+>   You always want to maintain content locally *first*, then mirror the changes async'ly upstream
 
 <br><br><br><br>
 

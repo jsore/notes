@@ -68,6 +68,16 @@ module.exports = {
     devServer: {
         contentBase: distDir,
         port: 60800,
+        /** proxy for webpack-dev to reach out to API endpoints */
+        proxy: {
+            /** send requests to /api here */
+            '/api': 'http://localhost:60702',
+            /** send requests to /es here and fix URL */
+            '/es': {
+                target: 'http://localhost:9200',
+                pathRewrite: {'^/es': ''},
+            }
+        },
     },
 
     /** bring in plugin for HTML generation */
