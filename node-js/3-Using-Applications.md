@@ -659,23 +659,25 @@ notes will still record my progress and thoughts throughout the remainder of thi
 
 Git `master` branch has now been branched to reflect this migration, new branch: `mac-notes`
 
-For the sake of my sanity, this was the process of getting everything back up and running locally <br>
-(mainly dealing with Elasticsearch)
-> - cli pretty config, alias addition for `ls=ls -Gp` (benign)
+For the sake of my sanity, I'll document the process and the actions I took to get everything back
+up and running locally, along with some CL commands I wanted to earmark 
+
+(this is me mainly dealing with Elasticsearch and porting DB's over)
+> - cli pretty config, alias addition for `ls=ls -Gp` (superficial changes but still wanted to document)
 >
-> - project root create
+> - create project root
 >
 > - `git clone`
 >
-> - rebuilt the `webpack` files and verified connection success
+> - rebuilt the `webpack` files and verified Express connection success
 >
 > - re-downloaded epub files for `databases/data` since `.gitignore` was set to ignore them
 >
-> - test Elasticsearch connection....failed
+> - testing Elasticsearch connection....failed
 >
-> - test Elasticsearch installation....failed (duh)
+> - testing Elasticsearch installation....failed (duh)
 >
-> - install (for mac) then run Elasticsearch
+> - install ( for MacOS ) then run Elasticsearch
 >> `./project-files/esclu`
 >> ```
 >> $ curl -L -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.4.3.zip
@@ -834,3 +836,33 @@ Now, after `$ npm start`'ing the app, the project should be reachable in a brows
 >>  // ./ux/b4-app/entry.js
 >>  import 'bootstrap';
 >>  ```
+
+<br>
+
+<b>TypeScript</b><br>
+`./ux/b4-app/tsconfig.json`<br>
+
+>Introduces:
+> - Transpiling JS with TypeScript for browser compability ( install with npm --save-dev and install
+>   `ts-loader` plugin for webpack to use TypeScript )
+>
+> - `tsconfig.json` for transpiling TypeScript >> JS
+
+Breaking down the `compilerOptions` object in this file:
+
+
+
+
+
+
+
+<br><br><br><br>
+
+#### TODO
+
+- for all sections, use hard line breaks ( `<br>` ) at columns 100, 80 & 60    <br>
+  depending on structure of section and/or 'sub-section'
+
+- normalize style across all sections
+
+- more elaboration within the earlier sections, explain my thoughts better

@@ -23,7 +23,9 @@ module.exports = {
      * point at root of where all other dependencies can be
      *   sourced from
      */
-    entry: './entry.js',
+    //entry: './entry.js',
+    /** use TypeScript instead */
+    entry: './app/index.ts',
 
     /**
      * target directory (distDir) and its file where all our
@@ -83,6 +85,11 @@ module.exports = {
      *
      * Note: use: [] processes its arguments in reverse order
      *
+     * ts-loader        use TypeScript for transpiling JS for
+     *                  browser compatibility, front end code
+     *                  now mmigrated from ./entry.js to new
+     *                  TS file, ./app/templates.ts
+     *
      * css-loader       reads CSS files, resolves @import, url()
      *                  statements using webpack's require()
      *
@@ -97,6 +104,9 @@ module.exports = {
      */
     module: {
         rules: [{
+            test: /\.ts$/,
+            loader: 'ts-loader',
+        },{
             test: /\.css$/,
             use: ['style-loader', 'css-loader']
         },{
