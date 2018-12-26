@@ -12,11 +12,14 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "bootstrap-social": "5.1.1",
         "express": "4.15.3",
         "express-session": "1.15.6",
+        "font-awesome": "4.7.0",
         "morgan": "1.8.2",
         "nconf": "0.8.4",
         "nodemon": "1.11.0",
+        "passport": "0.4.0",
         "request": "2.81.0",
         "request-promise": "4.2.1",
         "session-file-store": "1.1.2"

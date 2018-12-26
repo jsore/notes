@@ -1091,6 +1091,69 @@ agents (browsers) to include cookie value to point to a user's session<br>
 `express-session`: uses cookies for session association, but with poorly formatted memory management<br>
 `session-file-store`: better session/memory-storage funcitonality, via JSON files for each cookie
 
+With the session config info added to `server.js`, a `sessions` directory should now be in the project
+root, with JSON file(s) created under a matching session ID containing session data
+
+Session data can be reviewed with:
+```
+$ cat sessions/*.json | jq '.'
+```
+
+
+<br><br>
+
+<hr>
+
+<b>Note: Firewall warnings on MacOS</b><br>
+
+Yet another fun 'issue' encountered in this section, continuous notifications to allow Node (n) through
+my Mac's firewall was blocking access to this app and the enpoints it was trying to hit
+
+Documenting the fix here: https://github.com/tj/n/issues/394#issuecomment-312510914
+```
+- SHIFT + CMD + G
+- go to: /usr/local/n/versions/node/<version>/bin
+- copy node binary there to: /usr/local/bin
+- remove references to node in System Preferences > Security > Firewall
+- add firewall option for /usr/local/bin/node
+```
+There was something up with Node n copying the binary
+
+<br><br>
+
+
+Back to it.
+
+<hr>
+
+<br><br>
+
+<b>Authenticating the user sessions</b><br>
+( adding on to `app/templates.ts` )<br>
+( adding on to `app/index.ts` )<br>
+
+Frontend portion of user auth
+
+Do an `$ npm install --save -E` for Bootstrap's social buttons and Font Awesome, which it depends on,
+for user interaction on the frontend
+
+>Introduces:
+> - Bootstrap/Font Awesome icon usage
+
+<br>
+
+<b>Passport</b><br>
+( adding on to `server.js` )<br>
+
+Backend portion of user auth
+
+Express-based app authentication middleware, specifically for Facebook/Twitter/Google OAth flows
+instead of a self-managed auth system
+
+>Introduces:
+> - Configuring Passport to go from user ident token to an actual user object and vice versa
+
+
 
 <br><br><br><br>
 
