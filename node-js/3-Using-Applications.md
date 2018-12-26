@@ -1081,6 +1081,15 @@ So, after `$ npm start`'ing in project root, http://b4.example.com:60900/#welcom
 <hr>
 
 #### 3.b. Express user sessions
+An identifying token persisting across requests, authentication and linking requests to previous requests
+
+Will be using Express middleware for cookie/ID assignment, which links to session data, allowing user
+agents (browsers) to include cookie value to point to a user's session<br>
+
+`$ npm install --save -E express-session@1.15.6 session-file-store@1.1.2`
+
+`express-session`: uses cookies for session association, but with poorly formatted memory management<br>
+`session-file-store`: better session/memory-storage funcitonality, via JSON files for each cookie
 
 
 <br><br><br><br>

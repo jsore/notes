@@ -34,7 +34,38 @@ const servicePort =
 const express = require('express');
 const morgan = require('morgan');
 
+/** Express application reference */
 const app = express();
+
+/** Express session management middleware */
+const expressSession = require('express-session');
+if (isDev) {
+    /** dev mode, use FileStore */
+
+    /** setup of expressSession via FileStore class */
+    const FileStore = require('session-file-store')(expressSession);
+    app.use(expressSession({
+
+        /** save session on each request? */
+        resave: fales,
+
+        /**
+         * save new but unmodified sessions?
+         *
+         * set to false in prod for user agent race conditions
+         *   and obtaining user permission for cookie usage
+         *
+         * set to true in dev for inspection of all session data
+         */
+        saveUninitialized: true,
+
+        /** sign cookie vals, but pull from nconf in prod */
+        secret: 'unguessable',
+        store: new FileStore(),
+    }));
+} else {
+    /** prod mode, use RedisStore */
+}
 
 app.use(morgan('dev'));
 
