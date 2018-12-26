@@ -929,7 +929,8 @@ Instead of requesting new pages from the server that live at different URLs, thi
 a single-page application, with the user requesting a single page and all the content at once, forcing
 us to come up with a method of tracking navigation...
 
-...which brings us to hash (#) based navigation, each section of the URL after the # providing a <b>view</b>
+...which brings us to hash (#) based navigation, each section of the URL after the # providing a
+<b>view</b>
 
 >Introduces:
 > - `window.location.hash.split('/')`
@@ -1047,7 +1048,7 @@ Add a bundle: `curl -s -X POST localhost:60702/api/bundle/?name=Heavy%20Reading 
 
 <hr>
 
-#### 2.a. Project init
+#### 3.a. Project init
 
 ```
 ./project-files/fortify/....       <-- the 'consolidated' directory
@@ -1059,10 +1060,27 @@ as directed within the book, I'm using my files and updating the code where requ
 out my previous code - but keeping all the notes I've layed out throughout building up my files in an
 attempt to keep my understanding as lucid as possible
 
+<br>
+
+<b>example.com</b><br>
+For inconsistencies with localhost/127.0.0.1 usage with OAuth/providers, set localhost alias to
+`b4.example.com`, taking advantage of `example.com` 2nd level domain which is reserved by IANA
+for illustrative purposes
+```
+/etc/hosts
+
+127.0.0.1 b4.example.com
+```
+
+So, after `$ npm start`'ing in project root, http://b4.example.com:60900/#welcome is reachable
 
 
+<br><br>
 
 
+<hr>
+
+#### 3.b. Express user sessions
 
 
 <br><br><br><br>
