@@ -987,6 +987,67 @@ Add a bundle: `curl -s -X POST localhost:60702/api/bundle/?name=Heavy%20Reading 
 > - Webpack plugin `extract-text-webpack-plugin` for CSS text
 
 
+<br><br>
+
+
+<hr>
+
+## Chapter 3 - Bringing it all in
+#### Un-separating the core code into a web app
+
+
+<br>
+
+
+<b>Node.js core modules</b><br>
+> - Module `url` and its `URL` class for URL creation
+>
+> - Node environment variable `NODE_ENV` for dev/prod differentiation
+>
+> - Filesystem path manipulation with `path` module
+
+
+<br>
+
+
+<b>Patterns</b><br>
+> - Express middleware
+>   - stacking middleware and routes into Express Routers
+>
+> - Passport
+>   - user auth
+>   - session management via `express-session` module
+
+
+<br>
+
+
+<b>JavaScript-isms</b><br>
+> - More async
+>   - handling sync and async functions properly
+>
+> - Authenticated API hits via `fetch()` API
+
+
+<br>
+
+
+<b>Supporting code</b><br>
+> - `localhost` aliases
+>
+> - UI components
+>   - Social Bootstrap
+>   - Font Awesome
+>
+> - Redis DB and caching server for prod user session management
+
+
+<br>
+
+
+<hr>
+
+#### 2.a. Project init
 
 
 
