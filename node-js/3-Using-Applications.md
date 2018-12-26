@@ -1049,6 +1049,17 @@ Add a bundle: `curl -s -X POST localhost:60702/api/bundle/?name=Heavy%20Reading 
 
 #### 2.a. Project init
 
+```
+./project-files/fortify/....       <-- the 'consolidated' directory
+./project-files/fortify/b4-2       <-- my base version of the book's code
+```
+
+Per the book, this is where our final app will live, however, instead of copy/pasting files over
+as directed within the book, I'm using my files and updating the code where required while commenting
+out my previous code - but keeping all the notes I've layed out throughout building up my files in an
+attempt to keep my understanding as lucid as possible
+
+
 
 
 
