@@ -1161,18 +1161,60 @@ instead of a self-managed auth system
 >
 > - Passport <b>Strategies</b>, auth mechanisms, coupled with a `Strategy` class provided within
 >   plugins for the authentication providers that itself plugs into Passport
-
-Passport config steps:
-1. Create app with the provider
-2. Add to our config the app's identifier and secret info
-3. Install the Passport Strategy for that provider
-4. Configure the Strategy instance in `server.js`
+>
+> - Express route `/auth/facebook`, where users are shunted to when clicking 'Sign In' with facebook
+>
+> - Express route `/auth/facebook/callback`, where Facebook redirects authed users
 
 <br>
 
 <b>Note: Be sure to `.gitignore` the `development.config.json` file to keep your secret key secret</b><br>
 I've set a backup of the config file for future public reference in `backup-development.config.json`
 that holds everything prior to adding the secret key
+
+<br>
+
+<b>Passport config steps</b><br>
+1. Create app with the provider
+> ```
+> https://developers.facebook.com/apps/344489913000130/dashboard/
+> ```
+2. Add to our config the app's identifier and secret info
+> ```JSON
+> "auth": {
+>     "facebook": {
+>         "appID": "344489913000130",
+>         "appSecret": "<secret>"
+>     }
+> }
+> ```
+3. Install the Passport Strategy for that provider
+> ```
+> $ npm install --save -E passport-facebook@2.1.1
+> ```
+4. Configure the Strategy instance in `server.js`
+> ```javascript
+> const FacebookStrategy = require('passport-facebook').Strategy;
+> passport.use(new FacebookStrategy({
+>     clientID: nconf.get('auth:facebook:appID'),
+>     clientSecret: nconf.get('auth:facebook:appSecret'),
+>     callbackURL: new URL('/auth/facebook/callback', serviceUrl).href,
+> }, (accessToken, refreshToken, profile, done) => done(null, profile)));
+> ```
+
+<br>
+
+That is the basic config process for all auth providers, replacing 'facebook' as required
+
+<br>
+
+<b>Local sign on</b><br>
+Localhost won't serve HTTPS, which is unaceptable to these providers
+
+`server.js` and `development.config.json` have been updated to serve a `passport-local` auth
+mechanism to allow me to sign in using a username/password, so has the front end scripts
+
+This will be changed on launch
 
 
 

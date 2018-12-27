@@ -71,6 +71,25 @@ export const welcome = Handlebars.compile(`
                         Sign in with Google
                         <span class="fa fa-google"></span>
                     </a>
+
+                    <br><br>
+                    <form action="/auth/local" method="post">
+                        <div class="form-group">
+                            <!-- <label>Username</label> -->
+                            <input type="text" class="form-control" name="username"
+                            placeholder="Username"/>
+                        </div>
+                        <div class="form-group">
+                            <!-- <label>Password</label> -->
+                            <input type="password" class="form-control" name="password"
+                            placeholder="Password"/>
+                        </div>
+                        <div>
+                            <input type="submit" value="Log In"/>
+                        </div>
+                    </form>
+                    <br><br>
+
                 </div>
             </div>
         {{/if}}
