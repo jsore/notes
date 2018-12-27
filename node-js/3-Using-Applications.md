@@ -1124,6 +1124,10 @@ There was something up with Node n copying the binary
 
 Back to it.
 
+
+<br><br>
+
+
 <hr>
 
 <br><br>
@@ -1152,6 +1156,17 @@ instead of a self-managed auth system
 
 >Introduces:
 > - Configuring Passport to go from user ident token to an actual user object and vice versa
+>
+> - Setting Express session routes `/auth/session`, `/auth/signout`
+>
+> - Passport <b>Strategies</b>, auth mechanisms, coupled with a `Strategy` class provided within
+>   plugins for the authentication providers that itself plugs into Passport
+
+Passport config steps:
+1. Create app with the provider
+2. Add to our config the app's identifier and secret info
+3. Install the Passport Strategy for that provider
+4. Configure the Strategy instance in `server.js`
 
 
 
