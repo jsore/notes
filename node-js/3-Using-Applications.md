@@ -1168,6 +1168,12 @@ Passport config steps:
 3. Install the Passport Strategy for that provider
 4. Configure the Strategy instance in `server.js`
 
+<br>
+
+<b>Note: Be sure to `.gitignore` the `development.config.json` file to keep your secret key secret</b><br>
+I've set a backup of the config file for future public reference in `backup-development.config.json`
+that holds everything prior to adding the secret key
+
 
 
 <br><br><br><br>
