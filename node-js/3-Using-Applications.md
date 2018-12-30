@@ -1257,6 +1257,35 @@ Example: `app.use` is a delegation of a Router
 <br>
 
 <b>Moving to Prod</b><br>
+Dev mode is being flagged with `isDev` variable check
+
+>Introduces:
+> - Swapping session data management via <b>Redis</b>, a fast in-memory key/value storage tool, instead
+>   of the filesystem (our `session/*.json` files)
+>
+>   Note: Since Redis can also be used as a DB, cache, message broker and it can be told if it syncs
+>   to disk, we'll use it to store session data when `NODE_ENV` is set to `production`
+>>  ```
+>> // Redis install - Ubuntu
+>> $ sudo apt install redis-server redis-tools
+>>
+>> // Redis install - Mac
+>> $ brew install redis
+>> // force Redis to launch on PC boot
+>> $ ln -sfv /usr/local/opt/redis/*.plist ~/Library/LaunchAgents
+>>
+>> // start it via launchctl...
+>> $ launchctl load ~/Library/LaunchAgents/homebrew.mxcl.redis.plist
+>> // ...or start it via config file
+>> $ redis-server /usr/local/etc/redis.conf
+>>
+>> // test the install
+>> $ redis-cli ping
+>> // Redis package info
+>> $ brew info redis
+>> ```
+
+
 
 
 <br><br><br><br>
