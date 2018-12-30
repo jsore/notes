@@ -44,6 +44,37 @@ const fetchJSON = async (url, method = 'GET') => {
     }
 };
 
+/**
+ * bundle getter
+ */
+const getBundles = async () => {
+    /** hit /list-bundles route via fetchJSON */
+    const bundles = await fetchJSON('/api/list-bundles');
+    if (bundles.error) {
+        throw bundles.error;
+    }
+    return bundles;
+};
+
+/**
+ * bundle renderer
+ */
+const listBundles = bundles => {
+    /** tack everything on to parent div */
+    const mainElement = document.body.querySelector('.b4-main');
+
+    mainElement.innerHTML =
+        templates.addBundleForm() + templates.listBundles({bundles});
+
+    /** add new bundle section */
+    const form = mainElement.querySelector('form');
+    form.addEventListener('submit', event => {
+        event.preventDefault();
+        const name = form.querySelector('input').value;
+        addBundle(name);
+    });
+};
+
 
 /*----------  app navigation  ----------*/
 
@@ -61,6 +92,7 @@ const showView = async () => {
 
     /** switch() on newly created view object */
     switch (view) {
+
         /** welcome/home page */
         case '#welcome':
             /** grab fresh session object for up to date info... */
@@ -70,6 +102,18 @@ const showView = async () => {
             /** ...or fail */
             if (session.error) {  showAlert(session.error);  }
             break;
+
+        /** bundle page */
+        case '#list-bundles':
+            try {
+                const bundles = await getBundles();
+                listBundles(bundles);
+            } catch (err) {
+                showAlert(err);
+                window.location.hash = '#welcome';
+            }
+            break;
+
         /** or if async() returns rejected Promise */
         default:
             throw Error(`Unrecognized view: ${view}`);

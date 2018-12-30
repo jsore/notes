@@ -1231,6 +1231,32 @@ This will be changed on launch
 - Add keys to `development.config.json`
 - `$ npm install` the `passport-google-oath20` module, build the Strategy
 
+<br>
+
+<b>Express Routers</b><br>
+`../../project-files/fortify/B4/lib/bundle.js`<br>
+
+Allows for modular, maintainable management of API endpoints
+
+Example: `app.use` is a delegation of a Router
+
+>Introduces:
+> - Building custom Routes
+>
+> - Only serving routes after auth check
+>
+> - Building custom middleware for a Router
+>> ```javascript
+>> // lib/bundle.js
+>> router.use((req, res, next) => {
+>>     // auth check...
+>>     next();
+>> )};
+>> ```
+
+<br>
+
+<b>Moving to Prod</b><br>
 
 
 <br><br><br><br>

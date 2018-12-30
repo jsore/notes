@@ -310,5 +310,7 @@ app.get('/auth/signout', (req, res) => {
     res.redirect('/');
 });
 
+/** grab configured router instance from bundle.js */
+app.use('/api', require('./lib/bundle.js')(nconf.get('es')));
 
 app.listen(servicePort, () => console.log('Ready...'));
