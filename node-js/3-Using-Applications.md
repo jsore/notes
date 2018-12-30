@@ -1216,6 +1216,21 @@ mechanism to allow me to sign in using a username/password, so has the front end
 
 This will be changed on launch
 
+<br>
+
+<b>Google Auth</b>
+- Google Cloud Platform >> IAM & admin (sidebar) >> Manage resources
+- Create Project, named `b4-dev`, Create
+- APIs & Services > Dashboard, select the project in drop down from top-left
+- Enable APIs and Services button
+- Use Google+ API under 'Social'
+- Add `example.com` to Authorized Domains
+- Go to Credentials, Create Credentials
+- Select Web Application, ignore the name and Authorized Javascript origins
+- Set `http://b4.example.com:60900/auth/google/callback` as the Authorized redirect URI, Create
+- Add keys to `development.config.json`
+- `$ npm install` the `passport-google-oath20` module, build the Strategy
+
 
 
 <br><br><br><br>

@@ -94,22 +94,21 @@ const passport = require('passport');
  *   hitting a DB to grab a user ident string, query for
  *   the ID the login service provides
  */
-//passport.serializeUser((profile, done) => done(null, {
-//    id: profile.id,
-//    provider: profile.provider,
-//}));
-// this shoud still be okay:
+/** Facebook */
+passport.serializeUser((profile, done) => done(null, {
+    id: profile.id,
+    provider: profile.provider,
+}));
+
+/** Local */
+//passport.serializeUser(function(user, done) {
+//    done(null, user.id);
+//});
 //passport.serializeUser((profile, done) => done(null, {
 //    username: profile.username,
 //    password: profile.password,
 //}));
 
-//passport.serializeUser((user, done) => done(null, {
-//    id: user.id
-//});
-passport.serializeUser(function(user, done) {
-    done(null, user.id);
-});
 
 /**
  * user object >> ident token
@@ -117,13 +116,15 @@ passport.serializeUser(function(user, done) {
  * send our identified user object straight to done(), no
  *   need to hit a DB for ident lookup
  */
-//passport.deserializeUser((user, done) => done(null, user));
-//passport.deserializeUser((id, done) => )
-passport.deserializeUser(function(id, done) {
-    User.findById(id, function(err, user) {
-        done(err, user);
-    });
-});
+/** Facebook */
+passport.deserializeUser((user, done) => done(null, user));
+
+/** Local */
+//passport.deserializeUser(function(id, done) {
+//    User.findById(id, function(err, user) {
+//        done(err, user);
+//    });
+//});
 
 
 
@@ -162,6 +163,26 @@ passport.use(new FacebookStrategy({
 app.get('/auth/facebook', passport.authenticate('facebook'));
 /** Express route - user authed/authed failure */
 app.get('/auth/facebook/callback', passport.authenticate('facebook', {
+    successRedirect: '/',
+    failureRedirect: '/',
+}));
+
+
+/*----------  Google strategy  ----------*/
+
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+passport.use(new GoogleStrategy({
+    clientID: nconf.get('auth:google:clientID'),
+    clientSecret: nconf.get('auth:google:clientSecret'),
+    callbackURL: new URL('/auth/google/callback', serviceUrl).href,
+    /** google-specific param requirement */
+    scope: 'https://www.googleapis.com/auth/plus.login',
+}, (accessToken, refreshToken, profile, done) => done(null, profile)));
+
+/** Express routes for Google */
+app.get('/auth/google',
+    passport.authenticate('google', {scope: ['email', 'profile']}));
+app.get('/auth/google/callback', passport.authenticate('google', {
     successRedirect: '/',
     failureRedirect: '/',
 }));
