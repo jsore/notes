@@ -1,3 +1,9 @@
+# dev session files
 sessions
+
+# config files with sensitive data
 development.config.json
 production.config.json
+
+# ignore dynamically created files
+dist/

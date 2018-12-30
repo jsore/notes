@@ -1265,42 +1265,50 @@ Dev mode is being flagged with `isDev` variable check
 >
 >   Note: Since Redis can also be used as a DB, cache, message broker and it can be told if it syncs
 >   to disk, we'll use it to store session data when `NODE_ENV` is set to `production`
->>
->> <b>Install</b>
->>  ```
->> // Redis install - Ubuntu
->> $ sudo apt install redis-server redis-tools
->>
->> // Redis install - Mac
->> $ brew install redis
->> // force Redis to launch on PC boot
->> $ ln -sfv /usr/local/opt/redis/*.plist ~/Library/LaunchAgents
->>
->> // start it via launchctl...
->> $ launchctl load ~/Library/LaunchAgents/homebrew.mxcl.redis.plist
->> // ...or start it via config file
->> $ redis-server /usr/local/etc/redis.conf
->>
->> // test the install
->> $ redis-cli ping
->> // Redis package info
->> $ brew info redis
->> ```
->>
->> <b>Configure</b>
->> - `production.config.json`
->>
->> <b>Connect Redis to Express</b>
->> - For session management: `$ npm install --save -E connect-redis@3.3.2`
->> - update `server.js`
->>
->> <b>Tell webpack to build assets<b>
->> - `$ npm run build`
->> - confirm the build with `$ tree -F ./dist`
->>
->> <b>Reinstall dependencies</b>
->> - `$ rm -rf node_modules`
->>
+
+<br>
+
+Redis base setup & prod build:
+> <b>Install Redis</b>
+>  ```
+> // Redis install - Ubuntu
+> $ sudo apt install redis-server redis-tools
+>
+> // Redis install - Mac
+> $ brew install redis
+> // force Redis to launch on PC boot
+> $ ln -sfv /usr/local/opt/redis/*.plist ~/Library/LaunchAgents
+>
+> // start it via launchctl...
+> $ launchctl load ~/Library/LaunchAgents/homebrew.mxcl.redis.plist
+> // ...or start it via config file
+> $ redis-server /usr/local/etc/redis.conf
+>
+> // test the install
+> $ redis-cli ping
+> // Redis package info
+> $ brew info redis
+> ```
+>
+> <b>Configure</b>
+> - `production.config.json`
+>
+> <b>Connect Redis to Express</b>
+> - For session management: `$ npm install --save -E connect-redis@3.3.2`
+> - update `server.js`
+>
+> <b>Tell webpack to build assets<b>
+> - `$ npm run build`
+> - confirm the build with `$ tree -F ./dist`
+>
+> <b>Delete dependencies</b> ( after `git commit`'ing to backup files )
+> - `$ rm -rf node_modules`
+>
+> <b>Set production env var, re-install dependencies</b>
+> - `$ NODE_ENV=production npm install`
+>
+> <b>Restart server in prod mode</b>
+> - `$ NODE_ENV=production npm start`
 
 
 
