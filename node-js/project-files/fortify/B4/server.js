@@ -136,31 +136,35 @@ app.use(passport.session());
 
 /*----------  Facebook strategy  ----------*/
 
-//const FacebookStrategy = require('passport-facebook').Strategy;
-//passport.use(new FacebookStrategy({
-//    /** inside 1st .use argument... */
-//
-//    clientID: nconf.get('auth:facebook:appID'),
-//    clientSecret: nconf.get('auth:facebook:appSecret'),
-//    /** create FQDN with serviceUrl as the base */
-//    callbackURL: new URL('/auth/facebook/callback', serviceUrl).href,
-//
-//    /**
-//     * about to progress to 2nd arg, a user-resolving callback...
-//     *
-//     * we're not storing user data, so profile is all we need,
-//     *   no DB connection/retrieval needed, using the profile
-//     *   object from serializeUser above
-//     */
-//}, (accessToken, refreshToken, profile, done) => done(null, profile)));
-//
-///** Express route - sign in */
-//app.get('/auth/facebook', passport.authenticate('facebook'));
-///** Express route - user authed/authed failure */
-//app.get('/auth/facebook/callback', passport.authenticate('facebook', {
-//    successRedirect: '/',
-//    failureRedirect: '/',
-//}));
+/**
+ * Note - this only works over HTTPS
+ */
+
+const FacebookStrategy = require('passport-facebook').Strategy;
+passport.use(new FacebookStrategy({
+    /** inside 1st .use argument... */
+
+    clientID: nconf.get('auth:facebook:appID'),
+    clientSecret: nconf.get('auth:facebook:appSecret'),
+    /** create FQDN with serviceUrl as the base */
+    callbackURL: new URL('/auth/facebook/callback', serviceUrl).href,
+
+    /**
+     * about to progress to 2nd arg, a user-resolving callback...
+     *
+     * we're not storing user data, so profile is all we need,
+     *   no DB connection/retrieval needed, using the profile
+     *   object from serializeUser above
+     */
+}, (accessToken, refreshToken, profile, done) => done(null, profile)));
+
+/** Express route - sign in */
+app.get('/auth/facebook', passport.authenticate('facebook'));
+/** Express route - user authed/authed failure */
+app.get('/auth/facebook/callback', passport.authenticate('facebook', {
+    successRedirect: '/',
+    failureRedirect: '/',
+}));
 
 
 /*----------  local strategy  ----------*/
@@ -196,28 +200,33 @@ app.use(passport.session());
 //
 // doc specification
 //
-//const LocalStrategy = require('passport-local').Strategy;
+const LocalStrategy = require('passport-local').Strategy;
 //const username = nconf.get('auth:local:username');
 //const password = nconf.get('auth:local:password');
-//passport.use(new LocalStrategy(
-//    function(username, password, done) {
-//        User.findOne({ username: username }, function (err, user) {
-//            if (err) { return done(err); }
-//            if (!user) {
-//                return done(null, false, { message: 'bad username' });
-//            }
-//            if (!user.validPassword(password)) {
-//                return done(null, false, { message: 'bad password' });
-//            }
-//            return done(null, user);
-//        });
-//    }
-//));
-//app.post('/login', passport.authenticate('local', {
+//const username = 'demonstration';
+//const password = 123456;
+passport.use(new LocalStrategy(
+    function(username, password, done) {
+        User.findOne({ username: 'demonstration' }, function (err, user) {
+            if (err) { return done(err); }
+            if (!user) {
+                return done(null, false, { message: 'bad username' });
+            }
+            if (!user.validPassword('password')) {
+                return done(null, false, { message: 'bad password' });
+            }
+            return done(null, user);
+        });
+    }
+));
+//app.post('/auth/local', passport.authenticate('local', {
 //    successRedirect: '/',
 //    failureRedirect: '/',
 //}));
-
+//app.post((req, res) => {
+//    const session = {auth: true};
+//    res.status(200).json(session);
+//});
 
 
 /** other middleware, basic 'service up?' checker */
@@ -260,9 +269,13 @@ app.get('/api/session', (req, res) => {
      * use Passport's isAuthenticated(), which Passport adds
      *   to the Express request object req
      */
+
+
     // yeah this is borked, try again later
-    //const session = {auth: req.isAuthenticated()};
-    const session = {auth: true};
+    const session = {auth: req.isAuthenticated()};
+    //const session = {auth: true};
+
+
     /** /api/session returns obj with auth prop, JSON it */
     res.status(200).json(session);
 });
