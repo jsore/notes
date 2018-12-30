@@ -1265,6 +1265,8 @@ Dev mode is being flagged with `isDev` variable check
 >
 >   Note: Since Redis can also be used as a DB, cache, message broker and it can be told if it syncs
 >   to disk, we'll use it to store session data when `NODE_ENV` is set to `production`
+>>
+>> <b>Install</b>
 >>  ```
 >> // Redis install - Ubuntu
 >> $ sudo apt install redis-server redis-tools
@@ -1284,6 +1286,21 @@ Dev mode is being flagged with `isDev` variable check
 >> // Redis package info
 >> $ brew info redis
 >> ```
+>>
+>> <b>Configure</b>
+>> - `production.config.json`
+>>
+>> <b>Connect Redis to Express</b>
+>> - For session management: `$ npm install --save -E connect-redis@3.3.2`
+>> - update `server.js`
+>>
+>> <b>Tell webpack to build assets<b>
+>> - `$ npm run build`
+>> - confirm the build with `$ tree -F ./dist`
+>>
+>> <b>Reinstall dependencies</b>
+>> - `$ rm -rf node_modules`
+>>
 
 
 

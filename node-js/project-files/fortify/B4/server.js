@@ -43,10 +43,12 @@ const app = express();
 /*----------  Express - session management middleware  ----------*/
 
 const expressSession = require('express-session');
+
+
 if (isDev) {
     /** dev mode, use FileStore */
 
-    /** setup of expressSession via FileStore class */
+    /** pull FileStore class out of expressSession object */
     const FileStore = require('session-file-store')(expressSession);
     app.use(expressSession({
 
@@ -76,7 +78,22 @@ if (isDev) {
         store: new FileStore(),
     }));
 } else {
-    /** prod mode, use RedisStore */
+    /** prod mode, use Redis */
+
+    /** pull in RedisStore class attached to expressSession obj */
+    const RedisStore = require('connect-redis')(expressSession);
+    app.use(expressSession({
+        resave: false,
+        /** don't store un-auth'ed session data */
+        saveUninitialized: false,
+        /** securely grab the secret */
+        secret: nconf.get('redis:secret'),
+        /** new session via connect-redis module */
+        store: new RedisStore({
+            host: nconf.get('redis:host'),
+            port: nconf.get('redis:port'),
+        }),
+    }));
 }
 
 

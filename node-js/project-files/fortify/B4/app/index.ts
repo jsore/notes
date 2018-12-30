@@ -75,6 +75,14 @@ const listBundles = bundles => {
     });
 };
 
+const addBundle = async (name) => {
+    try {
+        showAlert('TODO');
+    } catch (err) {
+        showAlert(err);
+    }
+};
+
 
 /*----------  app navigation  ----------*/
 
