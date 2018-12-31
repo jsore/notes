@@ -77,7 +77,15 @@ const listBundles = bundles => {
 
 const addBundle = async (name) => {
     try {
-        showAlert('TODO');
+        //showAlert('TODO');
+        const bundles = await getBundles();
+
+        const url = `/api/bundle?name=${encodeURIComponent(name)}`;
+        const resBody = await fetchJSON(url, 'POST');
+
+        bundles.push({id: resBody._id, name});
+        listBundles(bundles);
+        showAlert(`Bundle "${name}" created!`, 'success');
     } catch (err) {
         showAlert(err);
     }
