@@ -40,5 +40,10 @@ New projects I've started here:
     - my notes on spinng up a site, from server provision to custom DNS config, dev environemnt
       config, Node.js-related practices (I've never worked with Node before so I wanted a reason
       to dive head first into it) and 
-- node-js
+- node-js (current project)
     - notes and supportive scripts for the book `Node.js 8 the Right Way`
+    - Part 1: https://github.com/jsore/notes/blob/master/node-js/1-Getting-Up-To-Speed.md
+    - Part 2: https://github.com/jsore/notes/blob/master/node-js/2-Working-With-Data.md
+    - Part 3: https://github.com/jsore/notes/blob/master/node-js/3-Using-Applications.md
+
+
