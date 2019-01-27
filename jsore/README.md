@@ -11,7 +11,7 @@ Further, to account for the future implementation of a side-project, Break Room 
 I'll be creating for me and a few buddies to review unique flavors of ramen, this is gonna be a bit
 overly fleshed out and thought through.
 
-<br>
+<br><br>
 <hr>
 
 ## Site Architecture
@@ -34,7 +34,7 @@ overly fleshed out and thought through.
 ```
 
 
-<br>
+<br><br>
 <hr>
 
 ## Project Structure
@@ -82,7 +82,7 @@ overly fleshed out and thought through.
 |-- README.md
 ```
 
-<br>
+<br><br>
 <hr>
 
 ## Key Modules
@@ -108,12 +108,12 @@ overly fleshed out and thought through.
 #### Mocha
 - unit testing
 
-<br>
+<br><br>
 <hr>
 
 ## Reasons why I've decided to...
 
-<br>
+<br><br>
 <hr>
 
 ## Things I want to look into
@@ -122,7 +122,7 @@ overly fleshed out and thought through.
 https://blog.risingstack.com/node-hero-node-js-authentication-passport-js/
 
 
-<br>
+<br><br>
 <hr>
 
 ## Snippets
@@ -147,7 +147,7 @@ main()
 
 
 
-<br>
+<br><br>
 <hr>
 
 ## TODO
