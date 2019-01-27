@@ -12,8 +12,30 @@ I'll be creating for me and a few buddies to review unique flavors of ramen, thi
 overly fleshed out and thought through.
 
 <br>
+<hr>
 
 ## Site Architecture
+
+- It will not process a lot of data
+- Mostly middleware, other services do heavy lifting
+- Async nature for handling multiple requests from different sources
+
+```
+.-------------------. .--------------------.
+|    web browser    | |   mobile browser   |    <-- what needs to be visually pleasing & accessible
+'-------------------' '--------------------'
+.------------------------------------------.
+|             REST API service             |    <-- what needs to be developed
+'------------------------------------------'
+.-----------------. .----------------------.
+|       DB        | |    REST middleware   |    <-- what needs to be secured
+|  Postgre SQL    | |       & services     |
+'-----------------' '----------------------'
+```
+
+
+<br>
+<hr>
 
 ## Project Structure
 
@@ -61,36 +83,71 @@ overly fleshed out and thought through.
 ```
 
 <br>
-
+<hr>
 
 ## Key Modules
 
 <i>items with --> * <-- are maybes</i>
 
-Express
+#### Express
 - expose app data
 - manage HTTP requests
 - handle HTTPS security
 - routing API endpoints
 
-Passport *
+#### Passport *
 - user authentication
 - session management
     (possible replacement: Axios)
 
-Webpack *
+#### Webpack *
 - production vs development environment management
 - config options handler
     (possible replacement: PM2)
 
-Mocha
+#### Mocha
 - unit testing
 
 <br>
-
+<hr>
 
 ## Reasons why I've decided to...
 
-## Other things I'm interested in using or doing
+<br>
+<hr>
+
+## Things I want to look into
+
+#### Passport authentication
+https://blog.risingstack.com/node-hero-node-js-authentication-passport-js/
+
+
+<br>
+<hr>
+
+## Snippets
+
+#### Simple async/await
+
+```javascript
+const main = async (paramsA, paramsB, paramsC) => {
+    const resA = await funcA(paramsA);
+    // need to uniquely handle an error?
+    const resB = await funcB(paramsB).catch(e => { /* things unique to this error */ });
+    const resC = await funcC(paramsC);
+
+    return { resA, resB, resC };
+};
+
+main()
+    .then(d => { // do things with the result })
+    // handle the rest of the catch clauses for each await
+    .catch(e => { // handle all other errors!! });
+```
+
+
+
+<br>
+<hr>
 
 ## TODO
