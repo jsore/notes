@@ -15,7 +15,39 @@ overly fleshed out and thought through.
 
 ## Site Architecture
 
-## Suggested Project Structure
+## Project Structure
+
+```
+.
+|-- .git
+|   `-- ...
+|-- .gitignore
+|-- breakroomramen
+|   |-- utils               // 2nd leve Postgre access, etc
+|   |   `-- ...
+|   |-- auth
+|   |   `-- ...             // user management
+|   |-- index.js
+|   |-- common.js
+|   `-- templates.js
+|-- jsore
+|   |-- welcome
+|   |   `-- welcome.js
+|   |-- resume
+|   |   `-- resume.js
+|   |-- ramblings
+|   |   |-- utils
+|   |   |   `-- ...         // 2nd leve Postgre access, etc
+|   |   `-- ramblings.js
+|   `-- templates.js
+|-- db                      // top-level Postgres management
+|   `-- ...
+|-- scripts                 // deployment automation
+|   `-- deploy.js
+|-- server.js               // main entry
+|-- package.json
+|-- README.md
+```
 
 ## Key Modules
 
