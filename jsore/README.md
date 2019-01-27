@@ -17,6 +17,8 @@ overly fleshed out and thought through.
 
 ## Project Structure
 
+> Organize files around features, not roles
+
 ```
 .
 |-- .git
@@ -36,20 +38,56 @@ overly fleshed out and thought through.
 |   |-- resume
 |   |   `-- resume.js
 |   |-- ramblings
-|   |   |-- utils
-|   |   |   `-- ...         // 2nd leve Postgre access, etc
+|   |   |-- utils           // 2nd leve Postgre access, etc
+|   |   |   `-- ...
 |   |   `-- ramblings.js
 |   `-- templates.js
+|-- config
+|   |-- webpack.config.js
+|   |-- development.config.js
+|   `-- ...
 |-- db                      // top-level Postgres management
 |   `-- ...
-|-- scripts                 // deployment automation
+|-- scripts                 // deployment automation (npm scripts)
 |   `-- deploy.js
+|-- tests                   // unit testing
+|   |-- jsore.welcome.js
+|   |-- jsore.resume.js
+|   |-- jsore.ramblings.js
+|   `-- breakroomramen.js
 |-- server.js               // main entry
 |-- package.json
 |-- README.md
 ```
 
+<br>
+
+
 ## Key Modules
+
+<i>items with --> * <-- are maybes</i>
+
+Express
+- expose app data
+- manage HTTP requests
+- handle HTTPS security
+- routing API endpoints
+
+Passport *
+- user authentication
+- session management
+    (possible replacement: Axios)
+
+Webpack *
+- production vs development environment management
+- config options handler
+    (possible replacement: PM2)
+
+Mocha
+- unit testing
+
+<br>
+
 
 ## Reasons why I've decided to...
 
