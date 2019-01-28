@@ -11,14 +11,19 @@ Further, to account for the future implementation of a side-project, Break Room 
 I'll be creating for me and a few buddies to review unique flavors of ramen, this is gonna be a bit
 overly fleshed out and thought through.
 
-<br>
 
-#### Development Flow
+
+<br><br>
+<hr>
+
+
+
+## Development Flow
 ( & some other things I've come across )
 
 <br>
 
-<b>HTTPS in development environments</b><br>
+#### HTTPS in development environments
 One of the first things I ran into was getting HTTPS set up correctly in production (running on
 a Linode VM) <b>AND</b> in development (locally, on my macbook).
 
@@ -36,90 +41,96 @@ https://github.com/FiloSottile/mkcert
 
 Again, my development environment is on a macOS.
 
-<br><br>
+<br>
 
 Install:
-> `$ brew install mkcert`
+
+`$ brew install mkcert`
 
 <br>
 
 I wanted this working in Firefox too, not just Chrome:
-> `$ brew install nss`
+
+`$ brew install nss`
 
 <br>
 
 Create the psuedo/local CA:
-> ```
-> $ mkcert -install
-> > Using the local CA at "/Users/jsorensen/Library/Application Support/mkcert"
-> > Password: (for sudo)
-> > The local CA is now installed in the system trust store!
-> > The local CA is now installed in the Firefox trust store (requires browser restart)!
-> ```
+```
+$ mkcert -install
+> Using the local CA at "/Users/jsorensen/Library/Application Support/mkcert"
+> Password: (for sudo)
+> The local CA is now installed in the system trust store!
+> The local CA is now installed in the Firefox trust store (requires browser restart)!
+```
 
 <br>
 
 Sign some certs, optionally adding additional domains or aliases if you have any configured:
-> ```
-> $ mkcert somedomain.com localhost 127.0.0.1 ::1
-> > Using the local CA at "/Users/jsorensen/Library/Application Support/mkcert"
-> >
-> > Created a new certificate valid for the following names
-> >  - "somedomain.com"
-> >  - "localhost"
-> >  - "127.0.0.1"
-> >  - "::1"
-> >
-> > The certificate is at "./somedomain.com+3.pem" and the key at "./somedomain.com+3-key.pem"
-> ```
+```
+$ mkcert somedomain.com localhost 127.0.0.1 ::1
+> Using the local CA at "/Users/jsorensen/Library/Application Support/mkcert"
+>
+> Created a new certificate valid for the following names
+>  - "somedomain.com"
+>  - "localhost"
+>  - "127.0.0.1"
+>  - "::1"
+>
+> The certificate is at "./somedomain.com+3.pem" and the key at "./somedomain.com+3-key.pem"
+```
 
-<br><br>
+<br>
 
 Since I'm using a Node.js architecture, I also had to tell Node where to look for the new CA by
 setting a specific Node environment variable...
-> `$ export NODE_EXTRA_CA_CERTS="$(mkcert -CAROOT)/rootCA.pem"    # <-- from your project's root`
+
+`$ export NODE_EXTRA_CA_CERTS="$(mkcert -CAROOT)/rootCA.pem"    # <-- from your project's root`
 
 <br>
 
 ...and because I prefer not to tack on a port number at the end of the URL where my Node server can
 be reached, it's required that the Node server is started with `sudo` permissions to get around a pesky
 `EACCES` error message, where Node isn't able to access port 443
-> `$ sudo npm start`
+
+`$ sudo npm start`
 
 <br>
 
 Now, set the path to your newly created certificate and key files when you call `createServer()`
-> ```javascript
-> // bring in modules
-> const fs = require('fs');
-> const https = require('https');
-> const express = require('express');
-> // start an express instance
-> const app = express();
-> const httpsOptions = {
->     // by default, these files are found at your
->     // user's root directory ( ~/ )
->     key: fs.readFileSync('path/to/the-key.pem'),
->     cert: fs.readFileSync('path/to/the-cert.pem'),
-> };
-> // tell the server to start listening
-> https.createServer(httpsOptions, app).listen(443, () => console.log('https ready'));
-> ```
+```javascript
+// bring in modules
+const fs = require('fs');
+const https = require('https');
+const express = require('express');
+// start an express instance
+const app = express();
+const httpsOptions = {
+    // by default, these files are found at your
+    // user's root directory ( ~/ )
+    key: fs.readFileSync('path/to/the-key.pem'),
+    cert: fs.readFileSync('path/to/the-cert.pem'),
+};
+// tell the server to start listening
+https.createServer(httpsOptions, app).listen(443, () => console.log('https ready'));
+```
 
 <br>
 
 Kind of dirty, since Chrome still throws a warning that the sight is untrusted, but my goal has
 essentially been acheived - get traffic flowing through HTTPS in dev.
 
-<br><br>
+<br>
 
 <b>Note:</b><br>
 Be <i>abunduntly</i> aware that the key this tool generates needs to be
 absolutely secured. At this time, I'm gonna be paranoid and not publicly detail the steps I took.
 
+
+
 <br><br>
 
-<b>Moving from Apache to Node.js/Express</b><br>
+#### Moving from Apache to Node.js/Express
 
 <br><br>
 <hr>
