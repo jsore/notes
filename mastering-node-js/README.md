@@ -203,3 +203,26 @@ console.log(target.includes('is', 4));  // false
 
 
 <br><br><hr>
+
+
+## Asynchronous event-driven programming
+& concurrency management with Promises, Generators, async/await
+
+<br>
+
+#### Fast I/O with Node
+Node handles it's I/O workers by attempting to never let there be any idle system resources. Typically,
+a worker would just sit idle until it can then move forward, but instead if a worker becomes idle
+due to an I/O block, it can advertise it is available to work on another job from another client.
+That is Node's approach. The environment can cooperatively schedule many client jobs to be cooperative.
+
+Efficiencies are found for Node's single threaded design by delegating as mnay blocking operations
+as possible to OS subsystems ( via the Event Loop using `libuv` package ) and only touching the main
+V8 thread - your executing Node program - when, after something decides it wants some data by passing
+a callback within a request, data has become available.
+
+The Event Loop essentially stacks each process, handing off a request for a worker or a request for
+data only when what is in essence a virtual switchboard has available workers. When a worker
+becomes available, the Event Loop takes the top-most process of the top of the stack, hands it to
+that switchboard and gets it assigned to a worker. `libuv` handles the actual gathering of triggered
+events or monitoring other sources of events, the user registering callbacks when the event occurs.
