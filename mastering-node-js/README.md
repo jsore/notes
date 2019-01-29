@@ -17,7 +17,7 @@ Supportive docs and code are rooted in this repo's `project-files` directory.
 <br><br><hr>
 
 
-# The low-level
+# The low-level - Some Basics
 
 <br>
 
@@ -206,7 +206,7 @@ console.log(target.includes('is', 4));  // false
 <br><br><hr>
 
 
-# Asynchronous event-driven programming
+# The low-level - Asynchronous Event-Driven Programming
 & concurrency management with Promises, Generators, async/await
 
 <br>
@@ -541,3 +541,22 @@ console.log(tt.next());  // { value: undefined, done: true }
 <b>Generators are to a sequence of future values as Promises are to a single future value.</b> They
 can both be passed around the instant they're generated even if some values haven't been resolved yet
 or haven't been queued yet, one being accessible via `next()`, the other `then()`.
+
+<br>
+
+### Applying ^ That ^
+
+- [ ] it should create a process to query Twitter for `#nodejs`
+- [ ] it should write any messages to `tweets.txt` in 140-byte chunks
+- [ ] it should create a server to broadcast these messages to a client
+- [ ] it should trigger those broadcasts with write events to `tweets.txt`
+- [ ] it should asynchronously read 140-byte chunks from last-known client read pointer on write event
+- [ ] it should continue until EOF, recursively broadcasting
+- [ ] it should have a place to display these broadcasts, `client.html`
+
+Finally, it should demonstrate...
+- [ ] listening to filesystem for changes, then responding
+- [ ] using data stream events for read/writing files
+- [ ] responding to network events
+- [ ] using timeouts for polling state
+- [ ] using a Node server as a network event broadcaster
