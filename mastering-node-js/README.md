@@ -21,7 +21,7 @@ Supportive docs and code are rooted in this repo's `project-files` directory.
 
 <br>
 
-#### POSIX
+### POSIX
 Old, simple and well known definition for the standard API for Unix OS'es.
 
 Node uses wrappers around POSIX for file I/O instead of reinventing the wheel, allowing for
@@ -29,7 +29,7 @@ greater familiarity for developers trained in other languages.
 
 <br>
 
-#### Threads and Events
+### Threads and Events
 System programmers access computing tasks via the thread, which Node mimics with a <b>single</b>
 event loop-bound thread. Callbacks are utilized to have tasks enter/leave the execution context,
 the event loop popping tasks into the context until the lowest level task has been executed. Events
@@ -37,7 +37,7 @@ are created by I/O operations generating them within data streams.
 
 <br>
 
-#### Standard C libraries
+### Standard C libraries
 Node isn't having JavaScript actually doing the low-level work, JavaScript is calling down to
 the C code version of the library you're using, which gets included and compiled into Node.
 
@@ -45,7 +45,7 @@ Again, the intention being to not reinvent the wheel.
 
 <br>
 
-#### Node's extensions of JS
+### Node's extensions of JS
 Applications written in a more systematic language (C, Java) want to know the outcome in some
 future event and are notified when that event occurs. JavaScript similarily asks for notification
 upon an I/O event emission, not blocking the execution of other events. Node imported this JS
@@ -53,7 +53,7 @@ event model to build interfaces for system operations.
 
 <br>
 
-#### Object `EventEmitter`
+### Object `EventEmitter`
 This is where events live, being instances of `events.EventEimitters`. Node brought this `EventEmitter`
 object to JS and made it an object your objects can extend, letting that object handle I/O data streams.
 
@@ -63,7 +63,7 @@ for hanlding callbacks.
 
 <br>
 
-#### CommonJS
+### CommonJS
 CommonJS Gave JavaScript packages, a modular method of writing applications. Packages are collections
 of JS files, defined via Metadata residing in `package.json`. A portion of that Metadata is the
 package's version, which is dictated by <b>Semantic Versioning</b> rules ( Major.Minor.Patch ).
@@ -87,7 +87,7 @@ dependencies, download all the code and keep everything up to date.
 
 <br>
 
-#### Code optimizations to help the compiler
+### Code optimizations to help the compiler
 Make sure your code is seen by V8 as utterly predictable as possible.
 
 - don't create arrays with gaps between indexes
@@ -113,7 +113,7 @@ all properties in constructor functions in the same order )
 
 <br>
 
-#### Variables, functions, `this`
+### Variables, functions, `this`
 - the `var` variable declaration type is not block scoped, but `let` is
 
 ```javascript
@@ -210,7 +210,7 @@ console.log(target.includes('is', 4));  // false
 
 <br>
 
-#### Fast I/O with Node
+### Fast I/O with Node
 Node handles it's I/O workers by attempting to never let there be any idle system resources. Typically,
 a worker would just sit idle until it can then move forward, but instead if a worker becomes idle
 due to an I/O block, it can advertise it is available to work on another job from another client.
@@ -226,3 +226,12 @@ data only when what is in essence a virtual switchboard has available workers. W
 becomes available, the Event Loop takes the top-most process of the top of the stack, hands it to
 that switchboard and gets it assigned to a worker. `libuv` handles the actual gathering of triggered
 events or monitoring other sources of events, the user registering callbacks when the event occurs.
+
+<br>
+
+### Signals
+Signals: A form of communication used in Unix & POSIX compliant systems, an asynchronous notification
+sent to a process to notify it that an event has occurred. Node's `process` object exposes to a Node
+process OS system signal events, using standard POSIX signal names.
+
+`SIGINT` = CTRL + C'ing a process via it's terminal.
