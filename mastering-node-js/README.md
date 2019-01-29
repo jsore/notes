@@ -114,6 +114,7 @@ all properties in constructor functions in the same order )
 <br>
 
 ### Variables, Functions, `this`
+
 - the `var` variable declaration type is not block scoped, but `let` is
 
 ```javascript
@@ -324,9 +325,219 @@ Consider a use case for periodically re-running a function - for example, hittin
 every few seconds and pushing updates, or garbage collection. You could use `setInterval`:
 
 ```javascript
+// note: this snippet would run forever
 let intervalId = setInterval(() => { ... }, 100);
 ```
 
 But you're still bound to the Event Loop. If something blocks the loop at some point, your intervals
 will still be running, but will be just getting queued up on the stack. Once ( if ) the Event Loop
 clears up, your timing delays will be lost, all of those interval'ed callbacks get fired at once.
+
+Use `clearInterval(intervalId)` to clear an interval, `intervalId.unref();` if you want a process
+to end when that timer is the only event source remaining for the Event Loop to process, `ref()` to
+do the opposite ( timer will go back to be running forever ).
+
+Demonstration:
+```javascript
+const fs = require('fs');
+const EventEmitter = require('events').EventEmitter;
+let pos = 0;
+let messenger = new EventEmitter();
+
+// Listener for EventEmitter
+messenger.on("message", (msg) => {
+  console.log(++pos + " MESSAGE: " + msg);
+});
+
+// (A) FIRST
+console.log(++pos + " FIRST");
+
+//  (B) NEXT
+process.nextTick(() => {
+  console.log(++pos + " NEXT")
+})
+
+// (C) QUICK TIMER
+setTimeout(() => {
+  console.log(++pos + " QUICK TIMER")
+}, 0)
+
+// (D) LONG TIMER
+setTimeout(() => {
+  console.log(++pos + " LONG TIMER")
+}, 10)
+
+// (E) IMMEDIATE
+setImmediate(() => {
+  console.log(++pos + " IMMEDIATE")
+})
+
+// (F) MESSAGE HELLO!
+messenger.emit("message", "Hello!");
+
+// (G) FIRST STAT
+fs.stat(__filename, () => {
+  console.log(++pos + " FIRST STAT");
+});
+
+// (H) LAST STAT
+fs.stat(__filename, () => {
+  console.log(++pos + " LAST STAT");
+});
+
+// (I) LAST
+console.log(++pos + " LAST");
+
+/**
+ * FIRST (A).              // 1st console.log()
+ * MESSAGE: Hello! (F).    // messenger.emit()
+ * LAST (I).               // 2nd console.log(), call stack exhausted, time for I/O
+ * NEXT (B).               // 1st queued process.nextTicket()
+ * QUICK TIMER (C).        // setTimeout(0) (1 milsec)
+ * FIRST STAT (G).         // 1st queued fs.stat()
+ * LAST STAT (H).          // 2nd queued fs.stat()
+ * IMMEDIATE (E).          // no more I/O or timers, setImmediate()
+ * LONG TIMER (D).         // setTimeout(10)
+ */
+```
+
+<br>
+
+### Good Concurrency - Callbacks
+
+- the first argument returned to a callback should be any error message:
+
+```javascript
+API.getUser(loginInfo, aCallback(err, user) {
+    // handle error, then
+    API.getProfile(user, anotherCallback(err, profile) {
+        // handle error, then
+        // ...
+    }
+});
+```
+
+- that error should preferrably be formed as an object:
+
+```javascript
+new Error("This should be a String");
+```
+
+- if there's no error to report, the first slot should contain a `null` value
+
+- when passing a callback to a function, it should be the last in the function signature
+
+<br>
+
+### Good Concurrency - Promises
+
+- Promises excute only once, either error ( unfulfilled ) or fulfilled, then via `then` that last
+immutable value is accessed
+
+```javascript
+// Promise chain
+let promiseProfile = API.getUser(loginInfo)
+.then(user => API.getProfile(user))
+.then(profile => {
+    // do something with the profile
+})
+// this will handle all errors, don't have to manage
+// them individually
+.catch(err => console.log(err))
+```
+
+- use `Promise.all` to run Promises in parallel for efficiency
+
+```javascript
+// block of Promises, all of them DB calls, which always
+// run serially, regardless of how Promises are handled
+const db = {
+    // anything match any of these queries?
+    getFullName: Promise.resolve('John Doe'),
+    getAddress: Promise.resolve('10th street'),
+    getFavorites: Promise.resolve('Lean'),
+};
+
+// trigger the Promise block simultaneously, run the
+// Promises in parallel while DB calls are made
+Promise.all([
+    db.getFullName()
+    db.getAddress()
+    db.getFavourites()
+])
+.then(results => {
+    // results = ['John Doe', '10th street', 'Lean']
+})
+.catch(err => { ... })
+```
+
+- `Promise.all` will always return a Promise
+
+<br>
+
+### Good Concurrency - async/await
+
+- these do not block the process ( asynchronous execution ) but still halt a program until resolved
+( synchronous )
+
+```javascript
+const db = {
+    getFullName: Promise.resolve('John Doe'),
+    getAddress: Promise.resolve('10th street'),
+    getFavorites: Promise.resolve('Lean'),
+}
+
+// will produce a Promise
+async function profile() {
+    // these expect to find a Promise
+    let fullName = await db.getFullName()
+    let address = await db.getAddress()
+    let favorites = await db.getFavorites()
+
+    return {fullName, address, favorites};
+}
+
+// produce the Promise and access the value of it
+profile().then(res => console.log(res))  // results = ['John Doe', '10th street', 'Lean']
+```
+
+- `async` always returns a Promise
+
+- `await` expects a Promise
+
+<br>
+
+### Generators, Iterators
+Generator functions can be paused and resumed. It will yield a value, then stop, without destroying
+the context of the function. This lets you re-enter the Generator later for further results. They
+expose a `next` method, which is used to pull out values from the Generator, returning an object
+with two properties: a value and `done`.
+
+Iterators, objects that provide a `next()` method, know how to access items from a collection one at
+a time, keeping track of it's current position. Generators implement the JavaScript Iteration protocol
+and are factories for Iterators.
+
+```javascript
+// denote Generator with *
+function* threeThings() {
+    // yield is synonymous with return
+    yield 'one';
+    yield 'two';
+    yield 'three';
+}
+
+// haven't executed anything yet, just built a reference...
+let tt = threeThings();
+
+// ...now, create the (empty) Generator object...
+console.log(tt);  // {}
+// ...and start working through it
+console.log(tt.next());  // { value: 'one', done: false }
+console.log(tt.next());  // { value: 'two', done: false }
+console.log(tt.next());  // { value: 'three', done: false }
+console.log(tt.next());  // { value: undefined, done: true }
+```
+
+<b>Generators are to a sequence of future values as Promises are to a single future value.</b> They
+can both be passed around the instant they're generated even if some values haven't been resolved yet
+or haven't been queued yet, one being accessible via `next()`, the other `then()`.
