@@ -281,7 +281,14 @@ main()
     .catch(e => { // handle all other errors!! });
 ```
 
+<br>
 
+### https.createServer
+https://nodejs.org/api/https.html#https_https_createserver_options_requestlistener
+
+https://nodejs.org/api/https.html#https_https_request_options_callback
+
+http: https://nodejs.org/api/http.html#http_http_request_options_callback
 
 <br><br>
 <hr>
