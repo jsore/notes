@@ -550,16 +550,16 @@ or haven't been queued yet, one being accessible via `next()`, the other `then()
 - [ ] it should write any messages to `tweets.txt` in 140-byte chunks
 - [ ] it should create a server to broadcast these messages to a client using <b>Server Sent Events</b>
 - [ ] it should trigger those broadcasts with write events to `tweets.txt`
-- [ ] it should asynchronously read 140-byte chunks from last-known client read pointer on write event
-- [ ] it should continue until EOF, recursively broadcasting
+- [x] it should asynchronously read 140-byte chunks from last-known client read pointer on write event
+- [x] it should continue until EOF, recursively broadcasting
 - [ ] it should have a place to display these broadcasts, `client.html`
 
 Finally, it should demonstrate...
-- [ ] listening to file system for changes, then responding
-- [ ] using data stream events for read/writing files
-- [ ] responding to network events
-- [ ] using timeouts for polling state
-- [ ] using a Node server as a network event broadcaster
+- [x] listening to file system for changes, then responding
+- [x] using data stream events for read/writing files
+- [x] responding to network events
+- [x] using timeouts for polling state
+- [x] using a Node server as a network event broadcaster
 
 <b>`twitter/server.js`</b> `<-- did not finish, Twitter API is garbage` <br>
 <b>`twitter/twitter.txt`</b><br>
@@ -598,4 +598,216 @@ window.onload = () => {
 </html>
 ```
 
+<br><br><hr>
 
+
+# Data From Files
+
+<br>
+
+### Purpose of Streams
+Consider copying a file. Files can be large and it's easy to block other processes if you just
+straightforward copy the entire file at once then create a new destination file. Streams let you
+break the file up into small ( fast ) chunks, and also let you properly avoid Buffer `RangeError`s
+while not blocking the event loop.
+
+```javascript
+// copy a file with streams
+// bad, you can't read the whole file into memory and
+// you're blocking the event loop while this runs
+console.log('Copying...');
+let block = fs.readFileSync("source.bin");
+console.log('Size: ' + block.length);
+fs.writeFileSync("destination.bin", block);
+console.log('Done.');
+
+// good
+console.log('Copying...');
+fs.createReadStream('source.bin')
+    .pipe(fs.createWriteStream('destination.bin'))
+    .on('close', () => { console.log('Done.'); });
+```
+
+<br>
+
+Remember:
+
+- <b>Managing I/O in Node involves managing data events bound to data streams</b>
+
+- Stream objects are instances of `EventEmitter` & are representations of data flows that we can
+read/write to
+
+- A stream is just a sequence - a buffer - of bytes, of 0 or greater length
+
+- Typically, network I/O in Node is handled one particular Stream implementation: the HTTP module
+
+<br>
+
+Node's Stream module is the preferred way to manage asynchronous data streams, since it handles the
+data buffers and stream events so the implementer doesn't have to. In addition to byte streams -
+chunking memory through streams, passing serialized data like streaming media - there are also
+<b>object streams</b> - Javascript objects, structured like JSON.
+
+<br>
+
+### Implementing `Readable` Streams
+These are Streams that produce data that another process may want.
+
+<b>NOTE:</b> every `Readable` implementation MUST provide a `private _read` method that services the `public
+read` method exposed to the API. Further, the `readable` event is emitted as long as data is being
+pushed to the stream to alert the consumer to check for new data via the `read` method of `Readable`.
+
+- you should carefully consider how volume is managed along the stream to avoid exceeding memory
+
+- all stream implementations should be aware of and respond to `push` operations, and if it returns
+`false`, the implementation should cease reading from the source and `push`ing until the next `_read`
+
+<br>
+
+Parsed from `streams/Readable.js`:
+
+Scenario:
+
+- create a `Feed` object, its instance inheriting the `Readable` stream interface
+
+- implement abstract `_read` method of `Readable` to push data to a consumer until nothing left to push
+
+- trigger `Readable` stream to send an `end` event with `null`
+
+<br>
+
+Readable with defaults
+```javascript
+const stream = require('stream');
+let Feed = function (channel) {
+    /** inheritance */
+    let readable = new stream.Readable({ /* defaults */ });
+    /** passed as chunks of bytes */
+    let news = [
+        "Big Win!",
+        "Stocks Down!",
+        "Actor Sad!"
+    ];
+    /** abstract implementation */
+    readable._read = () => {
+        if (news.length) {
+            return readable.push(news.shift() + "\n");
+        }
+        /** end trigger */
+        readable.push(null);
+    };
+    return readable;
+};
+/** instantiation */
+let feed = new Feed();
+feed.on("readable", () => {
+    let data = feed.read();
+    data && process.stdout.write(data);
+)};
+feed.on("end", () => console.log("No more news"));
+/** chunked bytes */
+// Big Win!
+// Stocks Down!
+// Actor Sad!
+// No more news
+```
+
+<br>
+
+Readable with objects
+```javascript
+const stream = require('stream');
+let Feed = function(channel) {
+    /** inheritance */
+    let readable = new stream.Readable({
+        objectMode : true
+    });
+    /** passed as objects */
+    let prices = [{price : 1},{price : 2}];
+    /** abstract implementation */
+    readable._read = () => {
+        if (prices.length) {
+            return readable.push(prices.shift());
+        }
+        readable.push(null);
+    };
+    return readable;
+};
+let feed = new Feed();
+feed.on("readable", () => {
+    let data = feed.read();
+    data && console.log(data);
+});
+feed.on("end", () => console.log("No more"));
+/** objects */
+// { price: 1 }
+// { price: 2 }
+// No more news
+```
+
+<br>
+
+### Implementing `Writable` Streams
+These are responsible for accepting some value (byte stream, string) and writing that data to a
+destination. Example: streaming data into a file container.
+
+<b>NOTE:</b> every `Writable` implementation MUST provide a `_write` handler which will be passed
+the arguments sent to the `write` method of instances.
+
+- think of these as a data target
+
+- Stream will emit a `drain` event when its safe to write again should `write` return false ( the
+'stream of water' is about to overflow, stop pouring until it drains ).
+
+- respect warnings emitted by write events
+
+- wait for the drain
+
+<br>
+
+Parsed from `streams/Writable.js`:
+
+Scenario:
+
+- create a `Writeable` stream with a `highWaterMark` value of 10 bytes to be conscious of data size
+
+- push a string of data to `stdout` larger than the `highWaterMark` a few times
+
+- catch buffer overflows & wait for drain events to fire before re-engaging
+
+
+<br>
+
+Writable with default string conversion
+```javascript
+const stream = require('stream');
+let writable = new stream.Writable({
+    highWaterMark: 10
+});
+writable._write = (chunk, encoding, callback) => {
+    process.stdout.write(chunk);
+    callback();
+};
+
+/**
+ * for every write event, check if the stream write action
+ * returned false, wait for next drain before running
+ * the wright method again
+ */
+function writeData(iterations, writer, data, encoding, cb) {
+    (function write() {
+        if (!iterations--) {
+            return cb()
+        }
+        if (!writer.write(data, encoding)) {
+            console.log(` <wait> highWaterMark of ${writable.writableHighWaterMark} reached...`);
+            writer.once('drain', write);
+        }
+    })()
+}
+writeData(4, writable, 'String longer than highWaterMark', 'utf8', () => console.log('finished'));
+```
+
+<br>
+
+### Implementing `Duplex` Streams
