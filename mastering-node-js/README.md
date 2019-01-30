@@ -391,9 +391,9 @@ console.log(++pos + " LAST");
 /**
  * FIRST (A).              // 1st console.log()
  * MESSAGE: Hello! (F).    // messenger.emit()
- * LAST (I).               // 2nd console.log(), call stack exhausted, time for I/O
- * NEXT (B).               // 1st queued process.nextTicket()
- * QUICK TIMER (C).        // setTimeout(0) (1 milsec)
+ * LAST (I).               // 2nd console.log(), JS call stack exhausted
+ * NEXT (B).               // process.nextTick(), inserted to head of event queue just before I/O
+ * QUICK TIMER (C).        // setTimeout(0) (1 milsec), 1st to be after queued nextTick()'s
  * FIRST STAT (G).         // 1st queued fs.stat()
  * LAST STAT (H).          // 2nd queued fs.stat()
  * IMMEDIATE (E).          // no more I/O or timers, setImmediate()
@@ -555,10 +555,47 @@ or haven't been queued yet, one being accessible via `next()`, the other `then()
 - [ ] it should have a place to display these broadcasts, `client.html`
 
 Finally, it should demonstrate...
-- [ ] listening to filesystem for changes, then responding
+- [ ] listening to file system for changes, then responding
 - [ ] using data stream events for read/writing files
 - [ ] responding to network events
 - [ ] using timeouts for polling state
 - [ ] using a Node server as a network event broadcaster
 
-<b>`twitter/server.js`</b><br>
+<b>`twitter/server.js`</b> `<-- did not finish, Twitter API is garbage` <br>
+<b>`twitter/twitter.txt`</b><br>
+Spin up a server, watch for file changes to `twitter.txt`, watch for client connects and write to
+client-accessible site
+
+As mentioned, this one was never finished because of issues with Twitter developer accounts
+
+An example of using SSE, as was listed in the 'it should's, within the client page:
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+
+<script>
+
+window.onload = () => {
+  let list = document.getElementById("list");
+  let evtSource = new EventSource("http://localhost:8080/events");
+
+  evtSource.onmessage = (e) => {
+    let newElement = document.createElement("li");
+    newElement.innerHTML = e.data;
+    list.appendChild(newElement);
+  }
+}
+
+</script>
+<body>
+
+<ul id="list"></ul>
+
+</body>
+</html>
+```
+
+
