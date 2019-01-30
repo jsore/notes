@@ -550,16 +550,16 @@ or haven't been queued yet, one being accessible via `next()`, the other `then()
 - [ ] it should write any messages to `tweets.txt` in 140-byte chunks
 - [ ] it should create a server to broadcast these messages to a client using <b>Server Sent Events</b>
 - [ ] it should trigger those broadcasts with write events to `tweets.txt`
-- [ ] it should asynchronously read 140-byte chunks from last-known client read pointer on write event
-- [ ] it should continue until EOF, recursively broadcasting
+- [x] it should asynchronously read 140-byte chunks from last-known client read pointer on write event
+- [x] it should continue until EOF, recursively broadcasting
 - [ ] it should have a place to display these broadcasts, `client.html`
 
 Finally, it should demonstrate...
-- [ ] listening to file system for changes, then responding
-- [ ] using data stream events for read/writing files
-- [ ] responding to network events
-- [ ] using timeouts for polling state
-- [ ] using a Node server as a network event broadcaster
+- [x] listening to file system for changes, then responding
+- [x] using data stream events for read/writing files
+- [x] responding to network events
+- [x] using timeouts for polling state
+- [x] using a Node server as a network event broadcaster
 
 <b>`twitter/server.js`</b> `<-- did not finish, Twitter API is garbage` <br>
 <b>`twitter/twitter.txt`</b><br>
@@ -598,4 +598,70 @@ window.onload = () => {
 </html>
 ```
 
+<br><br><hr>
 
+
+# Data From Files
+
+<br>
+
+### Purpose of Streams
+Consider copying a file. Files can be large and it's easy to block other processes if you just
+straightforward copy the entire file at once then create a new destination file. Streams let you
+break the file up into small ( fast ) chunks, and also let you properly avoid Buffer `RangeError`s
+while not blocking the event loop.
+
+```javascript
+// copy a file with streams
+// bad, you can't read the whole file into memory and
+// you're blocking the event loop while this runs
+console.log('Copying...');
+let block = fs.readFileSync("source.bin");
+console.log('Size: ' + block.length);
+fs.writeFileSync("destination.bin", block);
+console.log('Done.');
+
+// good
+console.log('Copying...');
+fs.createReadStream('source.bin')
+    .pipe(fs.createWriteStream('destination.bin'))
+    .on('close', () => { console.log('Done.'); });
+```
+
+<br>
+
+Remember:
+
+- <b>Managing I/O in Node involves managing data events bound to data streams</b>
+
+- Stream objects are instances of `EventEmitter` & are representations of data flows that we can
+read/write to
+
+- A stream is just a sequence - a buffer - of bytes, of 0 or greater length
+
+- Typically, network I/O in Node is handled one particular Stream implementation: the HTTP module
+
+<br>
+
+Node's Stream module is the preferred way to manage asynchronous data streams, since it handles the
+data buffers and stream events so the implementer doesn't have to. In addition to byte streams -
+chunking memory through streams, passing serialized data like streaming media - there are also
+<b>object streams</b> - Javascript objects, structured like JSON.
+
+<br>
+
+### Implementing `Readable` Streams
+Streams that produce data that another process may want
+
+```javascript
+// create a Readable stream
+const stream = require('stream');
+let readable = new stream.Readable({
+    // default
+    encoding: "utf8",
+    // number of bytes in buffer before stopping the read
+    highWaterMark: 16000,  // 16k, the default
+    // stream of JSON objects instead of bytes?
+    objectMode: true  // defaults to false
+});
+```
