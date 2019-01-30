@@ -2,6 +2,20 @@
 
 Why build something in a manner that <i>doesn't</i> allow you to learn while you build?
 
+When I make something, I want to make sure it's made properly. To do that, I believe you need
+to take a step back, get the fuck out of whatever framework you're using, then learn what's
+happening behind doors. Of course, totally escaping 'user land' is physically just not
+possible, I'm aiming to do as much as I can to just.....understand.
+
+Yes, there are different ways of doing things.
+
+Yes, I want to learn them.
+
+Yes, I'm trying to.
+
+And, yes, I'm going to document what I learn, in my words, <b>in the hopes that it may help
+anyone else</b>.
+
 My site - `jsore.com` - is a simple portfolio/blogging site I've decided to make, but packed with
 technologies and created with an original mindset that I wanted to make this an opportunity to
 really get my hands dirty with Node. Purposfully not being a simple place where some static files
