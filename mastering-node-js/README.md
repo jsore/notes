@@ -548,7 +548,7 @@ or haven't been queued yet, one being accessible via `next()`, the other `then()
 
 - [ ] it should create a process to query Twitter for `#nodejs`
 - [ ] it should write any messages to `tweets.txt` in 140-byte chunks
-- [ ] it should create a server to broadcast these messages to a client
+- [ ] it should create a server to broadcast these messages to a client using <b>Server Sent Events</b>
 - [ ] it should trigger those broadcasts with write events to `tweets.txt`
 - [ ] it should asynchronously read 140-byte chunks from last-known client read pointer on write event
 - [ ] it should continue until EOF, recursively broadcasting
@@ -560,3 +560,5 @@ Finally, it should demonstrate...
 - [ ] responding to network events
 - [ ] using timeouts for polling state
 - [ ] using a Node server as a network event broadcaster
+
+<b>`twitter/server.js`</b><br>
