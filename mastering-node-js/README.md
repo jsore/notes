@@ -391,9 +391,9 @@ console.log(++pos + " LAST");
 /**
  * FIRST (A).              // 1st console.log()
  * MESSAGE: Hello! (F).    // messenger.emit()
- * LAST (I).               // 2nd console.log(), call stack exhausted, time for I/O
- * NEXT (B).               // 1st queued process.nextTicket()
- * QUICK TIMER (C).        // setTimeout(0) (1 milsec)
+ * LAST (I).               // 2nd console.log(), JS call stack exhausted
+ * NEXT (B).               // process.nextTick(), inserted to head of event queue just before I/O
+ * QUICK TIMER (C).        // setTimeout(0) (1 milsec), 1st to be after queued nextTick()'s
  * FIRST STAT (G).         // 1st queued fs.stat()
  * LAST STAT (H).          // 2nd queued fs.stat()
  * IMMEDIATE (E).          // no more I/O or timers, setImmediate()
@@ -555,10 +555,15 @@ or haven't been queued yet, one being accessible via `next()`, the other `then()
 - [ ] it should have a place to display these broadcasts, `client.html`
 
 Finally, it should demonstrate...
-- [ ] listening to filesystem for changes, then responding
+- [ ] listening to file system for changes, then responding
 - [ ] using data stream events for read/writing files
 - [ ] responding to network events
 - [ ] using timeouts for polling state
 - [ ] using a Node server as a network event broadcaster
 
 <b>`twitter/server.js`</b><br>
+<b>`twitter/twitter.txt`</b><br>
+Spin up a server, watch for file changes to `twitter.txt`, watch for client connects and write to
+client-accessible site
+
+npm dependencies: TWiT
