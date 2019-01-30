@@ -561,9 +561,41 @@ Finally, it should demonstrate...
 - [ ] using timeouts for polling state
 - [ ] using a Node server as a network event broadcaster
 
-<b>`twitter/server.js`</b><br>
+<b>`twitter/server.js`</b> `<-- did not finish, Twitter API is garbage` <br>
 <b>`twitter/twitter.txt`</b><br>
 Spin up a server, watch for file changes to `twitter.txt`, watch for client connects and write to
 client-accessible site
 
-npm dependencies: TWiT
+As mentioned, this one was never finished because of issues with Twitter developer accounts
+
+An example of using SSE, as was listed in the 'it should's, within the client page:
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+
+<script>
+
+window.onload = () => {
+  let list = document.getElementById("list");
+  let evtSource = new EventSource("http://localhost:8080/events");
+
+  evtSource.onmessage = (e) => {
+    let newElement = document.createElement("li");
+    newElement.innerHTML = e.data;
+    list.appendChild(newElement);
+  }
+}
+
+</script>
+<body>
+
+<ul id="list"></ul>
+
+</body>
+</html>
+```
+
+
