@@ -653,24 +653,26 @@ chunking memory through streams, passing serialized data like streaming media - 
 ### Implementing `Readable` Streams
 These are Streams that produce data that another process may want.
 
-<b>NOTE: every `Readable` implementation MUST provide a `private _read` method that services the `public
-read` method exposed to the API.</b> Further, the `readable` event is emitted as long as data is being
+<b>NOTE:</b> every `Readable` implementation MUST provide a `private _read` method that services the `public
+read` method exposed to the API. Further, the `readable` event is emitted as long as data is being
 pushed to the stream to alert the consumer to check for new data via the `read` method of `Readable`.
 
-Parsed from `streams/Readable.js`
+- you should carefully consider how volume is managed along the stream to avoid exceeding memory
+
+- all stream implementations should be aware of and respond to `push` operations, and if it returns
+`false`, the implementation should cease reading from the source and `push`ing until the next `_read`
 
 <br>
+
+Parsed from `streams/Readable.js`:
+
+Scenario:
 
 - create a `Feed` object, its instance inheriting the `Readable` stream interface
 
 - implement abstract `_read` method of `Readable` to push data to a consumer until nothing left to push
 
 - trigger `Readable` stream to send an `end` event with `null`
-
-- you should carefully consider how volume is managed along the stream to avoid exceeding memory
-
-- all stream implementations should be aware of and respond to `push` operations, and if it returns
-`false`, the implementation should cease reading from the source and `push`ing until the next `_read`
 
 <br>
 
@@ -742,3 +744,38 @@ feed.on("end", () => console.log("No more"));
 // { price: 2 }
 // No more news
 ```
+
+<br>
+
+### Implementing `Writable` Streams
+These are responsible for accepting some value (byte stream, string) and writing that data to a
+destination. Example: streaming data into a file container.
+
+<b>NOTE:</b> every `Writable` implementation MUST provide a `_write` handler which will be passed
+the arguments sent to the `write` method of instances.
+
+- think of these as a data target
+
+- Stream will emit a `drain` event when its safe to write again should `write` return false ( the
+'stream of water' is about to overflow, stop pouring until it drains ).
+
+- respect warnings emitted by write events
+
+- wait for the drain
+
+<br>
+
+Parsed from `streams/Writable.js`:
+
+Scenario:
+
+- create a `Writeable` stream with a `highWaterMark` value of 10 bytes to be conscious of data size
+
+- push a string of data to `stdout` larger than the `highWaterMark` a few times
+
+- catch buffer overflows & wait for drain events to fire before re-engaging
+
+
+<br>
+
+Writable with default string conversion
