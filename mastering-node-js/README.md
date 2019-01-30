@@ -651,17 +651,94 @@ chunking memory through streams, passing serialized data like streaming media - 
 <br>
 
 ### Implementing `Readable` Streams
-Streams that produce data that another process may want
+These are Streams that produce data that another process may want.
 
+<b>NOTE: every `Readable` implementation MUST provide a `private _read` method that services the `public
+read` method exposed to the API.</b> Further, the `readable` event is emitted as long as data is being
+pushed to the stream to alert the consumer to check for new data via the `read` method of `Readable`.
+
+Parsed from `streams/Readable.js`
+
+<br>
+
+- create a `Feed` object, its instance inheriting the `Readable` stream interface
+
+- implement abstract `_read` method of `Readable` to push data to a consumer until nothing left to push
+
+- trigger `Readable` stream to send an `end` event with `null`
+
+- you should carefully consider how volume is managed along the stream to avoid exceeding memory
+
+- all stream implementations should be aware of and respond to `push` operations, and if it returns
+`false`, the implementation should cease reading from the source and `push`ing until the next `_read`
+
+<br>
+
+Readable with defaults
 ```javascript
-// create a Readable stream
 const stream = require('stream');
-let readable = new stream.Readable({
-    // default
-    encoding: "utf8",
-    // number of bytes in buffer before stopping the read
-    highWaterMark: 16000,  // 16k, the default
-    // stream of JSON objects instead of bytes?
-    objectMode: true  // defaults to false
+let Feed = function (channel) {
+    /** inheritance */
+    let readable = new stream.Readable({ /* defaults */ });
+    /** passed as chunks of bytes */
+    let news = [
+        "Big Win!",
+        "Stocks Down!",
+        "Actor Sad!"
+    ];
+    /** abstract implementation */
+    readable._read = () => {
+        if (news.length) {
+            return readable.push(news.shift() + "\n");
+        }
+        /** end trigger */
+        readable.push(null);
+    };
+    return readable;
+};
+/** instantiation */
+let feed = new Feed();
+feed.on("readable", () => {
+    let data = feed.read();
+    data && process.stdout.write(data);
+)};
+feed.on("end", () => console.log("No more news"));
+/** chunked bytes */
+// Big Win!
+// Stocks Down!
+// Actor Sad!
+// No more news
+```
+
+<br>
+
+Readable with objects
+```javascript
+const stream = require('stream');
+let Feed = function(channel) {
+    /** inheritance */
+    let readable = new stream.Readable({
+        objectMode : true
+    });
+    /** passed as objects */
+    let prices = [{price : 1},{price : 2}];
+    /** abstract implementation */
+    readable._read = () => {
+        if (prices.length) {
+            return readable.push(prices.shift());
+        }
+        readable.push(null);
+    };
+    return readable;
+};
+let feed = new Feed();
+feed.on("readable", () => {
+    let data = feed.read();
+    data && console.log(data);
 });
+feed.on("end", () => console.log("No more"));
+/** objects */
+// { price: 1 }
+// { price: 2 }
+// No more news
 ```
