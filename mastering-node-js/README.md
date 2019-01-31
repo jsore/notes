@@ -673,9 +673,9 @@ source and `push`ing until the next `_read`
 
 <br>
 
-Parsed from `streams/Readable.js`:
-
 Scenario:
+
+- `streams/Readable.js`
 
 - create a `Feed` object, its instance inheriting the `Readable` stream interface
 
@@ -776,9 +776,9 @@ water into it until it drains ).
 
 <br>
 
-Parsed from `streams/Writable.js`:
-
 Scenario:
+
+- `streams/Writable.js`
 
 - create a `Writeable` stream with a `highWaterMark` value of 10 bytes to be<br>
 conscious of data size
@@ -833,8 +833,7 @@ combined with no additions
 
 <br>
 
-Parsed from `streams/Duplex.js`
-
+`streams/Duplex.js`
 ```javascript
 // note to self: unhandled error event on connection break
 
@@ -916,6 +915,7 @@ fs.createReadStream('./passthrough.txt').pipe(spy).pipe(process.stdout);
 ### HTTP - Create Server
 HTTP: stateless data transfer protocol on a request/response model.
 
+A basic HTTP server: `http/http.js`
 ```javascript
 const http = require('http');
 
@@ -936,5 +936,199 @@ server.on("request", (request, response) => {
     request.setEncoding("utf8");
     request.on("readable", () => console.log(request.read()));
     request.on("end", () => console.log("DONE"));
+});
+```
+
+<br>
+
+A Basic server that reports connections made and closed: `http/http-logger.js`
+```javascript
+const http = require('http');
+/** create a base Server() object */
+const server = new http.Server();
+/** grab the Duplex stream socket returned by Server() */
+server.on('connection', socket => {
+    let now = new Date();
+    console.log(`Client arrived: ${now}`);
+    socket.on('end', () => console.log(`client left: ${new Date()}`));
+});
+/** term the connections after 2 seconds */
+server.setTimeout(2000, socket => socket.end());
+server.listen(8080);
+```
+
+On multiuser and authenticated multiuser systems, at ^ this ^ point you should be performing client
+validation, tracking code, setting or reading cookies and other session variables, possibly
+broadcasting of a client arrival event to other clients working together concurrently in a real time
+application, etc etc.
+
+Adding listeners for requests is managed by `Readable` streams. POST'ed data can be caught like:
+```javascript
+server.on('request', (request, response) => {
+    request.setEncoding('utf8');
+    request.on('readable', () => {
+        let data = request.read();
+        data && response.end(data);
+    });
+});
+```
+
+<br>
+
+### HTTP - Requests
+Node supplies an easy interface for HTTP calls
+```javascript
+/** fetch HTML front page of example.org */
+const http = require('http');
+http.request({
+    host: 'www.example.org',
+    method: 'GET',
+    path: "/"
+}, function (response) {
+    response.setEncoding("utf8");
+    /** open a Readable stream */
+    response.on("readable", () => console.log(response.read()));
+}).end();
+
+
+/*----------  or, use Node's shortcut  ----------*/
+http.get("http://www.example.org", response => {
+    console.log(`Status: ${response.statusCode}`);
+}).on('error', err => {
+    console.log("Error: " + err.message);
+});
+```
+
+<br>
+
+### HTTP - Proxies, Tunnels
+A scenario where we want to perform general network services for clients, using a server to function
+as a <b>proxy ( or tunnel, broker )</b> for other services.
+
+This is the allowance of one server to distribute a load to another server, provide access to a secured
+server to users who can't connect to it directly, have one server answering for more than one URL
+( forwarding requests to the right recipient ), etc etc.
+
+Acting as a Proxy by serving a new request on behalf of client that connects to it:
+```javascript
+const http = require('http');
+const server = new http.Server();
+
+/** grab our client's request and Duplex stream */
+server.on("request"), (request, socket) => {
+    console.log(request.url);
+    /**
+     * proxy a new request for the connecteed client and
+     * send the response out to them
+     */
+    http.request({
+        host: 'www.example.org',
+        method: 'GET',
+        path: "/",
+        port: 80
+    }, response => response.pipe(socket))
+    /** because we used request(), explicity end the request */
+    .end();
+};
+server.listen(8080, () => console.log('Proxy server listening on localhost:8080'));
+// $ nc localhost 8080
+// 400 Bad Request
+```
+
+<br>
+
+<b>Tunneling</b> involves using a proxy server as an intermediary to communicate with a remote server
+on client's behalf. Once the proxy connects to the remote, it can pass messages back and forth
+between the remote and the client. Useful when it's not possible for a client to connect or does not
+want to connect to a remote server.
+
+Scenario:
+
+- `http/http-tunneling.js`
+
+- set up a proxy responding to `HTTP CONNECT` requests
+
+- make a `CONNECT` request to that proxy server
+
+- proxy is to receive the client's `Request` object, the client's socket & the<br>
+head ( the first packet ) of the tunneling stream
+
+- annotate the process within the script
+
+```javascript
+/**
+ * http/http-tunneling.js
+ */
+
+const http = require('http');
+const net = require('net');
+const url = require('url');
+
+/*----------  the tunnel on 8080  ----------*/
+
+/** set up a proxy server listening for HTTP CONNECT requests */
+const proxy = new http.Server();
+/** set up a bridge with client socket and remote socket */
+proxy.on('connect', (request, clientSocket, head) => {
+
+    /*----------  the proxy'ed request via tunnel  ----------*/
+
+    /** use the 'path' portion of the client request */
+    let reqData = url.parse(`http://${request.url}`);
+    /** take 'client' request, connect to the remote */
+    let remoteSocket = net.connect(reqData.port, reqData.hostname, () => {
+        /** send over a 200 OK to the client */
+        clientSocket.write('HTTP/1.1 200 \r\n\r\n');
+        /** send the client's header to the remote */
+        remoteSocket.write(head);
+        /**
+         * send the remote a copy of the client's request,
+         * which should recieve a response that was written
+         * to the clientSocket
+         */
+        remoteSocket.pipe(clientSocket);
+        /** pipe that response back to the client */
+        clientSocket.pipe(remoteSocket);
+    });
+}).listen(8080);
+
+/**
+ * now that the server at 8080 is running, we can make a
+ * request to it, mimicking a client
+ */
+
+/*----------  the 'client' connecting and requesting to tunnel  ----------*/
+
+let request = http.request({
+    port: 8080,
+    hostname: 'localhost',
+    method: 'CONNECT',
+    path: 'www.example.org:80'
+});
+/**
+ * because we used request(), explicity end the request after
+ * it has been sent
+ */
+request.end();
+
+/*----------  the 'client' tunneled GET after connecting  ----------*/
+
+request.on('connect', (res, socket, head) => {
+    socket.setEncoding("utf8");
+    /** send a _write to GET a response */
+    socket.write('GET / HTTP/1.1\r\nHost: www.example.org:80\r\nConnection: close\r\n\r\n');
+    /** on response (a 'read' event being emitted)... */
+    socket.on('readable', () => {
+        /**
+         * ...oblige the read event, which will fire an
+         * end() event by the read stream sending 'null'
+         * after it has nothing left to read
+         */
+        console.log(socket.read());
+    });
+    /** shut down the proxy */
+    socket.on('end', () => {
+        proxy.close();
+    });
 });
 ```
