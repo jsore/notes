@@ -18,6 +18,10 @@ writable._write = (chunk, encoding, callback) => {
  */
 function writeData(iterations, writer, data, encoding, cb) {
     (function write() {
+        /**
+         * "if there's no iterations after subtracting
+         * the current value"
+         */
         if (!iterations--) {
             return cb()
         }
