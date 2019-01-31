@@ -294,12 +294,15 @@ a child process, don't create a thread pool.
 
 <b>`parent.js`</b><br>
 <b>`lovechild.js`</b><br>
-> a forking process (`parent`) sends messsages to `child`, telling `child` to reply, which it does
+> a forking process (`parent`) sends messsages to `child`, telling `child` to<br>
+> reply, which it does<br>
 
 <b>`net-parent.js`</b><br>
 <b>`net-child.js`</b><br>
-> parent starts a server, passes a handle to it down to a forked child, which load balances the server
-> connection for any services that hit the port the server is listening on
+> parent starts a server, passes a handle to it down to a forked child, which<br>
+> load balances the server connection for any services that hit the port the<br>
+> server is listening on<br>
+
 
 <br>
 
@@ -425,14 +428,15 @@ new Error("This should be a String");
 
 - if there's no error to report, the first slot should contain a `null` value
 
-- when passing a callback to a function, it should be the last in the function signature
+- when passing a callback to a function, it should be the last parameter or<br>
+object in the function signature
 
 <br>
 
 ### Good Concurrency - Promises
 
-- Promises excute only once, either error ( unfulfilled ) or fulfilled, then via `then` that last
-immutable value is accessed
+- Promises excute only once, either error ( unfulfilled ) or fulfilled, then<br>
+via `then` that last immutable value is accessed
 
 ```javascript
 // Promise chain
@@ -477,8 +481,8 @@ Promise.all([
 
 ### Good Concurrency - async/await
 
-- these do not block the process ( asynchronous execution ) but still halt a program until resolved
-( synchronous )
+- these do not block the process ( asynchronous execution ) but still halt a<br>
+program until resolved ( synchronous )
 
 ```javascript
 const db = {
@@ -548,18 +552,20 @@ or haven't been queued yet, one being accessible via `next()`, the other `then()
 
 - [ ] it should create a process to query Twitter for `#nodejs`
 - [ ] it should write any messages to `tweets.txt` in 140-byte chunks
-- [ ] it should create a server to broadcast these messages to a client using <b>Server Sent Events</b>
+- [ ] it should create a server to broadcast these messages to a client using<br>
+SSE's, <b>Server Sent Events</b>
 - [ ] it should trigger those broadcasts with write events to `tweets.txt`
-- [x] it should asynchronously read 140-byte chunks from last-known client read pointer on write event
-- [x] it should continue until EOF, recursively broadcasting
+- [-] it should asynchronously read 140-byte chunks from last-known client read<br>
+pointer on write event
+- [-] it should continue until EOF, recursively broadcasting
 - [ ] it should have a place to display these broadcasts, `client.html`
 
 Finally, it should demonstrate...
-- [x] listening to file system for changes, then responding
-- [x] using data stream events for read/writing files
-- [x] responding to network events
-- [x] using timeouts for polling state
-- [x] using a Node server as a network event broadcaster
+- [-] listening to file system for changes, then responding
+- [-] using data stream events for read/writing files
+- [-] responding to network events
+- [-] using timeouts for polling state
+- [-] using a Node server as a network event broadcaster
 
 <b>`twitter/server.js`</b> `<-- did not finish, Twitter API is garbage` <br>
 <b>`twitter/twitter.txt`</b><br>
@@ -634,12 +640,13 @@ Remember:
 
 - <b>Managing I/O in Node involves managing data events bound to data streams</b>
 
-- Stream objects are instances of `EventEmitter` & are representations of data flows that we can
-read/write to
+- Stream objects are instances of `EventEmitter` & are representations of data<br>
+flows that we can read/write to
 
 - A stream is just a sequence - a buffer - of bytes, of 0 or greater length
 
-- Typically, network I/O in Node is handled one particular Stream implementation: the HTTP module
+- Typically, network I/O in Node is going to be handled with one particular<br>
+Stream implementation: the HTTP module
 
 <br>
 
@@ -657,10 +664,12 @@ These are Streams that produce data that another process may want.
 read` method exposed to the API. Further, the `readable` event is emitted as long as data is being
 pushed to the stream to alert the consumer to check for new data via the `read` method of `Readable`.
 
-- you should carefully consider how volume is managed along the stream to avoid exceeding memory
+- you should carefully consider how volume is managed along the stream to<br>
+avoid exceeding memory
 
-- all stream implementations should be aware of and respond to `push` operations, and if it returns
-`false`, the implementation should cease reading from the source and `push`ing until the next `_read`
+- all stream implementations should be aware of and respond to `push` operations,<br>
+and if it returns `false`, the implementation should cease reading from the<br>
+source and `push`ing until the next `_read`
 
 <br>
 
@@ -670,7 +679,8 @@ Scenario:
 
 - create a `Feed` object, its instance inheriting the `Readable` stream interface
 
-- implement abstract `_read` method of `Readable` to push data to a consumer until nothing left to push
+- implement abstract `_read` method of `Readable` to push data to a consumer until<br>
+there's nothing left to push
 
 - trigger `Readable` stream to send an `end` event with `null`
 
@@ -756,8 +766,9 @@ the arguments sent to the `write` method of instances.
 
 - think of these as a data target
 
-- Stream will emit a `drain` event when its safe to write again should `write` return false ( the
-'stream of water' is about to overflow, stop pouring until it drains ).
+- Stream will emit a `drain` event when its safe to write again should `write`<br>
+return false ( the 'stream of water' is about to overflow, stop pouring more<br>
+water into it until it drains ).
 
 - respect warnings emitted by write events
 
@@ -769,7 +780,8 @@ Parsed from `streams/Writable.js`:
 
 Scenario:
 
-- create a `Writeable` stream with a `highWaterMark` value of 10 bytes to be conscious of data size
+- create a `Writeable` stream with a `highWaterMark` value of 10 bytes to be<br>
+conscious of data size
 
 - push a string of data to `stdout` larger than the `highWaterMark` a few times
 
@@ -811,3 +823,95 @@ writeData(4, writable, 'String longer than highWaterMark', 'utf8', () => console
 <br>
 
 ### Implementing `Duplex` Streams
+These are both readable and writable. Demonstration of an implementation that combines independent
+processes. Most common example being a Node TCP server.
+
+- options for this implementation are the `Readable` and `Writable` options<br>
+combined with no additions
+
+- because of ^ that ^ any implementation will need `_write` and `_read` methods
+
+<br>
+
+Parsed from `streams/Duplex.js`
+
+```javascript
+// note to self: unhandled error event on connection break
+
+const stream = require("stream");
+const net = require("net");
+
+/**
+ * return us a server, which will also return an instance
+ * of the server's socket, which is the actual Duplex stream
+ */
+net.createServer(socket => {
+    /** tell the connected client to do something */
+    socket.write("Type something now\n");
+    socket.setEncoding("utf8");
+    socket.on("readable", function() {
+        /** tell the host process something else */
+        process.stdout.write(this.read());
+    });
+}).listen(8080);
+```
+
+<br>
+
+### Transforming ( `Transform` ) streams
+On the fly data stream transformations, `Transform`'s act as a `Duplex` between a `Readable` and
+`Writable` stream.
+
+- initialized with `Duplex` stream options, except the only method a custom<br>
+implementation needs to provide is a `_transform` method
+
+- the `_transform` method receives three arguments: the sent buffer, an ( optional )<br>
+character encoding argument, a callback to call after transformation is complete
+
+<br>
+
+Take note of the dead simple usage of `pipe`:
+```javascript
+// convert ASCII codes to corresponding characters
+const stream = require('stream');
+let converter = new stream.Transform();
+converter._transform = function (num, encoding, callback) {
+    this.push(String.fromCharCode(new Number(num)) + "\n");
+    callback();
+};
+process.stdin.pipe(converter).pipe(process.stdout);
+// $ 65
+// > A
+// $ 66
+// > B
+// $ 257
+// > ā
+```
+
+<br>
+
+Another implementation of `Transform` streams are `PassThrough` streams. They're in essence the exact
+same, except for two items of note: there's no transformations taken place and there's no requirements
+to include an abstract base class. The only upside being that you can easily use `pipe` to toss
+data around.
+
+```javascript
+// an event spy using a PassThrough stream
+const fs = require('fs');
+const stream = require('stream');
+const spy = new stream.PassThrough();
+
+spy
+.on('error', (err) => console.error(err))
+.on('data', function (chunk) {
+    console.log(`spied data -> ${chunk}`);
+})
+.on('end', () => console.log('\nsomething finished'));
+// place the watcher onto a stream
+fs.createReadStream('./passthrough.txt').pipe(spy).pipe(process.stdout);
+```
+
+<br>
+
+### HTTP - Create Server
+HTTP: stateless data transfer protocol on a request/response model
