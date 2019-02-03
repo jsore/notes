@@ -1271,7 +1271,7 @@ information shared about previous requests ).
 
 Scenario:
 
-- `cookies.js`
+- `http/cookies.js`
 
 - server echoes the value of a sent cookie
 
@@ -1318,5 +1318,88 @@ let server = http.createServer((request, response) => {
      * web browser pointed to http://localhost:8080
      */
     response.end(`Cookie set: ${cookies.toString()}`);  // Cookie set: session=123456
+}).listen(8080);
+```
+
+<br>
+
+### MIME Types, Favicons
+It's the responsibility of an HTTP response to set headers describing the contained entity - the MIME
+type. Clients typically pass a request header indicating the MIME type it expects the response's
+to be and the MIME type of its request's body. The server passes back header data about the response's
+body. File MIME types are NOT indicated by the file's extension. <b>Never trust the client</b>, sanity
+check any files streamed in from external sources.
+
+Favicon requests in a GET are normally combined with another GET request for the requested resource.
+It's two requests. Any HTTP server must be able to deal with these requests, checking MIME types and
+handling it:
+```javascript
+const http = require('http');
+http.createServer((request, response) => {
+    if (request.url === '/favicon.ico') {
+        response.writeHead(200, {
+            'Content-Type': 'image/x-icon'
+        });
+        // push favicon.ico data through response stream, then:
+        return response.end();
+    }
+    response.writeHead(200, {
+        'Content-Type': 'text/plain'
+    });
+    response.write('The requested resource');
+    response.end();
+}).listen(8080);
+```
+
+<br>
+
+### POST Forms
+Note: unlike other REST methods ( GET, PUT, etc etc ), handling POST data may have an effect on an
+application's state. Handle carefully.
+
+Scenario:
+
+- `http/http-post.js`
+
+- create a server to return a form to clients
+
+- echo back data a client submits using that form
+
+- determine if we got a form request or a form submission
+
+- return HTML for a form if request, parse submitted data on submission
+
+```javascript
+const http = require('http');
+const qs = require('querystring');
+
+http.createServer((request, response) => {
+    let body = " ";
+    /** root path, so the form is needed */
+    if (request.url === "/") {
+        response.writeHead(200, {
+            "Content-Type": "text/html"
+        });
+        /** set the form to POST sometext to path /submit */
+        return response.end(
+            '<form action="/submit" method="post">\
+            <input type="text" name="sometext">\
+            <input type="submit" value="Send some text">\
+            </form>'
+        );
+    }
+    /** posted path, so the data needs parsing */
+    if (request.url === "/submit") {
+        /** POST has begun a Readable stream, grab it */
+        request.on('readable', () => {
+            let data = request.read();
+            data && (body += data);
+        });
+        /** once POST's _read sends null, echo what POST'ed */
+        request.on('end', () => {
+            let fields = qs.parse(body);
+            response.end(`Thanks for sending: ${fields.sometext}`);
+        });
+    }
 }).listen(8080);
 ```
