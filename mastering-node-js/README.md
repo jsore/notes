@@ -1056,31 +1056,30 @@ head ( the first packet ) of the tunneling stream
 - annotate the process within the script
 
 ```javascript
-/**
- * http/http-tunneling.js
- */
-
 const http = require('http');
 const net = require('net');
 const url = require('url');
 
-/*----------  the tunnel on 8080  ----------*/
+/*----------  1st: the tunnel on 8080  ----------*/
 
 /** set up a proxy server listening for HTTP CONNECT requests */
 const proxy = new http.Server();
+
+/*----------  4th: the proxy'ed request via tunnel  ----------*/
+
 /** set up a bridge with client socket and remote socket */
 proxy.on('connect', (request, clientSocket, head) => {
-
-    /*----------  the proxy'ed request via tunnel  ----------*/
-
-    /** use the 'path' portion of the client request */
+    /** use the 'path' portion of the 'client' request */
     let reqData = url.parse(`http://${request.url}`);
     /** take 'client' request, connect to the remote */
     let remoteSocket = net.connect(reqData.port, reqData.hostname, () => {
-        /** send over a 200 OK to the client */
+        /** send over a 200 OK header to the client */
         clientSocket.write('HTTP/1.1 200 \r\n\r\n');
-        /** send the client's header to the remote */
+        /** send the client's request header to the remote */
         remoteSocket.write(head);
+
+        /** begin working with request body */
+
         /**
          * send the remote a copy of the client's request,
          * which should recieve a response that was written
@@ -1097,8 +1096,9 @@ proxy.on('connect', (request, clientSocket, head) => {
  * request to it, mimicking a client
  */
 
-/*----------  the 'client' connecting and requesting to tunnel  ----------*/
+/*----------  2nd: the 'client' connecting and requesting to tunnel  ----------*/
 
+/** returns http.ClientRequest instance (a Writable stream) */
 let request = http.request({
     port: 8080,
     hostname: 'localhost',
@@ -1111,24 +1111,295 @@ let request = http.request({
  */
 request.end();
 
-/*----------  the 'client' tunneled GET after connecting  ----------*/
+/*----------  3rd: the 'client' tunneled GET after connecting  ----------*/
 
 request.on('connect', (res, socket, head) => {
     socket.setEncoding("utf8");
-    /** send a _write to GET a response */
+    /** send a header via _write to GET a response */
     socket.write('GET / HTTP/1.1\r\nHost: www.example.org:80\r\nConnection: close\r\n\r\n');
     /** on response (a 'read' event being emitted)... */
     socket.on('readable', () => {
         /**
          * ...oblige the read event, which will fire an
-         * end() event by the read stream sending 'null'
+         * end() event via the read stream sending 'null'
          * after it has nothing left to read
          */
         console.log(socket.read());
     });
-    /** shut down the proxy */
+
+    /*----------  5th, final: shut down the proxy  ----------*/
+
     socket.on('end', () => {
         proxy.close();
     });
 });
+```
+
+<br>
+
+### HTTP Layered Over SSL/TLS
+Ensuring client-side business logic and web services are protected
+
+We'll need a self signed certificate to use Node's HTTPS module in a development environment. Won't
+demonstrate identity as a CA does but it lets us use the encryption of HTTPS. This can be applied to
+your everyday development environment, but since I'm just using this in relation to notes I'm taking
+on this book, I'm sticking the key and cert into a locally-bound directory.
+
+Create the private key:
+```
+$ openssl genrsa -out server-key.pem 2048
+```
+
+Then the CSR ( Certificate Signing Request ):
+```
+$ openssl req -new -key server-key.pem -out server-csr.pem
+```
+
+Then sign the private key to create a public certificate:
+```
+$ openssl x509 -req -in server-csr.pem -signkey server-key.pem -out server-cert.pem
+```
+
+<br>
+
+### Module - URL, Querystring
+Request objects will contain a URL property. The <b>URL</b> module handles that URL string.
+
+Start a node environment. The method `url.parse()` decomposes the string:
+```
+$ node
+# for brevities sake:
+> let ourURL = "http://username:password@www.example.org:8080/events/today/?filter=sports&maxresults=20#soccer";
+> console.log(url.parse(ourURL));
+Url {
+  protocol: 'http:',
+  slashes: true,
+  auth: 'username:password',
+  host: 'www.example.org:8080',
+  port: '8080',
+  hostname: 'www.example.org',
+  hash: '#soccer',
+  search: '?filter=sports&maxresults=20',
+  query: 'filter=sports&maxresults=20',
+  pathname: '/events/today/',
+  path: '/events/today/?filter=sports&maxresults=20',
+  href:
+   'http://username:password@www.example.org:8080/events/today/?filter=sports&maxresults=20#soccer' }
+```
+
+<br>
+
+Passing `true` as the second argument to `url.parse()` converts the `query` field to a key/value map:
+```
+> console.log(url.parse(ourURL, true));
+Url {
+  ...
+  query:
+   [Object: null prototype] { filter: 'sports', maxresults: '20' },
+  pathname: '/events/today/',
+  path: '/events/today/?filter=sports&maxresults=20',
+  href:
+   'http://username:password@www.example.org:8080/events/today/?filter=sports&maxresults=20#soccer' }
+```
+
+<br>
+
+To use the protocol-relative URL ( `//www.example.org` ) instead of an absolute URL
+( `http://www.example.org` ) pass `true` as a third argument, telling the method that slashes denote
+a host not a path:
+```
+> console.log(url.parse("//www.example.org"));
+Url {
+  ...
+  host: null,
+  path: '//www.example.org',
+  ... }
+
+> console.log(url.parse("//www.example.org", null, true));
+Url {
+  ...
+  host: 'www.example.org',
+  path: null,
+  ... }
+```
+
+<br>
+
+Then you can have protocol independent URLs to work with and, for example, set what type of protocol
+to use on the fly within an `http.request()` method via creating one of these URLs with `url.format()`:
+```javascript
+// note the similarity here with the object that gets
+// returned from calls to url.parse()
+url.format({
+    protocol: 'http',
+    host: 'www.example.org'
+});
+```
+
+<br>
+
+Method `url.resolve` can also be used for URL string creation:
+```javascript
+url.resolve("http://example.org/one/two", "three/four");  // http://example.org/one/three/four
+url.resolve("http://example.org/one/two", "/three/four");  // http://example.org/three/four
+url.resolve("http://example.org", "http://google.com");  // http://google.com/
+```
+
+<br>
+
+The <b>Querystring</b> module handles composing/decomposing a query from a map of key/value pairs:
+```javascript
+// normally seen in GET requests
+let qs = require("querystring");
+qs.parse("foo=bar&bingo=bango");  // { foo: 'bar', bingo: 'bango' }
+
+// optional arguments, 2nd: separator string, 3rd: assignment string
+qs.parse("foo:bar^bingo:bango", "^", ":");  // { foo: 'bar', bingo: 'bango' }
+
+// create a querystring
+qs.stringify({ foo: 'bar', bingo: 'bango'});  // foo=bar&bingo=bango
+
+// stringify with custom separators
+qs.stringify({ foo: 'bar', bingo: 'bango' }, "^", ":");  // foo:bar^bingo:bango
+```
+
+<br>
+
+### Cookies
+This is how state is shared between clients and servers ( HTTP is a stateless protocol, there's no
+information shared about previous requests ).
+
+Scenario:
+
+- `http/cookies.js`
+
+- server echoes the value of a sent cookie
+
+- if no cookie exists, create it and force client to ask for it again
+
+```javascript
+const http = require('http');
+const url = require('url');
+
+let server = http.createServer((request, response) => {
+    /** cookie value of request header's key/value mappings */
+    let cookies = request.headers.cookie;
+
+    /** if no cookies found for domain, create one */
+    if (!cookies) {
+        /** name it and give it a value */
+        let cookieName = "session";
+        let cookieValue = "123456";
+        /** expire the cookie after 4 days from today */
+        let numberOfDays = 4;
+        let expiryDate = new Date();
+        expiryDate.setDate(expiryDate.getDate() + numberOfDays);
+
+        /**
+         * we've set this cookie for the first time, use
+         * HTTP 302 Found (redirect) to tell the client
+         * to call the server again
+         */
+        let cookieText = `${cookieName}=${cookieValue};expires=${expiryDate.toUTCString()};`;
+        response.setHeader('Set-Cookie', cookieText);
+        response.writeHead(302, {'Location': '/'});
+        /** we used request, so verbosely end() */
+        return response.end();
+    }
+
+    /** there will now always be a cookie for this domain */
+    cookies.split(';').forEach(cookie => {
+        let m = cookie.match(/(.*?)=(.*)$/);
+        cookies[m[1].trim()] = (m[2] || '').trim();
+    });
+
+    /**
+     * end the connection after printing this string to a
+     * web browser pointed to http://localhost:8080
+     */
+    response.end(`Cookie set: ${cookies.toString()}`);  // Cookie set: session=123456
+}).listen(8080);
+```
+
+<br>
+
+### MIME Types, Favicons
+It's the responsibility of an HTTP response to set headers describing the contained entity - the MIME
+type. Clients typically pass a request header indicating the MIME type it expects the response's
+to be and the MIME type of its request's body. The server passes back header data about the response's
+body. File MIME types are NOT indicated by the file's extension. <b>Never trust the client</b>, sanity
+check any files streamed in from external sources.
+
+Favicon requests in a GET are normally combined with another GET request for the requested resource.
+It's two requests. Any HTTP server must be able to deal with these requests, checking MIME types and
+handling it:
+```javascript
+const http = require('http');
+http.createServer((request, response) => {
+    if (request.url === '/favicon.ico') {
+        response.writeHead(200, {
+            'Content-Type': 'image/x-icon'
+        });
+        // push favicon.ico data through response stream, then:
+        return response.end();
+    }
+    response.writeHead(200, {
+        'Content-Type': 'text/plain'
+    });
+    response.write('The requested resource');
+    response.end();
+}).listen(8080);
+```
+
+<br>
+
+### POST Forms
+Note: unlike other REST methods ( GET, PUT, etc etc ), handling POST data may have an effect on an
+application's state. Handle carefully.
+
+Scenario:
+
+- `http/http-post.js`
+
+- create a server to return a form to clients
+
+- echo back data a client submits using that form
+
+- determine if we got a form request or a form submission
+
+- return HTML for a form if request, parse submitted data on submission
+
+```javascript
+const http = require('http');
+const qs = require('querystring');
+
+http.createServer((request, response) => {
+    let body = " ";
+    /** root path, so the form is needed */
+    if (request.url === "/") {
+        response.writeHead(200, {
+            "Content-Type": "text/html"
+        });
+        /** set the form to POST sometext to path /submit */
+        return response.end(
+            '<form action="/submit" method="post">\
+            <input type="text" name="sometext">\
+            <input type="submit" value="Send some text">\
+            </form>'
+        );
+    }
+    /** posted path, so the data needs parsing */
+    if (request.url === "/submit") {
+        /** POST has begun a Readable stream, grab it */
+        request.on('readable', () => {
+            let data = request.read();
+            data && (body += data);
+        });
+        /** once POST's _read sends null, echo what POST'ed */
+        request.on('end', () => {
+            let fields = qs.parse(body);
+            response.end(`Thanks for sending: ${fields.sometext}`);
+        });
+    }
+}).listen(8080);
 ```
