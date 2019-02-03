@@ -1137,4 +1137,186 @@ request.on('connect', (res, socket, head) => {
 
 <br>
 
-### HTTPS, TLS, Security
+### HTTP Layered Over SSL/TLS
+Ensuring client-side business logic and web services are protected
+
+We'll need a self signed certificate to use Node's HTTPS module in a development environment. Won't
+demonstrate identity as a CA does but it lets us use the encryption of HTTPS. This can be applied to
+your everyday development environment, but since I'm just using this in relation to notes I'm taking
+on this book, I'm sticking the key and cert into a locally-bound directory.
+
+Create the private key:
+```
+$ openssl genrsa -out server-key.pem 2048
+```
+
+Then the CSR ( Certificate Signing Request ):
+```
+$ openssl req -new -key server-key.pem -out server-csr.pem
+```
+
+Then sign the private key to create a public certificate:
+```
+$ openssl x509 -req -in server-csr.pem -signkey server-key.pem -out server-cert.pem
+```
+
+<br>
+
+### Module - URL, Querystring
+Request objects will contain a URL property. The <b>URL</b> module handles that URL string.
+
+Start a node environment. The method `url.parse()` decomposes the string:
+```
+$ node
+# for brevities sake:
+> let ourURL = "http://username:password@www.example.org:8080/events/today/?filter=sports&maxresults=20#soccer";
+> console.log(url.parse(ourURL));
+Url {
+  protocol: 'http:',
+  slashes: true,
+  auth: 'username:password',
+  host: 'www.example.org:8080',
+  port: '8080',
+  hostname: 'www.example.org',
+  hash: '#soccer',
+  search: '?filter=sports&maxresults=20',
+  query: 'filter=sports&maxresults=20',
+  pathname: '/events/today/',
+  path: '/events/today/?filter=sports&maxresults=20',
+  href:
+   'http://username:password@www.example.org:8080/events/today/?filter=sports&maxresults=20#soccer' }
+```
+
+<br>
+
+Passing `true` as the second argument to `url.parse()` converts the `query` field to a key/value map:
+```
+> console.log(url.parse(ourURL, true));
+Url {
+  ...
+  query:
+   [Object: null prototype] { filter: 'sports', maxresults: '20' },
+  pathname: '/events/today/',
+  path: '/events/today/?filter=sports&maxresults=20',
+  href:
+   'http://username:password@www.example.org:8080/events/today/?filter=sports&maxresults=20#soccer' }
+```
+
+<br>
+
+To use the protocol-relative URL ( `//www.example.org` ) instead of an absolute URL
+( `http://www.example.org` ) pass `true` as a third argument, telling the method that slashes denote
+a host not a path:
+```
+> console.log(url.parse("//www.example.org"));
+Url {
+  ...
+  host: null,
+  path: '//www.example.org',
+  ... }
+
+> console.log(url.parse("//www.example.org", null, true));
+Url {
+  ...
+  host: 'www.example.org',
+  path: null,
+  ... }
+```
+
+<br>
+
+Then you can have protocol independent URLs to work with and, for example, set what type of protocol
+to use on the fly within an `http.request()` method via creating one of these URLs with `url.format()`:
+```javascript
+// note the similarity here with the object that gets
+// returned from calls to url.parse()
+url.format({
+    protocol: 'http',
+    host: 'www.example.org'
+});
+```
+
+<br>
+
+Method `url.resolve` can also be used for URL string creation:
+```javascript
+url.resolve("http://example.org/one/two", "three/four");  // http://example.org/one/three/four
+url.resolve("http://example.org/one/two", "/three/four");  // http://example.org/three/four
+url.resolve("http://example.org", "http://google.com");  // http://google.com/
+```
+
+<br>
+
+The <b>Querystring</b> module handles composing/decomposing a query from a map of key/value pairs:
+```javascript
+// normally seen in GET requests
+let qs = require("querystring");
+qs.parse("foo=bar&bingo=bango");  // { foo: 'bar', bingo: 'bango' }
+
+// optional arguments, 2nd: separator string, 3rd: assignment string
+qs.parse("foo:bar^bingo:bango", "^", ":");  // { foo: 'bar', bingo: 'bango' }
+
+// create a querystring
+qs.stringify({ foo: 'bar', bingo: 'bango'});  // foo=bar&bingo=bango
+
+// stringify with custom separators
+qs.stringify({ foo: 'bar', bingo: 'bango' }, "^", ":");  // foo:bar^bingo:bango
+```
+
+<br>
+
+### Cookies
+This is how state is shared between clients and servers ( HTTP is a stateless protocol, there's no
+information shared about previous requests ).
+
+Scenario:
+
+- `cookies.js`
+
+- server echoes the value of a sent cookie
+
+- if no cookie exists, create it and force client to ask for it again
+
+```javascript
+const http = require('http');
+const url = require('url');
+
+let server = http.createServer((request, response) => {
+    /** cookie value of request header's key/value mappings */
+    let cookies = request.headers.cookie;
+
+    /** if no cookies found for domain, create one */
+    if (!cookies) {
+        /** name it and give it a value */
+        let cookieName = "session";
+        let cookieValue = "123456";
+        /** expire the cookie after 4 days from today */
+        let numberOfDays = 4;
+        let expiryDate = new Date();
+        expiryDate.setDate(expiryDate.getDate() + numberOfDays);
+
+        /**
+         * we've set this cookie for the first time, use
+         * HTTP 302 Found (redirect) to tell the client
+         * to call the server again
+         */
+        let cookieText = `${cookieName}=${cookieValue};expires=${expiryDate.toUTCString()};`;
+        response.setHeader('Set-Cookie', cookieText);
+        response.writeHead(302, {'Location': '/'});
+        /** we used request, so verbosely end() */
+        return response.end();
+    }
+
+    /** there will now always be a cookie for this domain */
+    cookies.split(';').forEach(cookie => {
+        let m = cookie.match(/(.*?)=(.*)$/);
+        cookies[m[1].trim()] = (m[2] || '').trim();
+    });
+
+    /**
+     * end the connection after printing this string to a
+     * web browser pointed to http://localhost:8080
+     */
+    response.end(`Cookie set: ${cookies.toString()}`);  // Cookie set: session=123456
+}).listen(8080);
+```
