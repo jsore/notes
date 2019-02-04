@@ -550,15 +550,14 @@ or haven't been queued yet, one being accessible via `next()`, the other `then()
 
 ### Applying ^ That ^
 
-- [ ] it should create a process to query Twitter for `#nodejs`
-- [ ] it should write any messages to `tweets.txt` in 140-byte chunks
-- [ ] it should create a server to broadcast these messages to a client using<br>
-SSE's, <b>Server Sent Events</b>
-- [ ] it should trigger those broadcasts with write events to `tweets.txt`
-- [-] it should asynchronously read 140-byte chunks from last-known client read<br>
-pointer on write event
-- [-] it should continue until EOF, recursively broadcasting
-- [ ] it should have a place to display these broadcasts, `client.html`
+It should...
+- [ ] create a process to query Twitter for `#nodejs`
+- [ ] write any messages to `tweets.txt` in 140-byte chunks
+- [ ] create a server to broadcast these messages to a client using SSE's, <b>Server Sent Events</b>
+- [ ] trigger those broadcasts with write events to `tweets.txt`
+- [-] asynchronously read 140-byte chunks from last-known client read pointer on write event
+- [-] continue until EOF, recursively broadcasting
+- [ ] have a place to display these broadcasts, `client.html`
 
 Finally, it should demonstrate...
 - [-] listening to file system for changes, then responding
@@ -1403,3 +1402,24 @@ http.createServer((request, response) => {
     }
 }).listen(8080);
 ```
+
+<br>
+
+### Applying ^ That ^
+
+It should...
+- [ ] generate pie charts dynamically server-side based on client requests
+- [ ] stream ( not just serve ) PNG representations of that data to clients
+- [ ] create PNG data streams from SVG representations by piping into HTTP resoonse streams
+- [ ] use <b>ImageMagick</b> conversion output streams for those SVG >> PNG conversion
+- [ ] keep those conversion streams operating within a separate ( child ) process
+- [ ] generate the converted SVG data ( the PNG's ) within a virtualized DOM
+- [ ] use npm package <b>jsdom</b> to create the virtual DOM residing within a Node process
+- [ ] use library <b>D3.js</b> as a JS API for data visualization creation
+- [ ] write the created PNG to a file, for caching server-side, piping that existing render as necessary
+- [ ] force the client to send values adding up to 1 ( ex: .2 + .7 + .1 )
+- [ ] tie a unique key to a request's data ( the values ) for querying
+- [ ] sort the values, join them into a string and use that string as the key for the cached pie graph
+
+Further, this isn't to be regarded as a production-ready example. We'll be assuming the client is
+sending properly formed requests - ignoring the dictum of 'never trust the user'.
