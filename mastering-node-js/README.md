@@ -1409,7 +1409,7 @@ http.createServer((request, response) => {
 
 It should...
 - [ ] generate pie charts dynamically server-side based on client requests
-- [ ] stream ( not just serve ) PNG representations of that data to clients
+- [ ] stream ( not just serve ) PNG representations of that SVG data to clients
 - [ ] create PNG data streams from SVG representations by piping into HTTP resoonse streams
 - [ ] use <b>ImageMagick</b> conversion output streams for those SVG >> PNG conversion
 - [ ] keep those conversion streams operating within a separate ( child ) process
@@ -1423,3 +1423,9 @@ It should...
 
 Further, this isn't to be regarded as a production-ready example. We'll be assuming the client is
 sending properly formed requests - ignoring the dictum of 'never trust the user'.
+
+<br>
+
+<b>Creating a PNG representation, caching it, send it</b>
+
+Install ImageMagick: http://www.imagemagick.org/script/download.php
