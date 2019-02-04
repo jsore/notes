@@ -25,6 +25,7 @@ http.createServer((request, response) => {
         /** POST has begun a Readable stream, grab it */
         request.on('readable', () => {
             let data = request.read();
+            /** return new content and concat the rest */
             data && (body += data);
         });
         /** once POST's _read sends null, echo what POST'ed */
