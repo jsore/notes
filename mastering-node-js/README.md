@@ -1408,18 +1408,18 @@ http.createServer((request, response) => {
 ### Applying ^ That ^
 
 It should...
-- [ ] generate pie charts dynamically server-side based on client requests
-- [ ] stream ( not just serve ) PNG representations of that SVG data to clients
-- [ ] create PNG data streams from SVG representations by piping into HTTP resoonse streams
-- [ ] use <b>ImageMagick</b> conversion output streams for those SVG >> PNG conversion
-- [ ] keep those conversion streams operating within a separate ( child ) process
-- [ ] generate the converted SVG data ( the PNG's ) within a virtualized DOM
-- [ ] use npm package <b>jsdom</b> to create the virtual DOM residing within a Node process
-- [ ] use library <b>D3.js</b> as a JS API for data visualization creation
-- [ ] write the created PNG to a file, for caching server-side, piping that existing render as necessary
-- [ ] force the client to send values adding up to 1 ( ex: .2 + .7 + .1 )
-- [ ] tie a unique key to a request's data ( the values ) for querying
-- [ ] sort the values, join them into a string and use that string as the key for the cached pie graph
+- [-] generate pie charts dynamically server-side based on client requests
+- [-] stream ( not just serve ) PNG representations of that SVG data to clients
+- [-] create PNG data streams from SVG representations by piping into HTTP resoonse streams
+- [-] use <b>ImageMagick</b> conversion output streams for those SVG >> PNG conversion
+- [-] keep those conversion streams operating within a separate ( child ) process
+- [-] generate the converted SVG data ( the PNG's ) within a virtualized DOM
+- [-] use npm package <b>jsdom</b> to create the virtual DOM residing within a Node process
+- [-] use library <b>D3.js</b> as a JS API for data visualization creation
+- [-] write the created PNG to a file, for caching server-side, piping that existing render as necessary
+- [-] force the client to send values adding up to 1 ( ex: .2 + .7 + .1 )
+- [-] tie a unique key to a request's data ( the values ) for querying
+- [-] sort the values, join them into a string and use that string as the key for the cached pie graph
 
 Further, this isn't to be regarded as a production-ready example. We'll be assuming the client is
 sending properly formed requests - ignoring the dictum of 'never trust the user'.
@@ -1428,4 +1428,11 @@ sending properly formed requests - ignoring the dictum of 'never trust the user'
 
 <b>Creating a PNG representation, caching it, send it</b>
 
-Install ImageMagick: http://www.imagemagick.org/script/download.php
+Install ImageMagick then spawn a Node process to interface with the installed binary:<br>
+http://www.imagemagick.org/script/download.php
+
+Files `d3.min.js` and `d3.layout.min.js` are expected by `pie.js`, which is the implementation of D3<br>
+( https://gist.github.com/mattbaker/1509145 )
+
+File `server.js` is the implementation of jsdom and is how the pie chart is being generated and
+streamed, which is where the focus shoud be.
