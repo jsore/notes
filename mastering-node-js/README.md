@@ -1542,3 +1542,154 @@ var writer = (request, response) => {
 }
 http.createServer(writer).listen(8080);
 ```
+
+<br><br><br>
+
+# Advanced Filesystem Manipulation
+
+<br>
+
+### Module - Path
+Compose, decompose and relate paths instead of hand rolling a method to manipulate a path string.
+
+Working with file paths from untrusted sources: `path.normalize`
+```javascript
+const path = require('path');
+path.normalize("../one///two/./three.html");  // ../one/two/three.html
+```
+
+Building a single path out of segments: `path.join`
+```javascript
+const path = require('path');
+path.join("../", "one", "two", "three.html");  // ../one/two/three.html
+```
+
+Snip a directory name out of a path: `path.dirname`
+```javascript
+const path = require('path');
+path.dirname("../one/two/three.html");  // ../one/two
+```
+
+Manipulate the final path segment: `path.basename`
+```javascript
+const path = require('path');
+path.basename("../one/two/three.html");  // three.html
+
+// Remove file extension from the basename
+path.basename("../one/two/three.html", ".html");  // three
+```
+
+Slice from the last period (.) to the end of the path string: `path.extname`
+```javascript
+const path = require('path');
+var pstring = "../one/two/three.html";
+path.extname(pstring);  // .html
+```
+
+Find the relative path from one absolute path to another: `path.relative`
+```javascript
+const path = require('path');
+path.relative(
+  '/one/two/three/four',
+  '/one/two/thumb/war'
+);
+// ../../thumb/war
+```
+
+<br>
+
+### File Descriptors, Operations
+
+The `fs.open` method
+```javascript
+//fs.open(path, flags, [mode], callback)
+// [mode] is optional, for setting permissions for file in octal digits (755, 777, etc)
+fs.open("path.js", "r", (err, fileDescriptor) => {
+  // the callback receives exceptions caused by operation as 1st argument
+  // the 2nd argument will be a file descriptor for the file at 'path'
+  console.log(fileDescriptor);  // an int uniquely describing a file
+});
+```
+
+Be sure to remember to `fs.close(fd, callback)` ( `callback` receives any exceptions thrown )
+
+A note about `[mode]`'s and setting read/write/execute bits in octal digits:
+```
+fs.chmod(path, mode, callback)
+fs.fschmod(fd, mode, callback) // the same, except with a file descriptor
+
+chmod(755)
+
+         [r]ead  [w]rite  e[x]ecute  total
+  owner  4       2        1          7
+  group  4       0        1          5
+  other  4       0        1          5
+
+
+chmod(777):
+
+         [r]ead  [w]rite  e[x]ecute  total
+  owner  4       2        1          7
+  group  4       2        1          5
+  other  4       2        1          5
+```
+
+<br>
+
+Scenario: we want to walk through a directory and its subdirectories
+
+- `ch4-filesystem/readdir.js`
+
+- maps directories
+
+- returns JSON object reflecting directory tree, each leaf a file object
+
+- broadcasts an event using a `EventEmitter` object
+
+```javascript
+let walk = (dir, done, emitter) => {
+  /** create object to publish events when dir or file encountered */
+  emitter = emitter || new (require('events').EventEmitter);
+  let results = {};
+
+  /** start by getting all files in a directory and fire a callback afterwards */
+  fs.readdir(dir, (err, list) => {
+    let pending = list.length;
+    if (err || !pending) {
+      return done(err, results);
+    }
+
+    /** if the argument in CB isn't an error, it'll be the dir list */
+    list.forEach(file => {
+      let dfile = require('path').join(dir, file);
+
+      fs.stat(dfile, (err, stat) => {
+        if(stat.isDirectory()) {
+          /** broadcast that directory is found... */
+          emitter.emit('directory', dfile, stat);
+          /** ...recursively step through subdirectories... */
+          return walk(dfile, (err, res) => {
+            results[file] = res;
+            !--pending && done(null, results);
+          }, emitter);
+        }
+
+        /** ...or broadcast that normal file is found */
+        emitter.emit('file', dfile, stat);
+        results[file] = stat;
+        !--pending && done(null, results);
+        return emitter;
+      });
+    });
+  });
+};
+
+walk("usr/local", (err, res) => {
+  console.log(require('util').inspect(res, {depth: null}));
+}).on("directory", (path, stat) => {
+  /** if a directory event is emitted... */
+  console.log(`Directory: ${path} - size: ${stat.size}`);
+}).on("file", (path, stat) => {
+  console.log(`File: ${path} - size: ${stat.size}`);
+});
+```
