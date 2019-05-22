@@ -1,7 +1,8 @@
 # Building Enterprise JS Applications
 
-My notes
-- and excerpts of possible integrations to my site `jsore.com`
+My notes and excerpts of possible integrations to my site `jsore.com`
+
+Source and supplemental code: https://github.com/jsore/hobnob
 
 <br>
 
@@ -69,3 +70,20 @@ My notes
 - PM2
 - Docker
 - Kubernetes
+
+<br><br>
+
+Reminder to self: TM userscript added to fix the fucky sizing for `kbd` text
+> ```javascript
+> // ==UserScript==
+> ...
+> // @match        https://learning.oreilly.com/library/view/building-enterprise-javascript/*
+> // @grant        GM_addStyle
+> ...
+> let fixme = () => {
+>     //GM_addStyle('kbd { font-size: 1rem !important; }');
+>     GM_addStyle('#sbo-rt-content kbd, #sbo-rt-content .packt_action { font-size: 13pt !important; }');
+>     console.log('kbd text size fixed');
+> };
+> fixme();
+> ```
