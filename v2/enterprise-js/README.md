@@ -82,7 +82,9 @@ Reminder to self: TM userscript added to fix the fucky sizing for `kbd` text
 > ...
 > let fixme = () => {
 >     //GM_addStyle('kbd { font-size: 1rem !important; }');
->     GM_addStyle('#sbo-rt-content kbd, #sbo-rt-content .packt_action { font-size: 13pt !important; }');
+>     // i hate myself
+>     //GM_addStyle('#sbo-rt-content kbd, #sbo-rt-content .packt_action { font-size: 13pt !important; }');
+>     GM_addStyle('#sbo-rt-content kbd, #sbo-rt-content .packt_action { font-size: 13pt !important; } #sbo-rt-content a, #sbo-rt-content .packt_url { font-size: 11pt; }');
 >     console.log('kbd text size fixed');
 > };
 > fixme();
