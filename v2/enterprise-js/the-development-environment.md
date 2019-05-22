@@ -174,4 +174,12 @@ $ yarn add @babel/preset-env --dev
 
 $ npx babel index.js -o compiled.js
 $ node compiled.js    # open browser, see results
+
+    refactor: separate source and distribution code
+
+$ rm compiled.js compile.js
+$ mkdir src dist
+$ mv index.js dist/
+$ rm -rf dist/ && npx babel src -d dist     # clean up artifacts from old build 1st
+$ node dist/index.js                        # browser: yo
 ```
