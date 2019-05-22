@@ -4,6 +4,8 @@ Some stuff I might want to use on v2 of my site.
 
 <br>
 
+### Directory walker
+
 ```javascript
 const fs = require('fs');
 
