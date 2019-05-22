@@ -56,6 +56,16 @@ let walk = (dir, done, emitter) => {
           /** ...recursively step through subdirectories... */
           return walk(dfile, (err, res) => {
             results[file] = res;
+            /**
+             * this fuckery bothered me a bit
+             *
+             * decrement pending and evaluate if true
+             * fall through to done() if pending not true
+             * !--var false until var === 0
+             * so, if pending isn't 0, we're not done()
+             *
+             * https://stackoverflow.com/questions/34323527/what-does-do-in-javascript
+             */
             !--pending && done(null, results);
           }, emitter);
         }

@@ -1,6 +1,7 @@
 # Building Enterprise JS Applications
 
-My notes, and excerpts of possible integrations to my site `jsore.com`
+My notes
+- and excerpts of possible integrations to my site `jsore.com`
 
 <br>
 
@@ -39,3 +40,32 @@ My notes, and excerpts of possible integrations to my site `jsore.com`
 [Kubernetes For HA](https://github.com/jsore/notes/blob/master/v2/enterprise-js/kubernetes.md)
 
 [Snippets](https://github.com/jsore/notes/blob/master/v2/enterprise-js/snippets.md) ( just some things that might be useful to integrate )
+
+<br>
+
+### Concepts And Tools
+
+( Some of these I'm already familair or am already using in my daily workflow )
+
+- Git
+- npm
+- yarn
+- Babel
+- ESLint
+- Cucumber
+- Mocha
+- Istanbul/NYC
+- Selenium
+- OpenAPI/Swagger
+- Express
+- Elasticsearch
+- React
+- Redux
+- Webpack
+- Travis
+- Jenkins
+- NGINX
+- Linux
+- PM2
+- Docker
+- Kubernetes
