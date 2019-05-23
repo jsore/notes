@@ -7,6 +7,11 @@
 - `nodemon` for project file changes
 - Linting with ESLint
 
+<br><br>
+
+
+
+--------------------------------------------------------------------------------
 ### Module Standards
 
 <strong>CommonJS</strong>: The format NodeJS modules are written.
@@ -25,8 +30,11 @@ Module formats were standardized by ECMA in <strong>ECMAScript 2015</strong>
 
 <strong>Babel</strong> is the de facto ES6 >> CommonJS transpiler
 
-<br>
+<br><br>
 
+
+
+--------------------------------------------------------------------------------
 ### Yarn Package Manager
 
 Main differentiating factor is how dependencies are resolved and downloaded.
@@ -34,7 +42,9 @@ Main differentiating factor is how dependencies are resolved and downloaded.
 Yarn installs packages and saves a copy of it at `~/.yarn-cache` for package
 cache'ing
 
-<br>
+<br><br>
+
+
 
 Installing:
 ```
@@ -42,9 +52,11 @@ $ brew install yarn
 $ yarn --version
 ```
 
-See this for `PATH` problems: https://yarnpkg.com/en/docs/install#mac-stable
+_See this for `PATH` problems:_ https://yarnpkg.com/en/docs/install#mac-stable
 
-<br>
+<br><br>
+
+
 
 Usage:
 ```
@@ -75,28 +87,16 @@ why                                   ( ex: was it a dependency of a dependency?
 -------------------------------------------------------------------------------------
 ```
 
-<br>
+<br><br>
 
+
+
+--------------------------------------------------------------------------------
 ### Babel ES6 Transpiling
 
-Pre-Babel:
-```javascript
-/** hobnob/index.js */
-const http = require('http');   // CommonJS syntax
-import http from 'http';        // ES6 syntax, SyntaxError: Unexpected token
-
-const requestHandler = function (req, res) {
-  res.writeHead(200, {'Content-Type': 'text/plain'});
-  /** finsih prepping response and send to client */
-  res.end('Yo');
-}
-const server = http.createServer(requestHandler);
-server.listen(8080);
-```
-
 <br>
 
-<strong>Babel service `@babel/cli`</strong>
+Babel service `@babel/cli`
 - transpile source code before runtime
 - gives an executable ( `babel` ) for transpiling in terminals
 - copies files around
@@ -104,19 +104,27 @@ server.listen(8080);
 - `plugins` tell Babel how to transform your code
 - `presets` are predefined groups of `plugins`
 
-<strong>Babel service `@babel/polyfill`</strong>
+<br>
+
+Babel service `@babel/polyfill`
 - pollyfills for newer un-supported code ( `fetch -> XMLHTTPRequest`, etc )
 
-<strong>Babel service `@babel/register`</strong>
+<br>
+
+Babel service `@babel/register`
 - transpile at runtime
 - useful for testing, lets you write ESNext inside tests, which is transpiled down
 Note: this isn't used in this project
 
-<strong>Babel service `@babel/preset-env`</strong>
+<br>
+
+Babel service `@babel/preset-env`
 - gives you the `env` preset, dynamically download Babel plugins based on the
 environment's compatibilities
 
-<br>
+<br><br>
+
+
 
 Install & usage:
 ```
@@ -131,35 +139,46 @@ $ ./node_modules/.bin/babel index.js -o compile.js
 ```
 
 `npx` command builds a compiled version of the file in the same dir, side by side:
+```javascript
+// index.js
+import http from 'http';
+const requestHandler = function (req, res) {
+  res.writeHead(200, {'Content-Type': 'text/plain'});
+  /** finsih prepping response and send to client */
+  res.end('Yo');
+}
+const server = http.createServer(requestHandler);
+server.listen(8080);
+```
+```javascript
+// compile.js
+import http from 'http';
 
+const requestHandler = function (req, res) {
+  res.writeHead(200, {
+    'Content-Type': 'text/plain'
+  });
+  /** finsih prepping response and send to client */
+
+  res.end('Yo');
+  };
+
+  const server = http.createServer(requestHandler);
+  server.listen(8080);
 ```
-// index.js                                            |  // compile.js
-//const http = require('http');                        |  //const http = require('http');
-import http from 'http';                               |  import http from 'http';
-const requestHandler = function (req, res) {           |
-  res.writeHead(200, {'Content-Type': 'text/plain'});  |  const requestHandler = function (req, res) {
-  /** finsih prepping response and send to client */   |    res.writeHead(200, {
-  res.end('Yo');                                       |      'Content-Type': 'text/plain'
-}                                                      |    });
-const server = http.createServer(requestHandler);      |    /** finsih prepping response and send to client */
-server.listen(8080);                                   |
-                                                       |    res.end('Yo');
-                                                       |  };
-                                                       |
-                                                       |  const server = http.createServer(requestHandler);
-                                                       |  server.listen(8080);
-```
+
+<br><br>
+
+
 
 Using the `@babel/preset-env` package and updating our `.babelrc` file makes
-it even easier to transpile
-
+it even easier to transpile. Install it:
 ```
-    install it
-
 $ yarn add @babel/preset-env --dev
+```
 
-    now update .babelrc
-
+Now update `.babelrc`:
+```
 {
   "presets": [
     ["@babel/env", {
@@ -169,17 +188,87 @@ $ yarn add @babel/preset-env --dev
     }]
   ]
 }
+```
 
-    now, run the npx command to build the file and run it
+Then you can run the npx command to build the file and run it, while cleaning up
+any possible artificats remaining from any previous builds with
+`rm -rf dist/ && npx babel src -d dist`
 
-$ npx babel index.js -o compiled.js
-$ node compiled.js    # open browser, see results
+```
+$ npx babel index.js -o compiled.js   # build without separating src/dist
+$ node compiled.js                    # open browser, see results
 
-    refactor: separate source and distribution code
-
-$ rm compiled.js compile.js
-$ mkdir src dist
-$ mv index.js dist/
-$ rm -rf dist/ && npx babel src -d dist     # clean up artifacts from old build 1st
+$ rm compiled.js compile.js           # remove old builds
+$ mkdir src dist                      # set somewhere to accept our Babel code
+$ mv index.js src/                    # move our ES6 code
+$ rm -rf dist/ && npx babel src -d dist     # rebuild after accounting for artifacts
 $ node dist/index.js                        # browser: yo
+```
+
+<br><br>
+
+
+
+--------------------------------------------------------------------------------
+### Cross Platform Compatibility
+
+Make sure your npm scripts work accross other architectures ( Windows, Linux, etc ).
+Example:
+```
+$ rm -rf dist ...       # fine for Mac & *Nix, but...
+$ rd /s /q dist         # ...windows would shit itself
+```
+
+The npm package `rimraf` helps  with this:
+```
+$ yarn add rimraf --dev
+```
+
+Then update `build` script: `"build": "rimraf dist && babel src -d dist",`
+
+<br><br>
+
+
+
+--------------------------------------------------------------------------------
+### Automate Refreshing The Build
+
+Use `nodemon` to watch for changes to your project's files and re-run after a change
+```
+$ yarn add nodemon --dev
+```
+
+Update `scripts`: `"watch": "nodemon -w src --exec yarn run serve"`
+
+Nodemon will now watch for changes to files in `src` then run `yarn run serve`
+and restart the server.
+
+Run it with `yarn run watch`, test it by making a small change to `src/index.js`
+
+<br><br>
+
+
+
+--------------------------------------------------------------------------------
+### Set Up Linting with ESLint
+
+Standardized your styles for readability & to account for another dev's style prefs
+
+Rules for code styles are set in `.eslintrc`. The flag `--init` gives you a
+wizard for composing the file, `--fix` automatically fixes violations that can
+be done without a human.
+
+<br><br>
+
+
+Install and configure:
+```
+$ yarn add eslint --dev
+$ npx eslint --init
+( select use popular )
+( select airbnb )
+( select no react )
+( select json config )
+( select yes install )
+( .eslintrc.json created in proj root )
 ```
