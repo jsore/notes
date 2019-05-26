@@ -264,7 +264,11 @@ be done without a human.
 <br><br>
 
 
-Install and configure:
+Linter of choice: Airbnb JavaScript https://github.com/airbnb/javascript
+
+<br>
+
+Install and configure ( from the book ):
 ```
 $ yarn add eslint --dev
 $ npx eslint --init
@@ -275,3 +279,112 @@ $ npx eslint --init
 ( select yes install )
 ( .eslintrc.json created in proj root )
 ```
+
+<br>
+
+Install and configure ( IRL ):
+```
+$ npx eslint --init
+> ? How would you like to use ESLint? To check syntax, find problems, and enforce code style
+> ? What type of modules does your project use? JavaScript modules (import/export)
+> ? Which framework does your project use? None of these
+> ? Where does your code run? Browser, Node
+> ? How would you like to define a style for your project? Use a popular style guide
+> ? Which style guide do you want to follow? Airbnb (https://github.com/airbnb/javascript)
+> ? What format do you want your config file to be in? JSON
+> Checking peerDependencies of eslint-config-airbnb-base@latest
+> The config that you've selected requires the following dependencies:
+>
+> eslint-config-airbnb-base@latest
+> ? Would you like to install them now with npm? Yes
+> Installing eslint-config-airbnb-base@latest
+> internal/modules/cjs/loader.js:584
+>     throw err;
+>     ^
+>
+> Error: Cannot find module '../lib/utils/unsupported.js'
+
+.eslintrc.json
+{
+    "env": {
+        "browser": true,
+        "es6": true,
+        "node": true
+    },
+    "extends": "airbnb-base",
+    "globals": {
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly"
+    },
+    "parserOptions": {
+        "ecmaVersion": 2018,
+        "sourceType": "module"
+    },
+    "rules": {
+    }
+}
+```
+
+The additional dependencies didn't install, had to do them manually:
+```
+$ yarn add eslint-config-airbnb-base@latest
+$ yarn add eslint-plugin-import@latest
+$ npx eslint src/index.js     # finally runs
+> ...
+> ✖ 8 problems (7 errors, 1 warning)
+>   7 errors and 0 warnings potentially fixable with the `--fix` option.
+$ npx eslint --fix src/index.js
+```
+
+<br><br>
+
+
+Optional additions:
+
+ - add the linting script to `package.json.scripts`
+ - install the eslint IDE extension for your IDE/text editor
+ - force a git commit to fail if linter errors by using a git hook ( `.git/hooks` )
+ - __automate the creation of a new hook with `Husky` ( `$ yarn add husky --dev` )__
+   + remember to add the `precommit` script to `package.json` that `Husky` watches for
+
+<br><br>
+
+
+
+--------------------------------------------------------------------------------
+### Setup Git To Finish Project Bootrapping
+
+I made a mistake here, got ahead of the book and started commiting stuff to a
+`dev` branch I made. I had no idea this portion of a project was considered
+__Bootstrapping__ and shouldnt be considered features....makes sense in hindsight.
+
+Already have a `.gitignore` for `node_modules`.
+
+To remove the other files I don't want Git to track anymore:
+```
+# keep the file in workind directory but make it fall off Git
+$ git rm --cached dist/index.js dist    # can be recreated from src/index.js
+```
+
+Then I deleted my existing `dev` branch and just touched or updated files to stage
+a commit similar to the book's
+```
+$ git status
+  ( 7 files untracked )
+$ git add -A && git commit -m "Initial project setup"
+```
+
+<br><br>
+
+
+
+--------------------------------------------------------------------------------
+### Summary
+
+Beacuse I have a feeling I'll forget eventually...
+
+- barebones HTTP server with `http` module
+- Babel to transpile ESNext -> local environment support
+- `nodemon` for change watch
+- setup ESLint for code management
+- pre-commit Git hook to run the linter before commiting
