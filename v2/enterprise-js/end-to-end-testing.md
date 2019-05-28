@@ -6,6 +6,9 @@ Using a TDD approach, develop backend API for a client CRUD app off an Elasticse
 
 - Types of tests
 - Implement TDD workflow __Red-Green-Refactor__ cycle
+  + Write failing tests `Red: test failed`
+  + Rewrite to pass tests `Green: test is now passing`
+  + Improve implementation quality `Refactor: work on code elegance` ( app's AND test's code )
 - E2E tests with `Cucumber` and `Gherkin`
 
 <br><br>
@@ -120,7 +123,14 @@ $ yarn add cucumber --dev
 
 <br>
 
-Separate the platform into multiple features each having defined scenarios to test for.
+
+__File Formats & Usage__
+
+Best Practice: Separate the platform into multiple features each having defined
+scenarios to test for.
+
+Each testing scenario is defined within a `.feature` file, denoted with keywords
+in the Gherkin language.
 
 __Create User Feature__ scenarios:
 
@@ -134,4 +144,120 @@ __Create User Feature__ scenarios:
 ```
 $ mkdir -p spec/cucumber/features/users/create
 $ touch spec/cucumber/features/users/create/main.feature    # feature defined in Gherkin
+```
+
+Example, a single specification from an early form of `main.feature`:
+```
+# some feature and a description of what it should do
+Feature: Create User
+
+ Clients should be able to send a request to our API in
+ order to create a user. Our API should also validate the
+ structure of the payload and respond with an error if it is
+ invalid.
+
+ Scenario: Empty Payload
+
+ If the client sends a POST request to /users with an
+ unsupported payload, it should receive a response with a
+ 4xx status code.
+
+# the steps to test this scenario
+ When the client creates a POST request to /users
+ And attaches a generic empty payload
+ And sends the request
+ Then our API should respond with a 400 HTTP status code
+ And the payload of the response should be a JSON object
+ And contains a message property which says "Payload should not be empty"
+```
+
+Cucumber looks for the `features` directory in the project's root by default, to
+run all `.feature` files within it. Pass our custom path `spec/cucumber/features`
+when running Cucumber
+```
+$ npx cucumber-js spec/cucumber/features
+```
+
+Cucumber can't parse instructions in Gherkin out of the box.
+
+The steps need to be defined in JS code as __step definitions__
+( `spec/cucumber/steps` ). Run with
+```
+$ npx cucumber-js spec/cucumber/features --require spec/cucumber/steps
+( oops, syntax error )
+$ yarn add @babel/register --dev    # 1st set Babel as compiler for ES6 usage
+$ npx cucumber-js spec/cucumber/features --require-module @babel/register --require spec/cucumber/steps
+```
+
+Note to self: the `npx` command above threw an error about `semver` and
+`utils/unsupported.js`. Fixed with:
+```
+# https://stackoverflow.com/questions/44363066/error-cannot-find-module-lib-utils-unsupported-js-while-using-ionic
+$ sudo rm -rf /usr/local/lib/node_modules/npm
+$ brew reinstall node
+( postinstall error )
+$ sudo chown -R $(whoami):admin /usr/local/lib/node_modules
+$ brew postinstall node    # now I can run what I originally wanted:
+$ npx cucumber-js spec/cucumber/features --require-module @babel/register --require spec/cucumber/steps
+```
+
+<br><br>
+
+
+
+--------------------------------------------------------------------------------
+### Implementing Step Definitions Testing
+
+Install `superagent` package for easier HTTP request testing
+- compose requests by chaining steps together
+- initiate a request object at init to get modified on each step
+- those modifications compose the final request
+
+```javascript
+// hobnob/spec/cucumber/steps/index.js
+
+/** 1st step definition... */
+When('the client creates a POST request to /users', function () {
+  /** start a new request object */
+  request = superagent('POST', 'localhost:8080/users');
+});
+
+/** ...2nd step definition... */
+When('attaches a generic empty payload', function () {
+  /** sending empty payloads is superagent's default behavior */
+  return undefined;
+});
+
+/** ...3rd step definition... */
+When('sends the request', function (callback) {
+  /** specify a callback so the next step doesn't run prematurely */
+
+  /** send request from 1st & 2nd steps to testing API server... */
+  request
+    .then((response) => {
+      /** ...and save the response elsewhere... */
+      result = response.res;
+      /** ...then finally callback() after response received and saved */
+      callback();
+    })
+    .catch((errResponse) => {
+      error = errResponse.response;
+      callback();
+    });
+});
+```
+
+<br><br>
+
+
+
+--------------------------------------------------------------------------------
+### Chrome DevTools In Node
+
+Pass `--inspect` when running node app and go to `chrome://inspect/#devices` and
+select 'Open dedicated DevTools for Node', then
+```
+$ yarn global add ndb     # install this globally cause it's a cool tool
+$ npx ndb .               # run the ndb binary
+( bottom left, run node command 'watch' )
 ```
