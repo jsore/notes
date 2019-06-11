@@ -284,7 +284,7 @@ $ git merge --no-ff release/0.1.0
 <strong>Releases are important, represent them as tags on `master`</strong>
 ```
 $ git checkout master
-$ git tag -a -0.1.0 -m "Message about additions"    # -a for annotated (informative)
+$ git tag -a 0.1.0 -m "Message about additions"    # -a for annotated (informative)
 $ git show 0.1.0
 > tag 0.1.0
 > Tagger: Daniel Li <dan@danyll.com>
