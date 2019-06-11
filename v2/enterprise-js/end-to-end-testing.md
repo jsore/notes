@@ -366,4 +366,121 @@ Reasons for refactoring for Express migration:
 - ...performance and security has yet to be addressed
 - ...__Server Side Rendering__ with React frontend needs to be accounted for
 
+<br><br>
+
+
+
+--------------------------------------------------------------------------------
+### Aside: Git Flow Update
+
+I wasn't thinking reasonably about branch structure, I'm taking notes on more
+than one book in this repo and each book will have its own separate sections.
+
+<br>
+
+
+__Old Structure__
+
+So, after merging updates up to this point to `sections -> dev -> master`:
+```
+$ git branch
+    dev
+  * master
+    sections
+    sections.end-to-end-testing
+    sections.the-development-environment
+```
+
+<br>
+
+
+__New Structuure__
+
+```.
+└── master
+    └── dev
+        ├── books/main
+        │   ├── books/some-book
+        │   │   ├── books/some-book.section-title-a
+        │   │   └── books/some-book.section-title-b
+        │   ├── books/a-different-book
+        │   │   ├── books/some-book.section-title-a
+        │   │   ├── books/some-book.section-title-b
+        │   │   ├── books/some-book.section-title-c
+        │   │   ├── books/some-book.section-title-d
+        │   │   └── books/some-book.section-title-e
+        │   └── books/book-over-topic-xyz
+        │       ├── books/some-book.section-title-a
+        │       ├── books/some-book.section-title-b
+        │       └── books/some-book.section-title-c
+        └── ramblings/main
+            ...
+```
+
+<br>
+
+
+Steps taken/process to revise and re-org into a better future proofed structure:
+
+- idk, play it safe and let's do this off `dev`'s branch
+    ```
+    $ git checkout dev
+      Switched to branch 'dev'
+    ```
+
+- delete sub-feature branches ( __REMINDER__: check `master` is up to date first )
+    ```
+    $ git branch -D sections.end-to-end-testing sections.the-development-environment
+      Deleted branch sections.end-to-end-testing (was 812b6bd).
+      Deleted branch sections.the-development-environment (was 024b989).
+
+    $ git branch
+      * dev
+        master
+        sections
+    ```
+
+- then ditch the main feature branch that was there
+    ```
+    $ git branch -D sections
+      Deleted branch sections (was 812b6bd).
+
+    $ git branch
+      * dev
+        master
+    ```
+
+- begin again, fresh start
+    ```
+    $ git checkout -b books/main dev
+      Switched to a new branch 'books/main'
+
+    $ git branch
+      * books/main
+        dev
+        master
+
+    $ git checkout -b books/enterprise-js books/main
+      Switched to a new branch 'books/enterprise-js'
+
+    $ git branch
+      * books/enterprise-js
+        books/main
+        dev
+        master
+
+    $ git checkout -b books/enterprise-js.end-to-end-testing
+      Switched to a new branch 'books/enterprise-js.end-to-end-testing'
+
+    $ git branch
+        books/enterprise-js
+      * books/enterprise-js.end-to-end-testing
+        books/main
+        dev
+        master
+    ```
+
+<br>
+
+`thats-better.png`
 
