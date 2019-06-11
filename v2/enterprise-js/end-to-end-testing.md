@@ -132,6 +132,9 @@ scenarios to test for.
 Each testing scenario is defined within a `.feature` file, denoted with keywords
 in the Gherkin language.
 
+<br>
+
+
 __Create User Feature__ scenarios:
 
 - Client sends `POST` to `/users` with empty payload
@@ -171,6 +174,9 @@ Feature: Create User
  And contains a message property which says "Payload should not be empty"
 ```
 
+<br>
+
+
 Cucumber looks for the `features` directory in the project's root by default, to
 run all `.feature` files within it. Pass our custom path `spec/cucumber/features`
 when running Cucumber
@@ -178,16 +184,34 @@ when running Cucumber
 $ npx cucumber-js spec/cucumber/features
 ```
 
-Cucumber can't parse instructions in Gherkin out of the box.
+The `.feature` files are spread across folders denoting a feature and different
+aspects of that feature.
 
-The steps need to be defined in JS code as __step definitions__
-( `spec/cucumber/steps` ). Run with
+Example: the ability for consumers to create a new user profile is a subfeature
+of the `users` feature,
+```
+spec/cucumber/features/users/create/main.feature
+```
+
+<br>
+
+
+Cucumber can't parse instructions in Gherkin out of the box. The steps need to
+be defined in JS code as __step definitions__
+```
+spec/cucumber/steps
+```
+
+Run with:
 ```
 $ npx cucumber-js spec/cucumber/features --require spec/cucumber/steps
 ( oops, syntax error )
 $ yarn add @babel/register --dev    # 1st set Babel as compiler for ES6 usage
 $ npx cucumber-js spec/cucumber/features --require-module @babel/register --require spec/cucumber/steps
 ```
+
+<br>
+
 
 Note to self: the `npx` command above threw an error about `semver` and
 `utils/unsupported.js`. Fixed with:
@@ -261,3 +285,85 @@ $ yarn global add ndb     # install this globally cause it's a cool tool
 $ npx ndb .               # run the ndb binary
 ( bottom left, run node command 'watch' )
 ```
+
+<br><br>
+
+
+
+--------------------------------------------------------------------------------
+### Using `.env` To Replace Hardcoded Values
+
+Example, removing hardcoded API server names:
+```
+# hobnob/.env
+SERVER_PROTOCOL=http
+SERVER_HOSTNAME=localhost
+SERVER_PORT=8080
+```
+
+Use `dotenv-cli` package to load the variables into our code
+```
+$ yarn add dotenv-cli --dev
+$ dotenv <node command you want to run>    # load the .env file
+( or add dotenv to package.json serve & test:e2e scripts )
+```
+
+<br><br>
+
+
+
+--------------------------------------------------------------------------------
+### Keep Testing Schema DRY
+
+Within a __Scenario Outline__ in `.feature` files, use a __Datatable__
+```
+  | payloadType | statusCode | message                                                       |
+  | empty       | 400        | "Payload should not be empty"                                 |
+  | non-JSON    | 415        | 'The "Content-Type" header must always be "application/json"' |
+  | malformed   | 400        | "Payload should be in JSON format"                            |
+```
+Cucmber will loop through each row and run through the test `row.length` times,
+using the value in each column for that row. Access those values by using
+__placeholders__ in your test's steps
+```
+# placeholders denoted by <variable>
+When the client creates a POST request to /users
+And attaches a generic <payloadType> payload
+And sends the request
+Then our API should respond with a <statusCode> HTTP status code
+And the payload of the response should be a JSON object
+And contains a message property which says <message>
+```
+This keeps you from having to repeat steps shared between multiple scenarios
+
+<br>
+
+
+In your step definitions, use __parameters__ in strings to avoid duplicating code
+```javascript
+/** indicate that the pattern should match an integer */
+Then('our API should respond with a {int} HTTP status code', function (statusCode) {
+  /** pass the value into the callback to do the checking */
+  assert.equal(this.response.statusCode, statusCode);
+});
+```
+Or, using regex
+```javascript
+Then(/^our API should respond with a ([1-5]\d{2}) HTTP status code$/, function (statusCode) {
+```
+
+<br><br>
+
+
+
+--------------------------------------------------------------------------------
+### Migrate API To Web Framework Express
+
+Reasons for refactoring for Express migration:
+- the API is messy and not even that functional, and yet...
+- ...code is not very readable
+- ...PITA to work with low level constructs like streams and buffers
+- ...performance and security has yet to be addressed
+- ...__Server Side Rendering__ with React frontend needs to be accounted for
+
+
