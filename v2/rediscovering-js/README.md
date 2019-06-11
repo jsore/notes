@@ -5,11 +5,11 @@
 
 ### Project Contents
 
-[Safe JS]()
+[Safe JS](https://github.com/jsore/notes/blob/master/v2/rediscovering-js/safe-js.md)
 
-[Newer JS Additions]()
+[Newer JS Additions](https://github.com/jsore/notes/blob/master/v2/rediscovering-js/newer-js.md)
 
-[Modular JS]()
+[Modular JS](https://github.com/jsore/notes/blob/master/v2/rediscovering-js/modular-js.md)
 
-[Going Meta]()
+[Going Meta](https://github.com/jsore/notes/blob/master/v2/rediscovering-js/meta-js.md)
 
