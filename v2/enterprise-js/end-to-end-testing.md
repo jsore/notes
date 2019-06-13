@@ -484,3 +484,29 @@ Steps taken/process to revise and re-org into a better future proofed structure:
 
 `thats-better.png`
 
+<br><br>
+
+
+
+--------------------------------------------------------------------------------
+### Summary
+
+__Red__
+- begin by writing test scenarios
+- implement any undefined steps
+- run tests, see them fail
+- implement enough application code to make them pass
+
+__Green__
+- all tests are passing
+
+__Refactor__
+- DRY not adhered to?
+- Should a custom supportive module be created for modularization?
+
+<br>
+
+
+__The whole point of TDD is to translate system design into requirements__
+
+
