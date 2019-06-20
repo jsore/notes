@@ -472,4 +472,191 @@ Dependencies used only while devloping, not packaged with distribution:
 
 
 --------------------------------------------------------------------------------
-###
+### Writing Specificaionts As Tests
+
+So far, only scenarios where user profiles are not supplied have been implemented.
+
+What should constitute a valid profile? Choice:
+
+```
+{
+  "name": {
+    "first": <string>,
+    "last": <string>,
+    "middle": <string>
+  },
+  "summary": <string>,
+  "bio": <string>
+}
+```
+
+<br><br>
+
+
+
+--------------------------------------------------------------------------------
+### Refactor: Validate With Data Schema
+
+Instead of validating using `if` blocks, use a schema ( declarative data
+structure ) to define how request data objects should be formed
+
+__JSON Schema__: define a schema written in JSON and compare data object using a
+llibrary.
+
+Consider __interoperability__ ( how easy the schema can be consumed by frameworks
+libraries or languages ) and __expressiveness__ ( the functionality to validate
+or operate on data 'if x is y then x needs to be type c' ) when picking a schema.
+
+<br>
+
+
+A JSON Schema is itself a JSON object, simplest example:
+```
+{}
+```
+
+Which is useless, any data type can be used in here. Define the data type with
+the `type` keyword:
+```
+{ "type": "object" }    <-- allows strings or array of strings
+```
+
+Inputs for user profile objects are expected to be `objects` only.
+
+Keywords can share type-specific keywords or other descriptive keywords.
+```
+{
+  "type": "object",
+  "properties": {                       <-- type-specific keyword, object props go here
+    "bio": { "type": "string" },        <-- properties must be objects with sub-schema
+    "summary": { "type": "string" },
+    "name": { "type": "object" }
+  }
+}
+```
+
+Objects with keys not defined in `properties` can be rejected:
+```
+{
+  "type": "object",
+  "properties": {
+    "bio": { "type": "string" },
+    "summary": { "type": "string" },
+    "name": { "type": "object" }
+  },
+  "additionalProperties": false         <-- another object-specific keyword
+}
+```
+
+This keyword is required here because of Elasticsearch using __dynamic mapping__
+to infer data types for documents to generate its indexes. What it infers is
+what it uses for an index's type mapping.
+
+<br>
+
+
+Define better, more specific property constraints with sub-schemas
+```
+{
+  "type": "object",
+  "properties": {
+    "bio": { "type": "string" },
+    "summary": { "type": "string" },
+    "name": {
+      "type": "object",
+      "properties": {
+        "first": { "type": "string" },
+        "last": { "type": "string" },
+        "middle": { "type": "string" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
+```
+
+But this is still unclear that it's a Schema, not just a JSON object. Supply to
+users additional context explaining what the purpose of this JSON block is
+```
+"title": "User Profile Schema",
+"description": "For validating client-provided user profile object when create and/or updating an user",
+
+"$schema": "http://json-schema.org/schema#"    <-- specifying meta-schema
+
+"$id": "http://example.com"    <-- unique referer to our schema
+```
+
+<br>
+
+
+Finished Schema `src/schema/users/profile.json`
+```
+{
+  "$schema": "http://json-schema.org/schema#",
+  "$id": "http://api.hobnob.social/schemas/users/profile.json",
+  "title": "User Profile Schema",
+  "description": "For validating client-provided user profile object when create and/or updating an user",
+  "type": "object",
+  "properties": {
+    "bio": { "type": "string" },
+    "summary": { "type": "string" },
+    "name": {
+      "type": "object",
+      "properties": {
+        "first": { "type": "string" },
+        "last": { "type": "string" },
+        "middle": { "type": "string" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
+```
+
+This Schema can now be used with a `$ref` reference. Example, from the
+Create User schema
+```
+{
+  "$schema": "http://json-schema.org/schema#",
+  "$id": "http://api.hobnob.social/schemas/users/profile.json",
+  "title": "Create User Schema",
+  "description": "For validating client-provided create user object",
+  "type": "object",
+  "properties": {
+    "email": {
+      "type": "string",
+      "format": "email"
+    },
+    "password": { "type": "string" },
+    "profile": { "$ref": "profile.json#" }    <-- use the already defined profile
+  },
+  "required": ["email", "password"],    <-- also, fail validation if not included
+  "additionalProperties": false
+}
+```
+
+<br>
+
+
+JSON Schema __validation libraries__ can be chosen from `json-schema.org`
+
+( json-schema.org/implementations.html )
+
+<br><br>
+
+
+
+--------------------------------------------------------------------------------
+### Refactor: Validating The Schema With Ajv Library
+
+`$ yarn add ajv`
+
+- Refactor `src/validators/users/create.js`
+- Add `src/validators/errors/messages.js`
+- Refactor `And` statements in `features/users/create/main.feature` for general usage
+- Workaround for Babel not using Schema files, update `build` script
+  + from:  `"build": "rimraf dist && babel src -d dist",`
+  + to:    `"build": "rimraf dist && babel src -d dist --copy-files"`
+  + this will allow Babel to copy over non-compatible files to `dist/`
