@@ -112,3 +112,14 @@ walk("usr/local", (err, res) => {
     export default ValidationError;
 
     ````
+
+<br>
+
+
+### Checking `Object.dataPath`
+
+```
+if (error.dataPath.indexOf('.profile') === 0) {
+    return 'The profile provided is invalid.';
+  }
+```
