@@ -87,3 +87,28 @@ walk("usr/local", (err, res) => {
   console.log(`File: ${path} - size: ${stat.size}`);
 });
 ```
+
+<br>
+
+### Error Class Extension
+
+    ```javascript
+    /**
+     * hobnob/src/validators/errors/validation-error.js
+     *
+     * extension of Error object to define a custom error
+     */
+
+    class ValidationError extends Error {
+      constructor(...params) {
+        super(...params);
+
+        if (Error.captureStackTrace) {
+          Error.captureStackTrace(this, ValidationError);
+        }
+      }
+    }
+
+    export default ValidationError;
+
+    ````
