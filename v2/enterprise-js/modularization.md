@@ -660,3 +660,286 @@ JSON Schema __validation libraries__ can be chosen from `json-schema.org`
   + from:  `"build": "rimraf dist && babel src -d dist",`
   + to:    `"build": "rimraf dist && babel src -d dist --copy-files"`
   + this will allow Babel to copy over non-compatible files to `dist/`
+
+<br>
+
+<details>
+<summary><strong>Tests Are Failing Now</strong></summary>
+Not sure what's wrong, but 12 tests are failing now, the server or the ES DB is
+returning with 404's instead of whatever is expected to be received.
+
+<br>
+
+<details>
+<summary>Test results</summary>
+
+```
+$ yarn run test:e2e
+
+> yarn run v1.16.0
+> $ dotenv -e envs/test.env -e envs/.env ./scripts/e2e.test.sh
+> Elasticsearch running and ready for tests
+> $ yarn run build && dotenv -e envs/.env node dist/index.js
+> $ rimraf dist && babel src -d dist --copy-files
+> Successfully compiled 11 files with Babel.
+> Hobnob API server running on port 8888...
+> node    75495 justin   23u  IPv6 0x193734643c001ea3      0t0  TCP *:8888 (LISTEN)
+
+ 1) Scenario: Bad Request Payload # spec/cucumber/features/users/create/main.feature:49
+    ✖ Then our API should respond with a 400 HTTP status code # spec/cucumber/steps/index.js:206
+        AssertionError [ERR_ASSERTION]: 404 == '400'
+            at World.equal (/Users/justin/Core/Dev/Pub/hobnob/spec/cucumber/steps/index.js:207:10)
+ 2) Scenario: Bad Request Payload # spec/cucumber/features/users/create/main.feature:50
+    ✖ Then our API should respond with a 400 HTTP status code # spec/cucumber/steps/index.js:206
+        AssertionError [ERR_ASSERTION]: 404 == '400'
+            at World.equal (/Users/justin/Core/Dev/Pub/hobnob/spec/cucumber/steps/index.js:207:10)
+ 3) Scenario: Request Payload with Properties of Unsupported Type # spec/cucumber/features/users/create/main.feature:65
+    ✖ Then our API should respond with a 400 HTTP status code # spec/cucumber/steps/index.js:206
+        AssertionError [ERR_ASSERTION]: 404 == '400'
+            at World.equal (/Users/justin/Core/Dev/Pub/hobnob/spec/cucumber/steps/index.js:207:10)
+ 4) Scenario: Request Payload with Properties of Unsupported Type # spec/cucumber/features/users/create/main.feature:66
+    ✖ Then our API should respond with a 400 HTTP status code # spec/cucumber/steps/index.js:206
+        AssertionError [ERR_ASSERTION]: 404 == '400'
+            at World.equal (/Users/justin/Core/Dev/Pub/hobnob/spec/cucumber/steps/index.js:207:10)
+ 5) Scenario: Request Payload with invalid email format # spec/cucumber/features/users/create/main.feature:82
+    ✖ Then our API should respond with a 400 HTTP status code # spec/cucumber/steps/index.js:206
+        AssertionError [ERR_ASSERTION]: 404 == '400'
+            at World.equal (/Users/justin/Core/Dev/Pub/hobnob/spec/cucumber/steps/index.js:207:10)
+ 6) Scenario: Request Payload with invalid email format # spec/cucumber/features/users/create/main.feature:83
+    ✖ Then our API should respond with a 400 HTTP status code # spec/cucumber/steps/index.js:206
+        AssertionError [ERR_ASSERTION]: 404 == '400'
+            at World.equal (/Users/justin/Core/Dev/Pub/hobnob/spec/cucumber/steps/index.js:207:10)
+ 7) Scenario: Request Payload with invalid email format # spec/cucumber/features/users/create/main.feature:84
+    ✖ Then our API should respond with a 400 HTTP status code # spec/cucumber/steps/index.js:206
+        AssertionError [ERR_ASSERTION]: 404 == '400'
+            at World.equal (/Users/justin/Core/Dev/Pub/hobnob/spec/cucumber/steps/index.js:207:10)
+ 8) Scenario: Minimal Valid User # spec/cucumber/features/users/create/main.feature:87
+    ✖ Then our API should respond with a 201 HTTP status code # spec/cucumber/steps/index.js:206
+        AssertionError [ERR_ASSERTION]: 404 == '201'
+            at World.equal (/Users/justin/Core/Dev/Pub/hobnob/spec/cucumber/steps/index.js:207:10)
+ 9) Scenario: Invalid Profile # spec/cucumber/features/users/create/main.feature:111
+    ✖ Then our API should respond with a 400 HTTP status code # spec/cucumber/steps/index.js:206
+        AssertionError [ERR_ASSERTION]: 404 == '400'
+            at World.equal (/Users/justin/Core/Dev/Pub/hobnob/spec/cucumber/steps/index.js:207:10)
+ 10) Scenario: Invalid Profile # spec/cucumber/features/users/create/main.feature:112
+     ✖ Then our API should respond with a 400 HTTP status code # spec/cucumber/steps/index.js:206
+         AssertionError [ERR_ASSERTION]: 404 == '400'
+             at World.equal (/Users/justin/Core/Dev/Pub/hobnob/spec/cucumber/steps/index.js:207:10)
+ 11) Scenario: Invalid Profile # spec/cucumber/features/users/create/main.feature:113
+     ✖ Then our API should respond with a 400 HTTP status code # spec/cucumber/steps/index.js:206
+         AssertionError [ERR_ASSERTION]: 404 == '400'
+             at World.equal (/Users/justin/Core/Dev/Pub/hobnob/spec/cucumber/steps/index.js:207:10)
+ 12) Scenario: Invalid Profile # spec/cucumber/features/users/create/main.feature:114
+     ✖ Then our API should respond with a 400 HTTP status code # spec/cucumber/steps/index.js:206
+         AssertionError [ERR_ASSERTION]: 404 == '400'
+             at World.equal (/Users/justin/Core/Dev/Pub/hobnob/spec/cucumber/steps/index.js:207:10)
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>Current Elasticsearch indexes and documents</summary>
+
+```
+hobnob
+  hobnob.user
+    hobnob.user.email
+    hobnob.user.password
+
+test
+  test.user
+    test.user.email
+    test.user.password
+    test.user.profile
+      test.user.profile.bio
+      test.user.profile.foo
+      test.user.profile.name
+        test.user.profile.name.a
+        test.user.profile.name.foo
+      test.user.profile.summary
+
+.
+├── HOBNOB
+│   └── USER
+│       └── properties
+│           ├── EMAIL
+│           │   ├── type:text
+│           │   └── keyword
+│           │       └── type:keyword
+│           └── PASSWORD
+│               ├── type:text
+│               └── keyword
+│                   └── type:keyword
+└── TEST
+    └── USER
+        └── properties
+            ├── EMAIL
+            │   ├── type:text
+            │   └── keyword
+            │       └── type:keyword
+            ├── PASSWORD
+            │   ├── type:text
+            │   └── keyword
+            │       └── type:keyword
+            └── PROFILE
+                └── properties
+                    ├── BIO
+                    │   └── type:long
+                    ├── FOO
+                    │   ├── type:text
+                    │   └── keyword
+                    │       └── type:keyword
+                    ├── NAME
+                    │   └── properties
+                    │       ├── A
+                    │       │   ├── type:text
+                    │       │   └── keyword
+                    │       │       └── type:keyword
+                    │       └── FIRST
+                    │           ├── type:text
+                    │           └── keyword
+                    │               └── type:keyword
+                    └── SUMMARY
+                        └── type:long
+```
+
+</details>
+
+<br>
+
+And there's items in both indexes that shouldn't exist.
+
+<details>
+<summary>Index 'test'</summary>
+
+```
+curl "http://localhost:9200/test/_search?pretty"
+{
+  "took" : 8,
+  "timed_out" : false,
+  "_shards" : {
+    "total" : 5,
+    "successful" : 5,
+    "skipped" : 0,
+    "failed" : 0
+  },
+  "hits" : {
+    "total" : 9,
+    "max_score" : 1.0,
+    "hits" : [
+      {
+        "_index" : "test",
+        "_type" : "user",
+        "_id" : "3P5rdmsBVWzSnxJzrVl8",
+        "_score" : 1.0,
+        "_source" : {
+          "email" : "e@ma.il",
+          "password" : "abc",
+          "profile" : {
+            "foo" : "bar"
+          }
+        }
+      },
+      {
+        "_index" : "test",
+        "_type" : "user",
+        "_id" : "IpL6UmsBuYJdXTgp6zwG",
+        "_score" : 1.0,
+        "_source" : {
+          "email" : "a,b,c@!!",
+          "password" : "password"
+        }
+      },
+      {
+        "_index" : "test",
+        "_type" : "user",
+        "_id" : "3f5rdmsBVWzSnxJzsVlE",
+        "_score" : 1.0,
+        "_source" : {
+          "email" : "e@ma.il",
+          "password" : "abc",
+          "profile" : {
+            "name" : {
+              "first" : "Jane",
+              "a" : "b"
+            }
+          }
+        }
+      },
+      {
+        "_index" : "test",
+        "_type" : "user",
+        "_id" : "IZL6UmsBuYJdXTgp6zwF",
+        "_score" : 1.0,
+        "_source" : {
+          "email" : "a@1.2.3.4",
+          "password" : "password"
+        }
+      },
+      {
+        "_index" : "test",
+        "_type" : "user",
+        "_id" : "IJL6UmsBuYJdXTgp6zwE",
+        "_score" : 1.0,
+        "_source" : {
+          "email" : "a238juqy2",
+          "password" : "password"
+        }
+      },
+      {
+        "_index" : "test",
+        "_type" : "user",
+        "_id" : "3_5rdmsBVWzSnxJzsllP",
+        "_score" : 1.0,
+        "_source" : {
+          "email" : "e@ma.il",
+          "password" : "abc",
+          "profile" : {
+            "bio" : 0
+          }
+        }
+      },
+      {
+        "_index" : "test",
+        "_type" : "user",
+        "_id" : "I5L6UmsBuYJdXTgp6zwG",
+        "_score" : 1.0,
+        "_source" : {
+          "email" : "e@ma.il",
+          "password" : "password"
+        }
+      },
+      {
+        "_index" : "test",
+        "_type" : "user",
+        "_id" : "JJL6UmsBuYJdXTgp6zxp",
+        "_score" : 1.0,
+        "_source" : {
+          "email" : "e@mai.il",
+          "password" : 10
+        }
+      },
+      {
+        "_index" : "test",
+        "_type" : "user",
+        "_id" : "3v5rdmsBVWzSnxJzsVmh",
+        "_score" : 1.0,
+        "_source" : {
+          "email" : "e@ma.il",
+          "password" : "abc",
+          "profile" : {
+            "summary" : 0
+          }
+        }
+      }
+    ]
+  }
+}
+```
+</details>
+
+</details>
+
+<br>
