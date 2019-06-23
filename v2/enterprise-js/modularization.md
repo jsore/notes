@@ -668,6 +668,32 @@ JSON Schema __validation libraries__ can be chosen from `json-schema.org`
 Not sure what's wrong, but 12 tests are failing now, the server or the ES DB is
 returning with 404's instead of whatever is expected to be received.
 
+HTTP messages ripped from all requests, saved locally as:
+```
+httpmsgs-passing-tests.txt
+httpmsgs-failing-tests.txt
+```
+Results can be logged with:
+
+```javascript
+// When (/^the client creates a (GET|POST|PATCH|PUT|DELETE|OPTIONS|HEAD) request... {
+  /** start a new request with a new request object */
+  // TODO: Failing Tests
+  // console.log(
+  //   `| superagent(method, http://host:portpath) ->`
+  //   + `${method}, http://${host}:${port}${path} |`
+  //   + `| ES client.host -> ${esHost}:${esPort} |`
+  // );
+}
+
+// Then(/^our API should respond with a ([1-5]\d{2}) HTTP status... {
+  // TODO: Failing Tests
+  // console.log(this.response);
+  // console.log(this.response.statusCode);
+}
+```
+
+
 <br>
 
 <details>
@@ -942,4 +968,14 @@ curl "http://localhost:9200/test/_search?pretty"
 
 </details>
 
-<br>
+<br><br>
+
+
+
+--------------------------------------------------------------------------------
+### Reset The Index
+
+Right now, there's a ton of dummy test users in the DB, which could be an issue
+in the future if our schema ends up needing a change. The Index should be
+deleted after every test, it will be automatically recreated by the test code.
+
