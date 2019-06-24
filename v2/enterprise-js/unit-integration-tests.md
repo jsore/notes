@@ -266,5 +266,124 @@ Get around dependency requirements with dependency injection.
 
 ( Monkey Patching is an alternative, but is harder to implement correctly ).
 
+<br>
+
+
 Dependency injection, how to go about actually replacing dependency usage?
   > Every dependency should be a parameter of the function.
+
+So, remove the dependency's `import` statements, import them all into the API
+entrypoint `src/index.js`
+
+  ```javascript
+  ...
+  /** dependency injection */
+  import injectHandlerDependencies from './utils/inject-handler-dependencies';
+  /** ./handlers/.../index.createUser() dependency */
+  /** ./engines/.../index.create() dependency */
+  import ValidationError from './validators/errors/validation-error';
+  /** users/createUser() handler for app.post() */
+  import createUserHandler from './handlers/users/create';
+  /** users/create() engine for handler.createUesr() */
+  import createUserEngine from './engines/users/create';
+  /** ./handlers/.../index.createUser() dependency, sent to engine via create() */
+  import createUserValidator from './validators/users/create'; // create.js
+  ...
+  ```
+
+Map the handlers to the engine and the validator so they can communicate
+
+  ```javascript
+  ...
+  const handlerToEngineMap = new Map([
+    [createUserHandler, createUserEngine],
+  ]);
+  const handlerToValidatorMap = new Map([
+    [createUserHandler, createUserValidator],
+  ]);
+  ...
+  ```
+
+Then inject them all when invoking the /user/ POST handler
+
+  ```javascript
+  ...
+  app.post('/users', injectHandlerDependencies(
+    createUserHandler,        // <-- POST handler
+    client,                   // <-- ES DB pointer
+    handlerToEngineMap,       // <-- handler will call to the engine
+    handlerToValidatorMap,    // <-- handler will pass validator to engine to use
+    ValidationError           // <-- general error message dependency
+  ));
+  ...
+  ```
+
+The `injectHandlerDependencies` function is a high order function for operating
+on functions:
+
+  ```javascript
+  // src/utils/inject-handler-dependencies.js
+
+  function injectHandlerDependencies(
+    handler,
+    db,
+    handlerToEngineMap,
+    handlerToValidatorMap,
+    ValidationError
+  ) {
+    const engine = handlerToEngineMap.get(handler);
+    const validator = handlerToValidatorMap.get(handler);
+    /** refactor: following the dependency inject pattern */
+    // return (req, res) => { handler(req, res, db); };  // <-- from when import's were used
+    return (req, res) => { handler(req, res, db, engine, validator, ValidationError); };
+  }
+  export default injectHandlerDependencies;
+  ```
+
+This gives the handler access to the injected dependencies, which it can then
+pass along. Meaning, in the handler, we haven't lost access to the previously
+imported dependencies
+
+  ```javascript
+  // src/handlers/users/create/index.js
+
+  /** Note: NO IMPORT STATEMENTS */
+
+  function createUser(req, res, db, create, validator, ValidationError) {
+    /**
+     * create engine and ValidationError class get injected
+     * into this handler from
+     * src/index.js & injectHandlerDependencies()
+     */
+
+    /** call to the engine should be a Promise */
+    return create(req, db, validator, ValidationError)
+      .then(onPromiseFulfilled, onPromiseRejected)
+      .catch( /** handle codebase error */ );
+    ...
+  ```
+
+All of our dependencies are available all the way down the chain
+
+  ```javascript
+  // src/engines/users/create/index.js
+
+  /**
+   * validate the request and write the user document to the
+   * database, returns result back to request handler
+   */
+  function create(req, db, validator, ValidationError) {
+
+    /** remember, dependency access has changed... */
+    // const validationResults = validate(req); // <-- ReferenceError
+    const validationResults = validator(req);
+    if (validationResults instanceof ValidationError) {
+      return Promise.reject(validationResults);
+    }
+
+    /**
+     * operate on the request ( try to index the supplied user
+     * document ) and return the result
+     */
+    return db.index({ ... });
+  ```
