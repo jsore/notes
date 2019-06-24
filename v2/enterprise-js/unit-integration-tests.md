@@ -226,6 +226,7 @@ So that unit tests can lay side-by-side to the module its testing.
 
 Example of new structure:
 
+    ...
     ├── middlewares
     │   ├── check-content-type-is-json
     │   │   ├── index.js                <-- module being tested
@@ -246,7 +247,53 @@ Example of new structure:
         ...
 
 All code files need to be updated to use this format, paths needs to be updated
-in the code.
+in the code. Here's the updated project structure with unit tests created and
+completed for each supportive module, including refactoring for the dependency
+injection method that will be used moving forward:
+
+    hobnob/src: $ tree
+    .
+    ├── engines
+    │   └── users
+    │       └── create
+    │           ├── index.js
+    │           └── index.unit.test.js
+    ├── handlers
+    │   └── users
+    │       └── create
+    │           ├── index.js
+    │           └── index.unit.test.js
+    ├── middlewares
+    │   ├── check-content-type-is-json
+    │   │   ├── index.js
+    │   │   └── index.unit.test.js
+    │   ├── check-content-type-is-set
+    │   │   ├── index.js
+    │   │   └── index.unit.test.js
+    │   ├── check-empty-payload
+    │   │   ├── index.js
+    │   │   └── index.unit.test.js
+    │   └── error-handler
+    │       ├── index.js
+    │       └── index.unit.test.js
+    ├── schema
+    │   └── users
+    │       ├── create.json
+    │       └── profile.json
+    ├── utils
+    │   └── inject-handler-dependencies.js
+    ├── validators
+    │   ├── errors
+    │   │   ├── messages
+    │   │   │   ├── index.js
+    │   │   │   └── index.unit.test.js
+    │   │   └── validation-error
+    │   │       ├── index.js
+    │   │       └── index.unit.test.js
+    │   └── users
+    │       └── create.js
+    └── index.js
+
 
 <br><br>
 
@@ -324,6 +371,11 @@ on functions:
   ```javascript
   // src/utils/inject-handler-dependencies.js
 
+  /**
+   * this is the thing doing the actual invocation of the
+   * create user handler
+   */
+
   function injectHandlerDependencies(
     handler,
     db,
@@ -386,4 +438,57 @@ All of our dependencies are available all the way down the chain
      * document ) and return the result
      */
     return db.index({ ... });
+  ```
+
+Now, we can use stubs to mimic the abilities of our dependencies in unit tests
+
+  ```javascript
+  // src/engines/users/create/index.unit.test.js
+  // the unit test for my create user engine
+
+  import assert from 'assert';
+  import { stub } from 'sinon';
+  import ValidationError from '../../../validators/errors/validation-error';
+  import create from '.';
+
+  describe('User Create Engine', function () {
+    let req;
+    let db;
+    let validator;
+    const dbIndexResult = {};
+    beforeEach(function () {
+      req = {};
+      db = {
+        index: stub().resolves(dbIndexResult),
+      };
+    });
+    describe('When invoked and validator returns with undefined', function () {
+      let promise;
+      beforeEach(function () {
+        validator = stub().returns(undefined);
+        promise = create(req, db, validator, ValidationError);
+        return promise;
+      });
+      describe('should call the validator', function () {
+        it('once', function () {
+          assert(validator.calledOnce);
+        });
+        it('with req as the only argument', function () {
+          assert(validator.calledWithExactly(req));
+        });
+      });
+      it('should relay the promise returned by db.index()', function () {
+        promise.then(res => assert.strictEqual(res, dbIndexResult));
+      });
+    });
+
+    describe('When validator returns with an instance of ValidationError', function () {
+      it('should reject with the ValidationError returned from validator', function () {
+        const validationError = new ValidationError();
+        validator = stub().returns(validationError);
+        return create(req, db, validator, ValidationError)
+          .catch(err => assert.strictEqual(err, validationError));
+      });
+    });
+  });
   ```
