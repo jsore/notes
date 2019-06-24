@@ -123,3 +123,12 @@ if (error.dataPath.indexOf('.profile') === 0) {
     return 'The profile provided is invalid.';
   }
 ```
+
+<br>
+
+### Lodash for deep object cloning and comparison
+
+related: `src/middlewares/check-empty-payload/index.unit.test.js`
+```
+$ yarn add lodash.isequal lodash.clonedeep --dev
+```
