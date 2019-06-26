@@ -802,3 +802,9 @@ Merge
   $ git checkout master
   $ git merge --no-ff dev    # probably wrong but ¯\_(ツ)_/¯
   ```
+
+Review current project structure
+
+  ```
+  $ tree ~/Core/Dev/Pub/hobnob -a -I 'node_modules|coverage|dist*|.git*|.nvmrc|.nyc_output|yarn*|*txt|*lock.json'
+  ```
