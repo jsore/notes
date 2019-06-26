@@ -319,20 +319,29 @@ Get around dependency requirements with dependency injection.
 Dependency injection, how to go about actually replacing dependency usage?
   > Every dependency should be a parameter of the function.
 
+<br>
+
+
 So, remove the dependency's `import` statements, import them all into the API
 entrypoint `src/index.js`
 
   ```javascript
   ...
-  /** dependency injection */
+  // src/index.js
+
+  /** dependency injection helper, high-order function */
   import injectHandlerDependencies from './utils/inject-handler-dependencies';
+
   /** ./handlers/.../index.createUser() dependency */
   /** ./engines/.../index.create() dependency */
   import ValidationError from './validators/errors/validation-error';
+
   /** users/createUser() handler for app.post() */
   import createUserHandler from './handlers/users/create';
+
   /** users/create() engine for handler.createUesr() */
   import createUserEngine from './engines/users/create';
+
   /** ./handlers/.../index.createUser() dependency, sent to engine via create() */
   import createUserValidator from './validators/users/create'; // create.js
   ...
@@ -342,6 +351,17 @@ Map the handlers to the engine and the validator so they can communicate
 
   ```javascript
   ...
+  // src/index.js
+
+  /**
+   * ES6 feature, a key-value store where a key or value can be
+   * any type ( primitives, objs, arrays, funcs ) unlike in an
+   * object literal where keys have to be strings or Symbols
+   *
+   *   Map([
+   *     [key, value]
+   *   ])
+   */
   const handlerToEngineMap = new Map([
     [createUserHandler, createUserEngine],
   ]);
@@ -351,10 +371,12 @@ Map the handlers to the engine and the validator so they can communicate
   ...
   ```
 
-Then inject them all when invoking the /user/ POST handler
+Then inject them all when invoking the `/user/` POST handler
 
   ```javascript
   ...
+  // src/index.js
+
   app.post('/users', injectHandlerDependencies(
     createUserHandler,        // <-- POST handler
     client,                   // <-- ES DB pointer
@@ -365,6 +387,9 @@ Then inject them all when invoking the /user/ POST handler
   ...
   ```
 
+<br>
+
+
 The `injectHandlerDependencies` function is a high order function for operating
 on functions:
 
@@ -373,7 +398,8 @@ on functions:
 
   /**
    * this is the thing doing the actual invocation of the
-   * create user handler
+   * create user handler, but with dynamic functionality for
+   * support of future additional request handlers
    */
 
   function injectHandlerDependencies(
@@ -440,6 +466,9 @@ All of our dependencies are available all the way down the chain
     return db.index({ ... });
   ```
 
+<br>
+
+
 Now, we can use stubs to mimic the abilities of our dependencies in unit tests
 
   ```javascript
@@ -456,19 +485,23 @@ Now, we can use stubs to mimic the abilities of our dependencies in unit tests
     let db;
     let validator;
     const dbIndexResult = {};
+
     beforeEach(function () {
       req = {};
       db = {
         index: stub().resolves(dbIndexResult),
       };
     });
+
     describe('When invoked and validator returns with undefined', function () {
       let promise;
+
       beforeEach(function () {
         validator = stub().returns(undefined);
         promise = create(req, db, validator, ValidationError);
         return promise;
       });
+
       describe('should call the validator', function () {
         it('once', function () {
           assert(validator.calledOnce);
@@ -477,6 +510,7 @@ Now, we can use stubs to mimic the abilities of our dependencies in unit tests
           assert(validator.calledWithExactly(req));
         });
       });
+
       it('should relay the promise returned by db.index()', function () {
         promise.then(res => assert.strictEqual(res, dbIndexResult));
       });
@@ -491,4 +525,280 @@ Now, we can use stubs to mimic the abilities of our dependencies in unit tests
       });
     });
   });
+  ```
+
+<br><br>
+
+
+
+--------------------------------------------------------------------------------
+### Integration Testing
+
+Testing module co-compatibility ( is that even a word? ) for User Create engine
+and the DB
+
+Add integration tests to general testing script
+
+    // "test": "yarn run test:unit && yarn run test:e2e",
+    "test": "yarn run test:unit && yarn run test:integration && yarn run test:e2e",
+
+Update unit testing script to be more specific
+
+    // "test:unit": "mocha 'src/**/*.test.js' --require @babel/register",
+    "test:unit": "mocha 'src/**/*.unit.test.js --require @babel/register",
+
+Add the integration testing script itself
+
+    "test:integration": "dotenv -e envs/test.env -e envs/.env mocha -- 'src/**/*.integration.test.js' --require @babel/register",
+
+The `--` tells bash "that's the end of options for `dotenv`", the remainder gets
+passed to `mocha`
+
+<br>
+
+
+Integration tests are basically the same as the unit tests, but without stubbing
+
+Continuing to use the createUser engine, as with the example for dep injections
+
+  ```javascript
+  import assert from 'assert';
+
+  /**
+   * don't stub out functionality, bring in the modules instead
+   */
+  import elasticsearch from 'elasticsearch';
+  import ValidationError from '../../../validators/errors/validation-error';
+  import createUserValidator from '../../../validators/users/create';
+  import create from '.';
+
+  /** instantiate an Elasticsearch JavaScript client */
+  const db = new elasticsearch.Client({
+    host: `${process.env.ELASTICSEARCH_HOSTNAME}:${process.env.ELASTICSEARCH_PORT}`,
+  });
+
+  describe('User Create Engine', function () {
+
+    describe('When invoked with invalid req', function () {
+      it('should return promise that rejects with an instance of ValidationError', function () {
+        const req = {};
+        create(req, db, createUserValidator, ValidationError)
+          .catch(err => assert(err instanceof ValidationError));
+      });
+    });
+
+    describe('When invoked with valid req', function () {
+      it('should return a success object containing the user ID', function () {
+        const req = {
+          body: {
+            email: 'e@ma.il',
+            password: 'password',
+            profile: {},
+          },
+        };
+        create(req, db, createUserValidator, ValidationError)
+          .then((result) => {
+            assert.equal(result.result, 'created');
+            assert.equal(typeof result._id, 'string');
+          });
+      });
+    });
+
+  });
+  ```
+
+<br><br>
+
+
+
+--------------------------------------------------------------------------------
+### Test Coverage
+
+Test coverage tools run your tests and record the lines of code that were
+executed then compares that with the total number of lines in the source file
+for a coverage percentage.
+
+Example:
+
+- module has 100 lines of code
+- the tests only ran 85 lines of that code
+- test coverage = 85%
+- points to dead code or missed use cases
+
+__Istanbul__ is the de facto coverage framework for JavaScript, its CLI is `nyc`
+
+  ```
+  $ yarn add nyc --dev
+  ```
+
+Add to `package.json.scripts`
+
+  ```
+  "test:unit:coverage": "nyc --reporter=html --reporter=text yarn run test:unit",
+  ```
+
+<br><br>
+
+
+__EDIT__: This solution doesn't work for me, files weren't being found:
+
+<details>
+<summary>My fix and corrected usage</summary>
+
+  1. Had to install
+
+  ```
+  istanbul
+  nyc --dev
+  babel-plugin-istanbul --dev
+  @istanbuljs/nyc-config-babel --dev
+  ```
+
+  2. Set in `"env"` from `.babelrc`
+
+  ```
+    "test": {
+      "plugins": [
+        "istanbul"
+      ]
+    }
+  ```
+
+  3. Create `.nycrc`
+
+  ```
+  {
+    "nyc": {
+      "all": true,
+      "extends": "@istanbuljs/nyc-config-babel",
+      "include": ["src/**/*.js"]
+    }
+  }
+  ```
+
+  4. Delete `node_modules/.cache`
+
+  5. Change `test:unit:coverage` to
+
+  ```
+  "test:unit:coverage": "nyc --reporter=html --reporter=text node_modules/.bin/mocha 'src/**/*.unit.test.js' --require @babel/register",
+  ```
+
+  6. Confirm tests working as expected
+
+  ```
+  $ yarn run test:unit:coverage
+  $ yarn run test:unit
+  $ open ../coverage/index.html    # from hobnob/src
+  $ yarn run report    # package.scripts.report "command open coverage/index.html"
+  ```
+
+</details>
+
+<br><br>
+
+
+__The HTML report__
+
+  - Lines: % of total lines of code ( __LoC__ ) that were run
+  - Statements: More useful than lines
+  - Branches: path code logic takes dictated by conditions ( conditional staments )
+
+<br><br>
+
+
+
+--------------------------------------------------------------------------------
+### Don't Chase 100% Test Coverage
+
+Tests are a diagnostic tool, helpers to uncover mistakes in code. Code coverage
+has no relation for the quality of the tests you write. Focus on writing
+meaningful tests that show bugs when they arise.
+
+__Code coverage cannot detect bad tests__
+
+<br><br>
+
+
+
+--------------------------------------------------------------------------------
+### Test Coverage For All Tests
+
+Add coverage scripts for integration and E2E, not just unit tests
+
+  ```
+  // from the book
+  "test:coverage": "nyc --reporter=html --reporter=text yarn run test",
+  "test:integration:coverage": "nyc --reporter=html --reporter=text yarn run test:integration",
+  "test:e2e:coverage": "nyc --reporter=html --reporter=text yarn run test:e2e",
+
+  // my ..."solutions"
+  "test": "yarn run test:unit && yarn run test:integration && yarn run test:e2e",
+  "test:serve": "dotenv -e envs/test.env -e envs/.env babel-node src/index.js",
+  "test:coverage": "nyc --reporter=html --reporter=text yarn run test:coverage:all",
+  "test:coverage:all": "yarn run test:unit:coverage && yarn run test:integration:coverage && yarn run test:e2e:coverage",
+  "test:e2e": "dotenv -e envs/test.env -e envs/.env ./scripts/e2e.test.sh",
+  "test:e2e:coverage": "nyc --reporter=html --reporter=text dotenv -e envs/test.env -e envs/.env ./scripts/e2e.test.sh  --exit",
+  "test:integration": "dotenv -e envs/test.env -e envs/.env mocha -- 'src/**/*.integration.test.js' --require @babel/register",
+  "test:integration:coverage": "nyc --reporter=html --reporter=text dotenv -e envs/test.env -e envs/.env node_modules/.bin/mocha -- 'src/**/*.integration.test.js' --require @babel/register",
+  "test:unit": "mocha 'src/**/*.unit.test.js' --require @babel/register",
+  "test:unit:coverage": "nyc --reporter=html --reporter=text node_modules/.bin/mocha 'src/**/*.unit.test.js' --require @babel/register",
+  "test:report": "command open coverage/index.html",
+  ```
+
+Also had to install `babel-node` and to `.babelrc`
+
+  ```
+  "presets": [
+    ["@babel/preset-env", {    <- changed from @babel/env
+      ...
+  "env": {
+    ...
+    "test": {
+      "plugins": [
+        "istanbul"
+      ]
+    }
+  ```
+
+The `test:e2e:coverage` command will run tests for `dist/` files because
+`scripts/e2e.test.sh` runs
+
+  ```
+  yarn run serve
+  ```
+
+Fix this by adding `test:serve` script using `babel-node` to directly run code
+
+  ```
+  "test:serve": "dotenv -e envs/test.env -e envs/.env babel-node src/index.js",
+
+  // update e2e.test.sh from
+  // yarn run serve &
+  // to
+  yarn run test:serve &
+  ```
+
+<br><br>
+
+
+
+--------------------------------------------------------------------------------
+### Merging Current Code
+
+Merge
+
+  ```
+  # create-user/refactor-modules -> create-user/main
+  $ git checkout create-user/main
+  $ git merge --no-ff create-user/refactor-modules
+
+  # create-user/main -> dev
+  $ git checkout dev
+  $ git merge --no-ff create-user/main
+
+  # not in the book, but also pushed to master and remote
+  # dev -> main
+  $ git checkout master
+  $ git merge --no-ff dev    # probably wrong but ¯\_(ツ)_/¯
   ```
