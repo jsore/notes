@@ -803,8 +803,100 @@ Merge
   $ git merge --no-ff dev    # probably wrong but ¯\_(ツ)_/¯
   ```
 
+<br><br>
+
+
+
+--------------------------------------------------------------------------------
+### Summary
+
 Review current project structure
 
   ```
-  $ tree ~/Core/Dev/Pub/hobnob -a -I 'node_modules|coverage|dist*|.git*|.nvmrc|.nyc_output|yarn*|*txt|*lock.json'
+  $ tree ~/Core/Dev/Pub/hobnob -a -I \
+  > 'node_modules|coverage|dist*|.git*|.nvmrc|.nyc_output|yarn*|*txt|*lock.json'
+  /Users/justin/Core/Dev/Pub/hobnob
+  ├── .babelrc
+  ├── .eslintrc.json
+  ├── .nycrc
+  ├── README.md
+  ├── envs
+  │   ├── .env
+  │   ├── .env.example
+  │   ├── test.env
+  │   └── test.env.example
+  ├── package.json
+  ├── scripts
+  │   └── e2e.test.sh
+  ├── spec
+  │   ├── .eslintrc.json
+  │   └── cucumber
+  │       ├── features
+  │       │   ├── main.feature
+  │       │   └── users
+  │       │       └── create
+  │       │           └── main.feature
+  │       └── steps
+  │           ├── index.js
+  │           └── utils.js
+  └── src
+      ├── engines
+      │   └── users
+      │       └── create
+      │           ├── index.integration.test.js
+      │           ├── index.js
+      │           └── index.unit.test.js
+      ├── handlers
+      │   └── users
+      │       └── create
+      │           ├── index.js
+      │           └── index.unit.test.js
+      ├── index.js
+      ├── middlewares
+      │   ├── check-content-type-is-json
+      │   │   ├── index.js
+      │   │   └── index.unit.test.js
+      │   ├── check-content-type-is-set
+      │   │   ├── index.js
+      │   │   └── index.unit.test.js
+      │   ├── check-empty-payload
+      │   │   ├── index.js
+      │   │   └── index.unit.test.js
+      │   └── error-handler
+      │       ├── index.js
+      │       └── index.unit.test.js
+      ├── schema
+      │   └── users
+      │       ├── create.json
+      │       └── profile.json
+      ├── tests
+      │   ├── spies
+      │   │   └── res
+      │   │       └── index.js
+      │   └── stubs
+      │       └── engines
+      │           └── users
+      │               └── create
+      │                   └── index.js
+      ├── utils
+      │   └── inject-handler-dependencies.js
+      └── validators
+          ├── errors
+          │   ├── messages
+          │   │   ├── index.js
+          │   │   └── index.unit.test.js
+          │   └── validation-error
+          │       ├── index.js
+          │       └── index.unit.test.js
+          └── users
+              └── create.js
   ```
+
+<br>
+
+
+Milestones:
+
+  - write E2E tests to drive development of features ( create user )
+  - modularize where possible
+  - add confidence in code by covering modules with unit and integration tests
