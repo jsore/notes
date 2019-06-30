@@ -264,14 +264,19 @@ __E2E tests__
     │   └── cucumber
     │       ├── features
   ```
-
 - [ ] `│       │   ├── main.feature`
-- [ ] `│       │   ├── profile`
-- [ ] `│       │   │   ├── replace`
+  ```
+    │       │   ├── profile
+    │       │   │   ├── replace
+  ```
 - [ ] `│       │   │   │   └── main.feature`
-- [ ] `│       │   │   └── update`
+  ```
+    │       │   │   └── update
+  ```
 - [ ] `│       │   │       └── main.feature`
-- [ ] `│       │   └── users`
+  ```
+    │       │   └── users
+  ```
 - [ ] `│       │       ├── create`
 - [ ] `│       │       │   └── main.feature`
 - [ ] `│       │       ├── delete`
@@ -280,9 +285,13 @@ __E2E tests__
 - [ ] `│       │       │   └── main.feature`
 - [ ] `│       │       └── search`
 - [ ] `│       │           └── main.feature`
-- [ ] `│       ├── sample-data`
+  ```
+    │       ├── sample-data
+  ```
 - [ ] `│       │   └── javascript-experts.json`
-- [ ] `│       └── steps`
+  ```
+    │       └── steps
+  ```
 - [ ] `│           ├── index.js`
 - [ ] `│           ├── profile.js`
 - [ ] `│           └── utils.js`
