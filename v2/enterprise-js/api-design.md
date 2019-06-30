@@ -263,11 +263,13 @@ Don't expose internal functions to the user, this adds unnecessary complexity.
   > - When user provides user ID and complete user object, replace old user object with it
   > - When user provides user ID and a partial user object, merge the partial into existing object
 
-__E2E tests__
+<br>
+
+
+__1. E2E tests__ ( Remember: TDD )
 
   ```
   ├── spec
-  │   └── cucumber
   │   └── cucumber
   │       ├── features
   │       │   ├── main.feature               [ ]
@@ -297,9 +299,106 @@ __E2E tests__
 <br>
 
 
-__Integration tests & supportive functions__
+__2. Implementation & implementation tests__
 
   ```
+  └── src
+      ├── index.js                                 [ ] entry
+      ├── engines                                  ENGINES
+      │   ├── profile                              ENGINES -> profile
+      │   │   ├── replace                          ENGINES -> PROFILE -> replace
+      │   │   │   ├── index.js                     [ ] entry
+      │   │   │   ├── index.integration.test.js    [ ]
+      │   │   │   └── index.unit.test.js           [ ]
+      │   │   └── update                           ENGINES -> PROFILE -> update
+      │   │       ├── index.js                     [ ] entry
+      │   │       ├── index.integration.test.js    [ ]
+      │   │       └── index.unit.test.js           [ ]
+      │   └── users                                USERS
+      │       ├── create                           USERS -> create
+      │       │   ├── index.js                     [ ] entry
+      │       │   ├── index.integration.test.js    [ ]
+      │       │   └── index.unit.test.js           [ ]
+      │       ├── delete                           USERS -> delete
+      │       │   ├── index.js                     [ ] entry
+      │       │   ├── index.integration.test.js    [ ]
+      │       │   └── index.unit.test.js           [ ]
+      │       ├── retrieve                         USERS -> retrieve
+      │       │   ├── index.js                     [ ] entry
+      │       │   ├── index.integration.test.js    [ ]
+      │       │   └── index.unit.test.js           [ ]
+      │       └── search                           USERS -> search
+      │           ├── index.js                     [ ] entry
+      │           ├── index.integration.test.js    [ ]
+      │           └── index.unit.test.js           [ ]
+      ├── handlers                                 HANDLERS
+      │   ├── index.js                             [ ] entry
+      │   ├── profile                              HANDLERS -> profile
+      │   │   ├── index.js                         [ ] entry
+      │   │   ├── replace                          HANDLERS -> PROFILE -> replace
+      │   │   │   ├── index.js                     [ ] entry
+      │   │   │   └── index.unit.test.js           [ ]
+      │   │   └── update                           HANDLERS -> PROFILE -> update
+      │   │       ├── index.js                     [ ] entry
+      │   │       └── index.unit.test.js           [ ]
+      │   └── users                                HANDLERS -> users
+      │       ├── index.js                         [ ] entry
+      │       ├── create                           HANDLERS -> USERS -> create
+      │       │   ├── index.js                     [ ] entry
+      │       │   └── index.unit.test.js           [ ]
+      │       ├── delete                           HANDLERS -> USERS -> delete
+      │       │   ├── index.js                     [ ] entry
+      │       │   └── index.unit.test.js           [ ]
+      │       ├── retrieve                         HANDLERS -> USERS -> retrieve
+      │       │   ├── index.js                     [ ] entry
+      │       │   └── index.unit.test.js           [ ]
+      │       └── search                           HANDLERS -> USERS -> search
+      │           ├── index.js                     [ ] entry
+      │           └── index.unit.test.js           [ ]
+      ├── middlewares                              MIDDLEWARES
+      │   ├── index.js                             [ ] entry
+      │   ├── check-content-length                 MIDDLEWARES -> check-content-length
+      │   │   ├── index.js                         [ ] entry
+      │   │   └── index.unit.test.js               [ ]
+      │   ├── check-content-type                   MIDDLEWARES -> check-content-type
+      │   │   ├── index.js                         [ ] entry
+      │   │   └── index.unit.test.js               [ ]
+      │   └── error-handler                        MIDDLEWARES -> error-handler
+      │       ├── index.js                         [ ] entry
+      │       └── index.unit.test.js               [ ]
+      ├── schema                                   SCHEMA
+      │   └── users                                SCHAME -> users
+      │       ├── create.json                      [ ]
+      │       ├── profile.json                     [ ]
+      │       └── search.json                      [ ]
+      ...                                          [ ]
+      └── validators                               VALIDATORS
+          ├── errors                               VALIDATORS -> errors
+          │   ├── messages                         VALIDATORS -> ERRORS -> messages
+          │   │   ├── index.js                     [ ] entry
+          │   │   └── index.unit.test.js           [ ]
+          │   └── validation-error                 VALIDATORS -> ERRORS -> validation-error
+          │       ├── index.js                     [ ] entry
+          │       └── index.unit.test.js           [ ]
+          ├── profile                              VALIDATORS -> profile
+          │   ├── replace.js                       [ ]
+          │   └── update.js                        [ ]
+          └── users                                VALIDATORS -> users
+              ├── create.js                        [ ]
+              └── search.js                        [ ]
+  ```
+
+<br>
+
+
+__3. Integration tests & supportive functions__
+
+  ```
+  .
+  ├── .env.example                        [ ]
+  ├── package.json                        [ ]
+  ├── scripts
+  │   └── e2e.test.sh                     [ ]
   └── src
       ...
       ├── tests
@@ -340,19 +439,6 @@ __Integration tests & supportive functions__
       │       └── validate
       │           └── index.js            [ ]
   ```
-
-
-__Create User__
-
-  ```
-      │   └── users
-      │       ├── create
-      │       │   ├── index.integration.test.js
-      │       │   ├── index.js
-      │       │   └── index.unit.test.js
-  ```
-
-
 
 <br>
 
