@@ -234,5 +234,324 @@ Related endpoints should be grouped, endpoint functionality should be obvious
 --------------------------------------------------------------------------------
 ### API Design Principle: Be __Simple__
 
-APIs should abstract the implementation details away from the end user. Don't
-expose internal functions to the user, this will add unnecessary complexity.
+APIs should abstract the implementation details away from the end user.
+
+Don't expose internal functions to the user, this adds unnecessary complexity.
+
+<br><br>
+
+
+
+--------------------------------------------------------------------------------
+### Completing The API
+
+- All request data must be transmitted in JSON
+- All response data payloads must be in JSON or plain text
+
+
+- [ ] `├── scripts`
+- [ ] `│   └── e2e.test.sh`
+
+
+
+__E2E tests__
+
+  - [ ] Create User
+  - [ ] Delete User
+  - [ ] Search Users
+  - [ ] Retrieve User
+  - [ ] Update User
+
+  ```
+  ├── spec
+  │   └── cucumber
+  ```
+
+- [ ] `│   └── cucumber`
+- [ ] `│       ├── features`
+- [ ] `│       │   ├── main.feature`
+- [ ] `│       │   ├── profile`
+- [ ] `│       │   │   ├── replace`
+- [ ] `│       │   │   │   └── main.feature`
+- [ ] `│       │   │   └── update`
+- [ ] `│       │   │       └── main.feature`
+- [ ] `│       │   └── users`
+- [ ] `│       │       ├── create`
+- [ ] `│       │       │   └── main.feature`
+- [ ] `│       │       ├── delete`
+- [ ] `│       │       │   └── main.feature`
+- [ ] `│       │       ├── retrieve`
+- [ ] `│       │       │   └── main.feature`
+- [ ] `│       │       └── search`
+- [ ] `│       │           └── main.feature`
+- [ ] `│       ├── sample-data`
+- [ ] `│       │   └── javascript-experts.json`
+- [ ] `│       └── steps`
+- [ ] `│           ├── index.js`
+- [ ] `│           ├── profile.js`
+- [ ] `│           └── utils.js`
+
+  ```
+  │   └── cucumber
+  │       ├── features
+  │       │   ├── main.feature
+  │       │   ├── profile
+  │       │   │   ├── replace
+  │       │   │   │   └── main.feature
+  │       │   │   └── update
+  │       │   │       └── main.feature
+  │       │   └── users
+  │       │       ├── create
+  │       │       │   └── main.feature
+  │       │       ├── delete
+  │       │       │   └── main.feature
+  │       │       ├── retrieve
+  │       │       │   └── main.feature
+  │       │       └── search
+  │       │           └── main.feature
+  ```
+
+
+<br>
+
+
+__Current Structure `vs` Book Structure__
+
+`$ tree -a -I 'node_modules|coverage|dist*|.git*|.nvmrc|.nyc_output|yarn*|*txt|*lock.json'`
+
+  ```
+  ~/Core/Dev/Pub/hobnob
+  .
+  ├── .babelrc
+  ├── .eslintrc.json
+  ├── .nycrc
+  ├── README.md
+  ├── envs
+  │   ├── .env
+  │   ├── .env.example
+  │   ├── test.env
+  │   └── test.env.example
+  ├── package.json
+  ├── scripts
+  │   └── e2e.test.sh
+  ├── spec
+  │   ├── .eslintrc.json
+  │   └── cucumber
+  │       ├── features
+  │       │   ├── main.feature
+  │       │   └── users
+  │       │       └── create
+  │       │           └── main.feature
+  │       └── steps
+  │           ├── index.js
+  │           └── utils.js
+  └── src
+      ├── engines
+      │   └── users
+      │       └── create
+      │           ├── index.integration.test.js
+      │           ├── index.js
+      │           └── index.unit.test.js
+      ├── handlers
+      │   └── users
+      │       └── create
+      │           ├── index.js
+      │           └── index.unit.test.js
+      ├── index.js
+      ├── middlewares
+      │   ├── check-content-type-is-json
+      │   │   ├── index.js
+      │   │   └── index.unit.test.js
+      │   ├── check-content-type-is-set
+      │   │   ├── index.js
+      │   │   └── index.unit.test.js
+      │   ├── check-empty-payload
+      │   │   ├── index.js
+      │   │   └── index.unit.test.js
+      │   └── error-handler
+      │       ├── index.js
+      │       └── index.unit.test.js
+      ├── schema
+      │   └── users
+      │       ├── create.json
+      │       └── profile.json
+      ├── tests
+      │   ├── spies
+      │   │   └── res
+      │   │       └── index.js
+      │   └── stubs
+      │       └── engines
+      │           └── users
+      │               └── create
+      │                   └── index.js
+      ├── utils
+      │   └── inject-handler-dependencies.js
+      └── validators
+          ├── errors
+          │   ├── messages
+          │   │   ├── index.js
+          │   │   └── index.unit.test.js
+          │   └── validation-error
+          │       ├── index.js
+          │       └── index.unit.test.js
+          └── users
+              └── create.js
+
+  35 directories, 39 files
+
+  ~/Core/Dev/Pub/hobnob-book-source/hobnob/Chapter06
+  .
+  ├── .babelrc
+  ├── .env.example
+  ├── .vscode
+  │   └── launch.json
+  ├── package.json
+  ├── scripts
+  │   └── e2e.test.sh
+  ├── spec
+  │   └── cucumber
+  │       ├── features
+  │       │   ├── main.feature
+  │       │   ├── profile
+  │       │   │   ├── replace
+  │       │   │   │   └── main.feature
+  │       │   │   └── update
+  │       │   │       └── main.feature
+  │       │   └── users
+  │       │       ├── create
+  │       │       │   └── main.feature
+  │       │       ├── delete
+  │       │       │   └── main.feature
+  │       │       ├── retrieve
+  │       │       │   └── main.feature
+  │       │       └── search
+  │       │           └── main.feature
+  │       ├── sample-data
+  │       │   └── javascript-experts.json
+  │       └── steps
+  │           ├── index.js
+  │           ├── profile.js
+  │           └── utils.js
+  └── src
+      ├── engines
+      │   ├── profile
+      │   │   ├── replace
+      │   │   │   ├── index.integration.test.js
+      │   │   │   ├── index.js
+      │   │   │   └── index.unit.test.js
+      │   │   └── update
+      │   │       ├── index.integration.test.js
+      │   │       ├── index.js
+      │   │       └── index.unit.test.js
+      │   └── users
+      │       ├── create
+      │       │   ├── index.integration.test.js
+      │       │   ├── index.js
+      │       │   └── index.unit.test.js
+      │       ├── delete
+      │       │   ├── index.integration.test.js
+      │       │   ├── index.js
+      │       │   └── index.unit.test.js
+      │       ├── retrieve
+      │       │   ├── index.integration.test.js
+      │       │   ├── index.js
+      │       │   └── index.unit.test.js
+      │       └── search
+      │           ├── index.integration.test.js
+      │           ├── index.js
+      │           └── index.unit.test.js
+      ├── handlers
+      │   ├── index.js
+      │   ├── profile
+      │   │   ├── index.js
+      │   │   ├── replace
+      │   │   │   ├── index.js
+      │   │   │   └── index.unit.test.js
+      │   │   └── update
+      │   │       ├── index.js
+      │   │       └── index.unit.test.js
+      │   └── users
+      │       ├── create
+      │       │   ├── index.js
+      │       │   └── index.unit.test.js
+      │       ├── delete
+      │       │   ├── index.js
+      │       │   └── index.unit.test.js
+      │       ├── index.js
+      │       ├── retrieve
+      │       │   ├── index.js
+      │       │   └── index.unit.test.js
+      │       └── search
+      │           ├── index.js
+      │           └── index.unit.test.js
+      ├── index.js
+      ├── middlewares
+      │   ├── check-content-length
+      │   │   ├── index.js
+      │   │   └── index.unit.test.js
+      │   ├── check-content-type
+      │   │   ├── index.js
+      │   │   └── index.unit.test.js
+      │   ├── error-handler
+      │   │   ├── index.js
+      │   │   └── index.unit.test.js
+      │   └── index.js
+      ├── schema
+      │   └── users
+      │       ├── create.json
+      │       ├── profile.json
+      │       └── search.json
+      ├── tests
+      │   ├── spies
+      │   │   └── res
+      │   │       └── index.js
+      │   └── stubs
+      │       ├── elasticsearch
+      │       │   ├── client
+      │       │   │   ├── delete
+      │       │   │   │   └── index.js
+      │       │   │   ├── get
+      │       │   │   │   └── index.js
+      │       │   │   ├── index
+      │       │   │   │   └── index.js
+      │       │   │   ├── search
+      │       │   │   │   └── index.js
+      │       │   │   └── update
+      │       │   │       └── index.js
+      │       │   └── errors
+      │       │       └── not-found
+      │       │           └── index.js
+      │       ├── engines
+      │       │   ├── profile
+      │       │   │   ├── replace
+      │       │   │   │   └── index.js
+      │       │   │   └── update
+      │       │   │       └── index.js
+      │       │   └── users
+      │       │       ├── create
+      │       │       │   └── index.js
+      │       │       ├── delete
+      │       │       │   └── index.js
+      │       │       ├── retrieve
+      │       │       │   └── index.js
+      │       │       └── search
+      │       │           └── index.js
+      │       └── validate
+      │           └── index.js
+      └── validators
+          ├── errors
+          │   ├── messages
+          │   │   ├── index.js
+          │   │   └── index.unit.test.js
+          │   └── validation-error
+          │       ├── index.js
+          │       └── index.unit.test.js
+          ├── profile
+          │   ├── replace.js
+          │   └── update.js
+          └── users
+              ├── create.js
+              └── search.js
+
+  69 directories, 82 files
+  ```
