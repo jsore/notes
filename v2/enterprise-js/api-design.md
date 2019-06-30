@@ -248,11 +248,7 @@ Don't expose internal functions to the user, this adds unnecessary complexity.
 - All request data must be transmitted in JSON
 - All response data payloads must be in JSON or plain text
 
-
-- [ ] `├── scripts`
-- [ ] `│   └── e2e.test.sh`
-
-
+<br>
 
 __E2E tests__
 
@@ -263,12 +259,12 @@ __E2E tests__
   - [ ] Update User
 
   ```
-  ├── spec
-  │   └── cucumber
+    ├── spec
+    │   └── cucumber
+    │   └── cucumber
+    │       ├── features
   ```
 
-- [ ] `│   └── cucumber`
-- [ ] `│       ├── features`
 - [ ] `│       │   ├── main.feature`
 - [ ] `│       │   ├── profile`
 - [ ] `│       │   │   ├── replace`
