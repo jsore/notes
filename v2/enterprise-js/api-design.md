@@ -304,86 +304,86 @@ __2. Implementation & implementation tests__
   ```
   └── src
       ├── index.js                                 [ ] entry
-      ├── engines                                  ENGINES
-      │   ├── profile                              ENGINES -> profile
-      │   │   ├── replace                          ENGINES -> PROFILE -> replace
+      ├── engines                                      ENGINES
+      │   ├── profile                                  ENGINES -> profile
+      │   │   ├── replace                              ENGINES -> PROFILE -> replace
       │   │   │   ├── index.js                     [ ] entry
       │   │   │   ├── index.integration.test.js    [ ]
       │   │   │   └── index.unit.test.js           [ ]
-      │   │   └── update                           ENGINES -> PROFILE -> update
+      │   │   └── update                               ENGINES -> PROFILE -> update
       │   │       ├── index.js                     [ ] entry
       │   │       ├── index.integration.test.js    [ ]
       │   │       └── index.unit.test.js           [ ]
-      │   └── users                                USERS
-      │       ├── create                           USERS -> create
+      │   └── users                                    USERS
+      │       ├── create                               USERS -> create
       │       │   ├── index.js                     [ ] entry
       │       │   ├── index.integration.test.js    [ ]
       │       │   └── index.unit.test.js           [ ]
-      │       ├── delete                           USERS -> delete
+      │       ├── delete                               USERS -> delete
       │       │   ├── index.js                     [ ] entry
       │       │   ├── index.integration.test.js    [ ]
       │       │   └── index.unit.test.js           [ ]
-      │       ├── retrieve                         USERS -> retrieve
+      │       ├── retrieve                             USERS -> retrieve
       │       │   ├── index.js                     [ ] entry
       │       │   ├── index.integration.test.js    [ ]
       │       │   └── index.unit.test.js           [ ]
-      │       └── search                           USERS -> search
+      │       └── search                               USERS -> search
       │           ├── index.js                     [ ] entry
       │           ├── index.integration.test.js    [ ]
       │           └── index.unit.test.js           [ ]
-      ├── handlers                                 HANDLERS
+      ├── handlers                                     HANDLERS
       │   ├── index.js                             [ ] entry
-      │   ├── profile                              HANDLERS -> profile
+      │   ├── profile                                  HANDLERS -> profile
       │   │   ├── index.js                         [ ] entry
-      │   │   ├── replace                          HANDLERS -> PROFILE -> replace
+      │   │   ├── replace                              HANDLERS -> PROFILE -> replace
       │   │   │   ├── index.js                     [ ] entry
       │   │   │   └── index.unit.test.js           [ ]
-      │   │   └── update                           HANDLERS -> PROFILE -> update
+      │   │   └── update                               HANDLERS -> PROFILE -> update
       │   │       ├── index.js                     [ ] entry
       │   │       └── index.unit.test.js           [ ]
-      │   └── users                                HANDLERS -> users
+      │   └── users                                    HANDLERS -> users
       │       ├── index.js                         [ ] entry
-      │       ├── create                           HANDLERS -> USERS -> create
+      │       ├── create                               HANDLERS -> USERS -> create
       │       │   ├── index.js                     [ ] entry
       │       │   └── index.unit.test.js           [ ]
-      │       ├── delete                           HANDLERS -> USERS -> delete
+      │       ├── delete                               HANDLERS -> USERS -> delete
       │       │   ├── index.js                     [ ] entry
       │       │   └── index.unit.test.js           [ ]
-      │       ├── retrieve                         HANDLERS -> USERS -> retrieve
+      │       ├── retrieve                             HANDLERS -> USERS -> retrieve
       │       │   ├── index.js                     [ ] entry
       │       │   └── index.unit.test.js           [ ]
-      │       └── search                           HANDLERS -> USERS -> search
+      │       └── search                               HANDLERS -> USERS -> search
       │           ├── index.js                     [ ] entry
       │           └── index.unit.test.js           [ ]
-      ├── middlewares                              MIDDLEWARES
+      ├── middlewares                                  MIDDLEWARES
       │   ├── index.js                             [ ] entry
-      │   ├── check-content-length                 MIDDLEWARES -> check-content-length
+      │   ├── check-content-length                     MIDDLEWARES -> check-content-length
       │   │   ├── index.js                         [ ] entry
       │   │   └── index.unit.test.js               [ ]
-      │   ├── check-content-type                   MIDDLEWARES -> check-content-type
+      │   ├── check-content-type                       MIDDLEWARES -> check-content-type
       │   │   ├── index.js                         [ ] entry
       │   │   └── index.unit.test.js               [ ]
-      │   └── error-handler                        MIDDLEWARES -> error-handler
+      │   └── error-handler                            MIDDLEWARES -> error-handler
       │       ├── index.js                         [ ] entry
       │       └── index.unit.test.js               [ ]
-      ├── schema                                   SCHEMA
-      │   └── users                                SCHAME -> users
+      ├── schema                                       SCHEMA
+      │   └── users                                    SCHAME -> users
       │       ├── create.json                      [ ]
       │       ├── profile.json                     [ ]
       │       └── search.json                      [ ]
       ...                                          [ ]
-      └── validators                               VALIDATORS
-          ├── errors                               VALIDATORS -> errors
-          │   ├── messages                         VALIDATORS -> ERRORS -> messages
+      └── validators                                   VALIDATORS
+          ├── errors                                   VALIDATORS -> errors
+          │   ├── messages                             VALIDATORS -> ERRORS -> messages
           │   │   ├── index.js                     [ ] entry
           │   │   └── index.unit.test.js           [ ]
-          │   └── validation-error                 VALIDATORS -> ERRORS -> validation-error
+          │   └── validation-error                     VALIDATORS -> ERRORS -> validation-error
           │       ├── index.js                     [ ] entry
           │       └── index.unit.test.js           [ ]
-          ├── profile                              VALIDATORS -> profile
+          ├── profile                                  VALIDATORS -> profile
           │   ├── replace.js                       [ ]
           │   └── update.js                        [ ]
-          └── users                                VALIDATORS -> users
+          └── users                                    VALIDATORS -> users
               ├── create.js                        [ ]
               └── search.js                        [ ]
   ```
@@ -438,6 +438,7 @@ __3. Integration tests & supportive functions__
       │       │           └── index.js    [ ]
       │       └── validate
       │           └── index.js            [ ]
+      ...
   ```
 
 <br>
@@ -448,238 +449,154 @@ __Current Structure `vs` Book Structure__
 `$ tree -a -I 'node_modules|coverage|dist*|.git*|.nvmrc|.nyc_output|yarn*|*txt|*lock.json'`
 
   ```
-  ~/Core/Dev/Pub/hobnob
-  .
-  ├── .babelrc
-  ├── .eslintrc.json
-  ├── .nycrc
-  ├── README.md
-  ├── envs
-  │   ├── .env
-  │   ├── .env.example
-  │   ├── test.env
-  │   └── test.env.example
-  ├── package.json
-  ├── scripts
-  │   └── e2e.test.sh
-  ├── spec
-  │   ├── .eslintrc.json
-  │   └── cucumber
-  │       ├── features
-  │       │   ├── main.feature
-  │       │   └── users
-  │       │       └── create
-  │       │           └── main.feature
-  │       └── steps
-  │           ├── index.js
-  │           └── utils.js
-  └── src
-      ├── engines
-      │   └── users
-      │       └── create
-      │           ├── index.integration.test.js
-      │           ├── index.js
-      │           └── index.unit.test.js
-      ├── handlers
-      │   └── users
-      │       └── create
-      │           ├── index.js
-      │           └── index.unit.test.js
-      ├── index.js
-      ├── middlewares
-      │   ├── check-content-type-is-json
-      │   │   ├── index.js
-      │   │   └── index.unit.test.js
-      │   ├── check-content-type-is-set
-      │   │   ├── index.js
-      │   │   └── index.unit.test.js
-      │   ├── check-empty-payload
-      │   │   ├── index.js
-      │   │   └── index.unit.test.js
-      │   └── error-handler
-      │       ├── index.js
-      │       └── index.unit.test.js
-      ├── schema
-      │   └── users
-      │       ├── create.json
-      │       └── profile.json
-      ├── tests
-      │   ├── spies
-      │   │   └── res
-      │   │       └── index.js
-      │   └── stubs
-      │       └── engines
-      │           └── users
-      │               └── create
-      │                   └── index.js
-      ├── utils
-      │   └── inject-handler-dependencies.js
-      └── validators
-          ├── errors
-          │   ├── messages
-          │   │   ├── index.js
-          │   │   └── index.unit.test.js
-          │   └── validation-error
-          │       ├── index.js
-          │       └── index.unit.test.js
-          └── users
-              └── create.js
+  ~/Core/Dev/Pub/hobnob                          ...Pub/hobnob-book-source/hobnob/Chapter06
+  .                                              .
+  ├── package.json                               ├── package.json
+  …                                              ├── .env.example
+  ├── scripts                                    ├── scripts
+  │   └── e2e.test.sh                            │   └── e2e.test.sh
+  ├── spec                                       ├── spec
+  │   └── cucumber                               │   └── cucumber
+  │       ├── features                           │       ├── features
+  │       │   ├── main.feature                   │       │   ├── main.feature
+  │       │   └── users                          │       │   └── users
+  │       │       └── create                     │       │       ├── create
+  │       │           └── main.feature           │       │       │   └── main.feature
+  …           …                                  │       │       ├── delete
+  …               …                              │       │       │   └── main.feature
+  …           …                                  │       │       ├── retrieve
+  …               …                              │       │       │   └── main.feature
+  …           …                                  │       │       └── search
+  …               …                              │       │           └── main.feature
+  │       └── steps                              │       └── steps
+  │           ├── index.js                       │           ├── index.js
+  …           …                                  │           ├── profile.js
+  │           └── utils.js                       │           └── utils.js
+  └── src                                        └── src
+      ├── index.js                                   ├── index.js
+      ├── engines                                    ├── engines
+      …   …                                          │   ├── profile
+      …       …                                      │   │   ├── replace
+      …           …                                  │   │   │   ├── index.integration.test.js
+      …           …                                  │   │   │   ├── index.js
+      …           …                                  │   │   │   └── index.unit.test.js
+      …       …                                      │   │   └── update
+      …           …                                  │   │       ├── index.integration.test.js
+      …           …                                  │   │       ├── index.js
+      …           …                                  │   │       └── index.unit.test.js
+      │   └── users                                  │   └── users
+      │   …   └── create                             │       ├── create
+      │   …       ├── index.js                       │       │   ├── index.js
+      │   …       ├── index.integration.test.js      │       │   ├── index.integration.test.js
+      │   …       └── index.unit.test.js             │       │   └── index.unit.test.js
+      …       …                                      │       ├── delete
+      …           …                                  │       │   ├── index.js
+      …           …                                  │       │   ├── index.integration.test.js
+      …           …                                  │       │   └── index.unit.test.js
+      …       …                                      │       ├── retrieve
+      …           …                                  │       │   ├── index.js
+      …           …                                  │       │   ├── index.integration.test.js
+      …           …                                  │       │   └── index.unit.test.js
+      …       …                                      │       └── search
+      …           …                                  │           ├── index.js
+      …           …                                  │           ├── index.integration.test.js
+      …           …                                  │           └── index.unit.test.js
+      ├── handlers                                   ├── handlers
+      …   …                                          │   ├── index.js
+      …   …                                          │   ├── profile
+      …       …                                      │   │   ├── index.js
+      …       …                                      │   │   ├── replace
+      …           …                                  │   │   │   ├── index.js
+      …           …                                  │   │   │   └── index.unit.test.js
+      …       …                                      │   │   └── update
+      …           …                                  │   │       ├── index.js
+      …           …                                  │   │       └── index.unit.test.js
+      │   └── users                                  │   └── users
+      …       …                                      │       ├── index.js
+      │       └── create                             │       ├── create
+      │       …   ├── index.js                       │       │   ├── index.js
+      │       …   └── index.unit.test.js             │       │   └── index.unit.test.js
+      …           …                                  │       ├── delete
+      …               …                              │       │   ├── index.js
+      …               …                              │       │   └── index.unit.test.js
+      …           …                                  │       ├── retrieve
+      …               …                              │       │   ├── index.js
+      …               …                              │       │   └── index.unit.test.js
+      …           …                                  │       └── search
+      …               …                              │           ├── index.js
+      …               …                              │           └── index.unit.test.js
+      ├── middlewares                                ├── middlewares
+      …   …                                          │   ├── index.js
+      │   ├── check-content-type-is-json             │   ├── check-content-length
+      │   │   ├── index.js                           │   │   ├── index.js
+      │   │   └── index.unit.test.js                 │   │   └── index.unit.test.js
+      │   ├── check-content-type-is-set              │   ├── check-content-type
+      │   │   ├── index.js                           │   │   ├── index.js
+      │   │   └── index.unit.test.js                 │   │   └── index.unit.test.js
+      │   ├── check-empty-payload                    │   └── error-handler
+      │   │   ├── index.js                           │       ├── index.js
+      │   │   └── index.unit.test.js                 │       └── index.unit.test.js
+      │   └── error-handler                          …
+      │       ├── index.js                           …
+      │       └── index.unit.test.js                 …
+      ├── schema                                     ├── schema
+      │   └── users                                  │   └── users
+      │       ├── create.json                        │       ├── create.json
+      │       └── profile.json                       │       ├── profile.json
+      …       …                                      │       └── search.json
+      ├── tests                                      ├── tests
+      │   ├── spies                                  │   ├── spies
+      │   │   └── res                                │   │   └── res
+      │   │       └── index.js                       │   │       └── index.js
+      │   └── stubs                                  │   └── stubs
+      …       …                                      │       ├── elasticsearch
+      …           …                                  │       │   ├── client
+      …               …                              │       │   │   ├── delete
+      …                   …                          │       │   │   │   └── index.js
+      …               …                              │       │   │   ├── get
+      …                   …                          │       │   │   │   └── index.js
+      …               …                              │       │   │   ├── index
+      …                   …                          │       │   │   │   └── index.js
+      …               …                              │       │   │   ├── search
+      …                   …                          │       │   │   │   └── index.js
+      …               …                              │       │   │   └── update
+      …                   …                          │       │   │       └── index.js
+      …           …                                  │       │   └── errors
+      …               …                              │       │       └── not-found
+      …                   …                          │       │           └── index.js
+      │       └── engines                            │       ├── engines
+      …           …                                  │       │   ├── profile
+      …               …                              │       │   │   ├── replace
+      …                   …                          │       │   │   │   └── index.js
+      …               …                              │       │   │   └── update
+      …                   …                          │       │   │       └── index.js
+      │           └── users                          │       │   └── users
+      │               └── create                     │       │       ├── create
+      │                   └── index.js               │       │       │   └── index.js
+      …               …                              │       │       ├── delete
+      …                   …                          │       │       │   └── index.js
+      …               …                              │       │       ├── retrieve
+      …                   …                          │       │       │   └── index.js
+      …               …                              │       │       └── search
+      …                   …                          │       │           └── index.js
+      …       …                                      │       └── validate
+      …           …                                  │           └── index.js
+      ├── utils                                      …       …
+      │   └── inject-handler-dependencies.js         …            …
+      └── validators                                 └── validators
+          ├── errors                                     ├── errors
+          │   ├── messages                               │   ├── messages
+          │   │   ├── index.js                           │   │   ├── index.js
+          │   │   └── index.unit.test.js                 │   │   └── index.unit.test.js
+          │   └── validation-error                       │   └── validation-error
+          │       ├── index.js                           │       ├── index.js
+          │       └── index.unit.test.js                 │       └── index.unit.test.js
+          …   …                                          ├── profile
+          …       …                                      │   ├── replace.js
+          …       …                                      │   └── update.js
+          └── users                                      └── users
+          …   └── create.js                                  ├── create.js
+          …       …                                          └── search.js
 
-  35 directories, 39 files
-
-  ~/Core/Dev/Pub/hobnob-book-source/hobnob/Chapter06
-  .
-  ├── .babelrc
-  ├── .env.example
-  ├── .vscode
-  │   └── launch.json
-  ├── package.json
-  ├── scripts
-  │   └── e2e.test.sh
-  ├── spec
-  │   └── cucumber
-  │       ├── features
-  │       │   ├── main.feature
-  │       │   ├── profile
-  │       │   │   ├── replace
-  │       │   │   │   └── main.feature
-  │       │   │   └── update
-  │       │   │       └── main.feature
-  │       │   └── users
-  │       │       ├── create
-  │       │       │   └── main.feature
-  │       │       ├── delete
-  │       │       │   └── main.feature
-  │       │       ├── retrieve
-  │       │       │   └── main.feature
-  │       │       └── search
-  │       │           └── main.feature
-  │       ├── sample-data
-  │       │   └── javascript-experts.json
-  │       └── steps
-  │           ├── index.js
-  │           ├── profile.js
-  │           └── utils.js
-  └── src
-      ├── engines
-      │   ├── profile
-      │   │   ├── replace
-      │   │   │   ├── index.integration.test.js
-      │   │   │   ├── index.js
-      │   │   │   └── index.unit.test.js
-      │   │   └── update
-      │   │       ├── index.integration.test.js
-      │   │       ├── index.js
-      │   │       └── index.unit.test.js
-      │   └── users
-      │       ├── create
-      │       │   ├── index.integration.test.js
-      │       │   ├── index.js
-      │       │   └── index.unit.test.js
-      │       ├── delete
-      │       │   ├── index.integration.test.js
-      │       │   ├── index.js
-      │       │   └── index.unit.test.js
-      │       ├── retrieve
-      │       │   ├── index.integration.test.js
-      │       │   ├── index.js
-      │       │   └── index.unit.test.js
-      │       └── search
-      │           ├── index.integration.test.js
-      │           ├── index.js
-      │           └── index.unit.test.js
-      ├── handlers
-      │   ├── index.js
-      │   ├── profile
-      │   │   ├── index.js
-      │   │   ├── replace
-      │   │   │   ├── index.js
-      │   │   │   └── index.unit.test.js
-      │   │   └── update
-      │   │       ├── index.js
-      │   │       └── index.unit.test.js
-      │   └── users
-      │       ├── create
-      │       │   ├── index.js
-      │       │   └── index.unit.test.js
-      │       ├── delete
-      │       │   ├── index.js
-      │       │   └── index.unit.test.js
-      │       ├── index.js
-      │       ├── retrieve
-      │       │   ├── index.js
-      │       │   └── index.unit.test.js
-      │       └── search
-      │           ├── index.js
-      │           └── index.unit.test.js
-      ├── index.js
-      ├── middlewares
-      │   ├── check-content-length
-      │   │   ├── index.js
-      │   │   └── index.unit.test.js
-      │   ├── check-content-type
-      │   │   ├── index.js
-      │   │   └── index.unit.test.js
-      │   ├── error-handler
-      │   │   ├── index.js
-      │   │   └── index.unit.test.js
-      │   └── index.js
-      ├── schema
-      │   └── users
-      │       ├── create.json
-      │       ├── profile.json
-      │       └── search.json
-      ├── tests
-      │   ├── spies
-      │   │   └── res
-      │   │       └── index.js
-      │   └── stubs
-      │       ├── elasticsearch
-      │       │   ├── client
-      │       │   │   ├── delete
-      │       │   │   │   └── index.js
-      │       │   │   ├── get
-      │       │   │   │   └── index.js
-      │       │   │   ├── index
-      │       │   │   │   └── index.js
-      │       │   │   ├── search
-      │       │   │   │   └── index.js
-      │       │   │   └── update
-      │       │   │       └── index.js
-      │       │   └── errors
-      │       │       └── not-found
-      │       │           └── index.js
-      │       ├── engines
-      │       │   ├── profile
-      │       │   │   ├── replace
-      │       │   │   │   └── index.js
-      │       │   │   └── update
-      │       │   │       └── index.js
-      │       │   └── users
-      │       │       ├── create
-      │       │       │   └── index.js
-      │       │       ├── delete
-      │       │       │   └── index.js
-      │       │       ├── retrieve
-      │       │       │   └── index.js
-      │       │       └── search
-      │       │           └── index.js
-      │       └── validate
-      │           └── index.js
-      └── validators
-          ├── errors
-          │   ├── messages
-          │   │   ├── index.js
-          │   │   └── index.unit.test.js
-          │   └── validation-error
-          │       ├── index.js
-          │       └── index.unit.test.js
-          ├── profile
-          │   ├── replace.js
-          │   └── update.js
-          └── users
-              ├── create.js
-              └── search.js
-
-  69 directories, 82 files
+  35 directories, 39 files                       69 directories, 82 files
   ```
