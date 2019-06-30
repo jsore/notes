@@ -250,71 +250,108 @@ Don't expose internal functions to the user, this adds unnecessary complexity.
 
 <br>
 
+- [ ] Create User
+  > - User must provide email address and password
+  > - User may optionally provide a profile, otherwise create empty profile
+- [ ] Delete User
+  > - User must provide a user ID to delete
+- [ ] Search Users
+  > - Defaults to the last 10 users who've registered
+- [ ] Retrieve User
+  > - Return profile of user specified when a user ID is provided
+- [ ] Update User
+  > - When user provides user ID and complete user object, replace old user object with it
+  > - When user provides user ID and a partial user object, merge the partial into existing object
+
 __E2E tests__
 
-  - [ ] Create User
-  - [ ] Delete User
-  - [ ] Search Users
-  - [ ] Retrieve User
-  - [ ] Update User
-
   ```
-    ├── spec
-    │   └── cucumber
-    │   └── cucumber
-    │       ├── features
-  ```
-- [ ] `│       │   ├── main.feature`
-  ```
-    │       │   ├── profile
-    │       │   │   ├── replace
-  ```
-- [ ] `│       │   │   │   └── main.feature`
-  ```
-    │       │   │   └── update
-  ```
-- [ ] `│       │   │       └── main.feature`
-  ```
-    │       │   └── users
-  ```
-- [ ] `│       │       ├── create`
-- [ ] `│       │       │   └── main.feature`
-- [ ] `│       │       ├── delete`
-- [ ] `│       │       │   └── main.feature`
-- [ ] `│       │       ├── retrieve`
-- [ ] `│       │       │   └── main.feature`
-- [ ] `│       │       └── search`
-- [ ] `│       │           └── main.feature`
-  ```
-    │       ├── sample-data
-  ```
-- [ ] `│       │   └── javascript-experts.json`
-  ```
-    │       └── steps
-  ```
-- [ ] `│           ├── index.js`
-- [ ] `│           ├── profile.js`
-- [ ] `│           └── utils.js`
-
-  ```
+  ├── spec
+  │   └── cucumber
   │   └── cucumber
   │       ├── features
-  │       │   ├── main.feature
+  │       │   ├── main.feature               [ ]
   │       │   ├── profile
   │       │   │   ├── replace
-  │       │   │   │   └── main.feature
+  │       │   │   │   └── main.feature       [ ]
   │       │   │   └── update
-  │       │   │       └── main.feature
+  │       │   │       └── main.feature       [ ]
   │       │   └── users
   │       │       ├── create
-  │       │       │   └── main.feature
+  │       │       │   └── main.feature       [ ]
   │       │       ├── delete
-  │       │       │   └── main.feature
+  │       │       │   └── main.feature       [ ]
   │       │       ├── retrieve
-  │       │       │   └── main.feature
+  │       │       │   └── main.feature       [ ]
   │       │       └── search
-  │       │           └── main.feature
+  │       │           └── main.feature       [ ]
+  │       ├── sample-data
+  │       │   └── javascript-experts.json    [ ]
+  │       └── steps
+  │           ├── index.js                   [ ]
+  │           ├── profile.js                 [ ]
+  │           └── utils.js                   [ ]
+
   ```
+
+<br>
+
+
+__Integration tests & supportive functions__
+
+  ```
+  └── src
+      ...
+      ├── tests
+      │   ├── spies
+      │   │   └── res
+      │   │       └── index.js            [ ]
+      │   └── stubs
+      │       ├── elasticsearch
+      │       │   ├── client
+      │       │   │   ├── delete
+      │       │   │   │   └── index.js    [ ]
+      │       │   │   ├── get
+      │       │   │   │   └── index.js    [ ]
+      │       │   │   ├── index
+      │       │   │   │   └── index.js    [ ]
+      │       │   │   ├── search
+      │       │   │   │   └── index.js    [ ]
+      │       │   │   └── update
+      │       │   │       └── index.js    [ ]
+      │       │   └── errors
+      │       │       └── not-found
+      │       │           └── index.js    [ ]
+      │       ├── engines
+      │       │   ├── profile
+      │       │   │   ├── replace
+      │       │   │   │   └── index.js    [ ]
+      │       │   │   └── update
+      │       │   │       └── index.js    [ ]
+      │       │   └── users
+      │       │       ├── create
+      │       │       │   └── index.js    [ ]
+      │       │       ├── delete
+      │       │       │   └── index.js    [ ]
+      │       │       ├── retrieve
+      │       │       │   └── index.js    [ ]
+      │       │       └── search
+      │       │           └── index.js    [ ]
+      │       └── validate
+      │           └── index.js            [ ]
+  ```
+
+
+__Create User__
+
+  ```
+      │   └── users
+      │       ├── create
+      │       │   ├── index.integration.test.js
+      │       │   ├── index.js
+      │       │   └── index.unit.test.js
+  ```
+
 
 
 <br>
