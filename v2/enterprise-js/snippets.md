@@ -132,3 +132,37 @@ related: `src/middlewares/check-empty-payload/index.unit.test.js`
 ```
 $ yarn add lodash.isequal lodash.clonedeep --dev
 ```
+
+<br>
+
+###  New Hotness vs Old Busted Hotness
+
+https://i.redd.it/mm20olnsjd731.jpg
+
+  ```javascript
+  /*===============================================================
+  =            'Cause ever since I left the city youuu            =
+  ===============================================================*/
+  const values = {
+    "nDogs": 10,
+    "nCats": 20
+  };
+  console.log("nDogs: " + values["nDogs"]); // 10
+  console.log("nDogs: " + values["nCats"]); // 20
+
+  /*===============================================================
+  =            Started wearing less and goin' out more            =
+  ===============================================================*/
+  const keys = ["nDogs", "nCats"];
+  const values = [10, 20];
+  const getValue = (key) => {
+    for (let i = 0; i < keys.length; i++) {
+      if (key == keys[i]) {
+        return values[i];
+      }
+    };
+  };
+  console.log(getValue("nDogs")); // 10
+  console.log(getValue("nCats")); // 20
+
+  ```
