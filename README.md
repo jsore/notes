@@ -57,7 +57,7 @@ New projects I've started here:
 - mastering-node-js
     - thoughts relating to Packt Publishing's `Mastering Node.js - Second Edition`
 
-### V2
+### V2 - Altering Project Structure
 
 The structure of this project....isn't ideal. I'm hand rolling a self-hosted
 wiki, but that's still a work in progress, so I'll continue updating this repo
