@@ -8,39 +8,43 @@ Source and supplemental code: https://github.com/jsore/hobnob
 
 ### Project Contents
 
-[Writing And Tracking Good Code](https://github.com/jsore/notes/blob/master/v2/enterprise-js/writing-and-tracking-good-code.md)
+- [x] [Writing And Tracking Good Code](https://github.com/jsore/notes/blob/master/v2/enterprise-js/writing-and-tracking-good-code.md)
 
-[The Development Environment](https://github.com/jsore/notes/blob/master/v2/enterprise-js/the-development-environment.md)
+- [x] [The Development Environment](https://github.com/jsore/notes/blob/master/v2/enterprise-js/the-development-environment.md)
 
-[End To End Testing](https://github.com/jsore/notes/blob/master/v2/enterprise-js/end-to-end-testing.md)
+- [x] [End To End Testing](https://github.com/jsore/notes/blob/master/v2/enterprise-js/end-to-end-testing.md)
 
-[Elasticsearch](https://github.com/jsore/notes/blob/master/v2/enterprise-js/elasticsearch.md)
+- [x] [Elasticsearch](https://github.com/jsore/notes/blob/master/v2/enterprise-js/elasticsearch.md)
 
-[Modularization](https://github.com/jsore/notes/blob/master/v2/enterprise-js/modularization.md)
+- [x] [Modularization](https://github.com/jsore/notes/blob/master/v2/enterprise-js/modularization.md)
 
-[Unit/Integration Tests](https://github.com/jsore/notes/blob/master/v2/enterprise-js/unit-integration-tests.md)
+- [x] [Unit/Integration Tests](https://github.com/jsore/notes/blob/master/v2/enterprise-js/unit-integration-tests.md)
 
-[API Design](https://github.com/jsore/notes/blob/master/v2/enterprise-js/api-design.md)
+Current:
 
-[Deployment](https://github.com/jsore/notes/blob/master/v2/enterprise-js/deployment.md)
+- [ ] [API Design](https://github.com/jsore/notes/blob/master/v2/enterprise-js/api-design.md)
 
-[CI](https://github.com/jsore/notes/blob/master/v2/enterprise-js/ci.md)
+Future:
 
-[Authentication And Authorization](https://github.com/jsore/notes/blob/master/v2/enterprise-js/authentication-authorization.md)
+- [ ] [Deployment](https://github.com/jsore/notes/blob/master/v2/enterprise-js/deployment.md)
 
-[Documenting The API](https://github.com/jsore/notes/blob/master/v2/enterprise-js/document-api.md)
+- [ ] [CI](https://github.com/jsore/notes/blob/master/v2/enterprise-js/ci.md)
 
-[React And The UI](https://github.com/jsore/notes/blob/master/v2/enterprise-js/react-ui.md)
+- [ ] [Authentication And Authorization](https://github.com/jsore/notes/blob/master/v2/enterprise-js/authentication-authorization.md)
 
-[Testing With React](https://github.com/jsore/notes/blob/master/v2/enterprise-js/testing-react.md)
+- [ ] [Documenting The API](https://github.com/jsore/notes/blob/master/v2/enterprise-js/document-api.md)
 
-[Redux For State Management](https://github.com/jsore/notes/blob/master/v2/enterprise-js/redux-state-management.md)
+- [ ] [React And The UI](https://github.com/jsore/notes/blob/master/v2/enterprise-js/react-ui.md)
 
-[Docker](https://github.com/jsore/notes/blob/master/v2/enterprise-js/docker.md)
+- [ ] [Testing With React](https://github.com/jsore/notes/blob/master/v2/enterprise-js/testing-react.md)
 
-[Kubernetes For HA](https://github.com/jsore/notes/blob/master/v2/enterprise-js/kubernetes.md)
+- [ ] [Redux For State Management](https://github.com/jsore/notes/blob/master/v2/enterprise-js/redux-state-management.md)
 
-[Snippets](https://github.com/jsore/notes/blob/master/v2/enterprise-js/snippets.md) ( just some things that might be useful to integrate )
+- [ ] [Docker](https://github.com/jsore/notes/blob/master/v2/enterprise-js/docker.md)
+
+- [ ] [Kubernetes For HA](https://github.com/jsore/notes/blob/master/v2/enterprise-js/kubernetes.md)
+
+- [ ] [Snippets](https://github.com/jsore/notes/blob/master/v2/enterprise-js/snippets.md) ( just some things that might be useful to integrate )
 
 <br>
 

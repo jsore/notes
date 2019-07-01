@@ -250,13 +250,13 @@ Don't expose internal functions to the user, this adds unnecessary complexity.
 
 <br>
 
-- [ ] Create User
-  > - User must provide email address and password
-  > - User may optionally provide a profile, otherwise create empty profile
 - [ ] Delete User
   > - User must provide a user ID to delete
 - [ ] Search Users
   > - Defaults to the last 10 users who've registered
+- [ ] Create User
+  > - User must provide email address and password
+  > - User may optionally provide a profile, otherwise create empty profile
 - [ ] Retrieve User
   > - Return profile of user specified when a user ID is provided
 - [ ] Update User
@@ -272,7 +272,7 @@ __1. E2E tests__ ( Remember: TDD )
   ├── spec
   │   └── cucumber
   │       ├── features
-  │       │   ├── main.feature               [ ]
+  │       │   ├── main.feature               [x]
   │       │   ├── profile
   │       │   │   ├── replace
   │       │   │   │   └── main.feature       [ ]
@@ -280,7 +280,7 @@ __1. E2E tests__ ( Remember: TDD )
   │       │   │       └── main.feature       [ ]
   │       │   └── users
   │       │       ├── create
-  │       │       │   └── main.feature       [ ]
+  │       │       │   └── main.feature       [x]
   │       │       ├── delete
   │       │       │   └── main.feature       [ ]
   │       │       ├── retrieve
@@ -293,7 +293,6 @@ __1. E2E tests__ ( Remember: TDD )
   │           ├── index.js                   [ ]
   │           ├── profile.js                 [ ]
   │           └── utils.js                   [ ]
-
   ```
 
 <br>
