@@ -250,6 +250,9 @@ Don't expose internal functions to the user, this adds unnecessary complexity.
 
 <br>
 
+- [ ] E2E tests
+  - [x] features
+  - [ ] steps
 - [ ] Delete User
   > - User must provide a user ID to delete
 - [ ] Search Users
@@ -262,9 +265,17 @@ Don't expose internal functions to the user, this adds unnecessary complexity.
 - [ ] Update User
   > - When user provides user ID and complete user object, replace old user object with it
   > - When user provides user ID and a partial user object, merge the partial into existing object
+- [ ] Unit tests
+- [ ] Integration tests
+
+Things to install or implement as I come across them
+- [ ] jsonfile
+- [ ] objectPath
+- [ ] processPath ( custom )
+
+
 
 <br>
-
 
 __1. E2E tests__ ( Remember: TDD )
 
@@ -272,27 +283,27 @@ __1. E2E tests__ ( Remember: TDD )
   ├── spec
   │   └── cucumber
   │       ├── features
-  │       │   ├── main.feature               [x]
+  │       │   ├── main.feature               [X]
   │       │   ├── profile
   │       │   │   ├── replace
-  │       │   │   │   └── main.feature       [ ]
+  │       │   │   │   └── main.feature       [X]
   │       │   │   └── update
-  │       │   │       └── main.feature       [ ]
+  │       │   │       └── main.feature       [X]
   │       │   └── users
   │       │       ├── create
-  │       │       │   └── main.feature       [x]
+  │       │       │   └── main.feature       [X]
   │       │       ├── delete
-  │       │       │   └── main.feature       [ ]
+  │       │       │   └── main.feature       [X]
   │       │       ├── retrieve
-  │       │       │   └── main.feature       [ ]
+  │       │       │   └── main.feature       [X]
   │       │       └── search
-  │       │           └── main.feature       [ ]
+  │       │           └── main.feature       [X]
   │       ├── sample-data
-  │       │   └── javascript-experts.json    [ ]
+  │       │   └── javascript-experts.json    [X]
   │       └── steps
   │           ├── index.js                   [ ]
   │           ├── profile.js                 [ ]
-  │           └── utils.js                   [ ]
+  │           └── utils.js                   [X]
   ```
 
 <br>
@@ -460,13 +471,13 @@ __Current Structure `vs` Book Structure__
   │       │   ├── main.feature                   │       │   ├── main.feature
   │       │   └── users                          │       │   └── users
   │       │       └── create                     │       │       ├── create
-  │       │           └── main.feature           │       │       │   └── main.feature
-  …           …                                  │       │       ├── delete
-  …               …                              │       │       │   └── main.feature
-  …           …                                  │       │       ├── retrieve
-  …               …                              │       │       │   └── main.feature
-  …           …                                  │       │       └── search
-  …               …                              │       │           └── main.feature
+  │       │       …   └── main.feature           │       │       │   └── main.feature
+  …       …       …                              │       │       ├── delete
+  …       …       …   …                          │       │       │   └── main.feature
+  …       …       …                              │       │       ├── retrieve
+  …       …       …   …                          │       │       │   └── main.feature
+  …       …       …                              │       │       └── search
+  …       …           …                          │       │           └── main.feature
   │       └── steps                              │       └── steps
   │           ├── index.js                       │           ├── index.js
   …           …                                  │           ├── profile.js
@@ -475,27 +486,27 @@ __Current Structure `vs` Book Structure__
       ├── index.js                                   ├── index.js
       ├── engines                                    ├── engines
       …   …                                          │   ├── profile
-      …       …                                      │   │   ├── replace
-      …           …                                  │   │   │   ├── index.integration.test.js
-      …           …                                  │   │   │   ├── index.js
-      …           …                                  │   │   │   └── index.unit.test.js
-      …       …                                      │   │   └── update
-      …           …                                  │   │       ├── index.integration.test.js
-      …           …                                  │   │       ├── index.js
-      …           …                                  │   │       └── index.unit.test.js
+      …   …   …                                      │   │   ├── replace
+      …   …   …   …                                  │   │   │   ├── index.integration.test.js
+      …   …   …   …                                  │   │   │   ├── index.js
+      …   …   …   …                                  │   │   │   └── index.unit.test.js
+      …   …   …                                      │   │   └── update
+      …   …       …                                  │   │       ├── index.integration.test.js
+      …   …       …                                  │   │       ├── index.js
+      …   …       …                                  │   │       └── index.unit.test.js
       │   └── users                                  │   └── users
-      │   …   └── create                             │       ├── create
-      │   …       ├── index.js                       │       │   ├── index.js
-      │   …       ├── index.integration.test.js      │       │   ├── index.integration.test.js
-      │   …       └── index.unit.test.js             │       │   └── index.unit.test.js
+      │       └── create                             │       ├── create
+      │       …   ├── index.js                       │       │   ├── index.js
+      │       …   ├── index.integration.test.js      │       │   ├── index.integration.test.js
+      │       …   └── index.unit.test.js             │       │   └── index.unit.test.js
       …       …                                      │       ├── delete
-      …           …                                  │       │   ├── index.js
-      …           …                                  │       │   ├── index.integration.test.js
-      …           …                                  │       │   └── index.unit.test.js
+      …       …   …                                  │       │   ├── index.js
+      …       …   …                                  │       │   ├── index.integration.test.js
+      …       …   …                                  │       │   └── index.unit.test.js
       …       …                                      │       ├── retrieve
-      …           …                                  │       │   ├── index.js
-      …           …                                  │       │   ├── index.integration.test.js
-      …           …                                  │       │   └── index.unit.test.js
+      …       …   …                                  │       │   ├── index.js
+      …       …   …                                  │       │   ├── index.integration.test.js
+      …       …   …                                  │       │   └── index.unit.test.js
       …       …                                      │       └── search
       …           …                                  │           ├── index.js
       …           …                                  │           ├── index.integration.test.js
@@ -503,27 +514,27 @@ __Current Structure `vs` Book Structure__
       ├── handlers                                   ├── handlers
       …   …                                          │   ├── index.js
       …   …                                          │   ├── profile
-      …       …                                      │   │   ├── index.js
-      …       …                                      │   │   ├── replace
-      …           …                                  │   │   │   ├── index.js
-      …           …                                  │   │   │   └── index.unit.test.js
-      …       …                                      │   │   └── update
-      …           …                                  │   │       ├── index.js
-      …           …                                  │   │       └── index.unit.test.js
+      …   …   …                                      │   │   ├── index.js
+      …   …   …                                      │   │   ├── replace
+      …   …   …   …                                  │   │   │   ├── index.js
+      …   …   …   …                                  │   │   │   └── index.unit.test.js
+      …   …   …                                      │   │   └── update
+      …   …       …                                  │   │       ├── index.js
+      …   …       …                                  │   │       └── index.unit.test.js
       │   └── users                                  │   └── users
       …       …                                      │       ├── index.js
       │       └── create                             │       ├── create
       │       …   ├── index.js                       │       │   ├── index.js
       │       …   └── index.unit.test.js             │       │   └── index.unit.test.js
-      …           …                                  │       ├── delete
-      …               …                              │       │   ├── index.js
-      …               …                              │       │   └── index.unit.test.js
-      …           …                                  │       ├── retrieve
-      …               …                              │       │   ├── index.js
-      …               …                              │       │   └── index.unit.test.js
-      …           …                                  │       └── search
-      …               …                              │           ├── index.js
-      …               …                              │           └── index.unit.test.js
+      …       …                                      │       ├── delete
+      …       …   …                                  │       │   ├── index.js
+      …       …   …                                  │       │   └── index.unit.test.js
+      …       …                                      │       ├── retrieve
+      …       …   …                                  │       │   ├── index.js
+      …       …   …                                  │       │   └── index.unit.test.js
+      …       …                                      │       └── search
+      …           …                                  │           ├── index.js
+      …           …                                  │           └── index.unit.test.js
       ├── middlewares                                ├── middlewares
       …   …                                          │   ├── index.js
       │   ├── check-content-type-is-json             │   ├── check-content-length
@@ -549,35 +560,35 @@ __Current Structure `vs` Book Structure__
       │   │       └── index.js                       │   │       └── index.js
       │   └── stubs                                  │   └── stubs
       …       …                                      │       ├── elasticsearch
-      …           …                                  │       │   ├── client
-      …               …                              │       │   │   ├── delete
-      …                   …                          │       │   │   │   └── index.js
-      …               …                              │       │   │   ├── get
-      …                   …                          │       │   │   │   └── index.js
-      …               …                              │       │   │   ├── index
-      …                   …                          │       │   │   │   └── index.js
-      …               …                              │       │   │   ├── search
-      …                   …                          │       │   │   │   └── index.js
-      …               …                              │       │   │   └── update
-      …                   …                          │       │   │       └── index.js
-      …           …                                  │       │   └── errors
-      …               …                              │       │       └── not-found
-      …                   …                          │       │           └── index.js
+      …       …   …                                  │       │   ├── client
+      …       …   …   …                              │       │   │   ├── delete
+      …       …   …   …   …                          │       │   │   │   └── index.js
+      …       …   …   …                              │       │   │   ├── get
+      …       …   …   …   …                          │       │   │   │   └── index.js
+      …       …   …   …                              │       │   │   ├── index
+      …       …   …   …   …                          │       │   │   │   └── index.js
+      …       …   …   …                              │       │   │   ├── search
+      …       …   …   …   …                          │       │   │   │   └── index.js
+      …       …   …   …                              │       │   │   └── update
+      …       …   …       …                          │       │   │       └── index.js
+      …       …   …                                  │       │   └── errors
+      …       …       …                              │       │       └── not-found
+      …       …           …                          │       │           └── index.js
       │       └── engines                            │       ├── engines
-      …           …                                  │       │   ├── profile
-      …               …                              │       │   │   ├── replace
-      …                   …                          │       │   │   │   └── index.js
-      …               …                              │       │   │   └── update
-      …                   …                          │       │   │       └── index.js
-      │           └── users                          │       │   └── users
-      │               └── create                     │       │       ├── create
-      │                   └── index.js               │       │       │   └── index.js
-      …               …                              │       │       ├── delete
-      …                   …                          │       │       │   └── index.js
-      …               …                              │       │       ├── retrieve
-      …                   …                          │       │       │   └── index.js
-      …               …                              │       │       └── search
-      …                   …                          │       │           └── index.js
+      …       …   …                                  │       │   ├── profile
+      …       …   …   …                              │       │   │   ├── replace
+      …       …   …   …   …                          │       │   │   │   └── index.js
+      …       …   …   …                              │       │   │   └── update
+      …       …   …       …                          │       │   │       └── index.js
+      │       …   └── users                          │       │   └── users
+      │       …       └── create                     │       │       ├── create
+      │       …       …   └── index.js               │       │       │   └── index.js
+      …       …       …                              │       │       ├── delete
+      …       …       …   …                          │       │       │   └── index.js
+      …       …       …                              │       │       ├── retrieve
+      …       …       …   …                          │       │       │   └── index.js
+      …       …       …                              │       │       └── search
+      …       …           …                          │       │           └── index.js
       …       …                                      │       └── validate
       …           …                                  │           └── index.js
       ├── utils                                      …       …
@@ -591,7 +602,7 @@ __Current Structure `vs` Book Structure__
           │       ├── index.js                           │       ├── index.js
           │       └── index.unit.test.js                 │       └── index.unit.test.js
           …   …                                          ├── profile
-          …       …                                      │   ├── replace.js
+          …   …   …                                      │   ├── replace.js
           …       …                                      │   └── update.js
           └── users                                      └── users
           …   └── create.js                                  ├── create.js
@@ -599,3 +610,6 @@ __Current Structure `vs` Book Structure__
 
   35 directories, 39 files                       69 directories, 82 files
   ```
+
+<br>
+
