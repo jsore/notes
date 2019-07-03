@@ -252,7 +252,7 @@ Don't expose internal functions to the user, this adds unnecessary complexity.
 
 - [ ] E2E tests
   - [x] features
-  - [ ] steps
+  - [x] steps
 - [ ] Delete User
   > - User must provide a user ID to delete
 - [ ] Search Users
@@ -269,13 +269,18 @@ Don't expose internal functions to the user, this adds unnecessary complexity.
 - [ ] Integration tests
 
 Things to install or implement as I come across them
-- [ ] jsonfile
-- [ ] objectPath
-- [ ] processPath ( custom )
 
+- [x] jsonfile
+  `spec/cucumber/steps/index.js`
 
+- [x] objectPath
+  `spec/cucumber/steps/index.js`
+
+- [x] processPath ( custom )
+  `spec/cucumber/steps/index.js`
 
 <br>
+
 
 __1. E2E tests__ ( Remember: TDD )
 
@@ -301,9 +306,12 @@ __1. E2E tests__ ( Remember: TDD )
   │       ├── sample-data
   │       │   └── javascript-experts.json    [X]
   │       └── steps
-  │           ├── index.js                   [ ]
-  │           ├── profile.js                 [ ]
+  │           ├── index.js                   [X]
+  │           ├── profile.js                 [X]
   │           └── utils.js                   [X]
+
+  64 scenarios (30 failed, 8 undefined, 26 passed)
+  553 steps (30 failed, 9 undefined, 77 skipped, 437 passed)
   ```
 
 <br>

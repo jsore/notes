@@ -218,6 +218,27 @@ $ yarn add lodash.isequal lodash.clonedeep --dev
   When(/^attaches an? (.+) payload which is missing the ([a-zA-Z0-9, ]+) fields?$/, function ...
   ```
 
+<br>
+
+### Easy walk array to delete item
+
+  ```javascript
+  // spec/cucumber/steps/index.js
+
+  function (responseProperty, contextProperty, missingFields) {
+    if (responseProperty === 'root') {
+      responseProperty = '';
+    }
+    const contextObject = objectPath.get(this, contextProperty);
+    const fieldsToDelete = convertStringToArray(missingFields);
+
+    fieldsToDelete.forEach(field => delete contextObject[field]);
+
+    assert.deepEqual( ...
+  ```
+
+
+
 ###  New Hotness vs Old Busted Hotness
 
 https://i.redd.it/mm20olnsjd731.jpg
