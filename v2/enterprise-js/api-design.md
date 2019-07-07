@@ -321,87 +321,87 @@ __2. Implementation & implementation tests__
 
   ```
   └── src
-      ├── index.js                                 [ ] entry
+      ├── index.js                                 [ ]
       ├── engines                                      ENGINES
-      │   ├── profile                                  ENGINES -> profile
-      │   │   ├── replace                              ENGINES -> PROFILE -> replace
-      │   │   │   ├── index.js                     [ ] entry
+      │   ├── profile                                  ENGINES -> PROFILE
+      │   │   ├── replace                              ENGINES -> PROFILE -> REPLACE
+      │   │   │   ├── index.js                     [ ]
       │   │   │   ├── index.integration.test.js    [ ]
       │   │   │   └── index.unit.test.js           [ ]
-      │   │   └── update                               ENGINES -> PROFILE -> update
-      │   │       ├── index.js                     [ ] entry
+      │   │   └── update                               ENGINES -> PROFILE -> UPDATE
+      │   │       ├── index.js                     [ ]
       │   │       ├── index.integration.test.js    [ ]
       │   │       └── index.unit.test.js           [ ]
       │   └── users                                    USERS
-      │       ├── create                               USERS -> create
-      │       │   ├── index.js                     [ ] entry
+      │       ├── create                               USERS -> CREATE
+      │       │   ├── index.js                     [ ]
       │       │   ├── index.integration.test.js    [ ]
       │       │   └── index.unit.test.js           [ ]
-      │       ├── delete                               USERS -> delete
-      │       │   ├── index.js                     [ ] entry
+      │       ├── delete                               USERS -> DELETE
+      │       │   ├── index.js                     [ ]
       │       │   ├── index.integration.test.js    [ ]
       │       │   └── index.unit.test.js           [ ]
-      │       ├── retrieve                             USERS -> retrieve
-      │       │   ├── index.js                     [ ] entry
+      │       ├── retrieve                             USERS -> RETRIEVE
+      │       │   ├── index.js                     [ ]
       │       │   ├── index.integration.test.js    [ ]
       │       │   └── index.unit.test.js           [ ]
-      │       └── search                               USERS -> search
-      │           ├── index.js                     [ ] entry
+      │       └── search                               USERS -> SEARCH
+      │           ├── index.js                     [ ]
       │           ├── index.integration.test.js    [ ]
       │           └── index.unit.test.js           [ ]
       ├── handlers                                     HANDLERS
-      │   ├── index.js                             [ ] entry
-      │   ├── profile                                  HANDLERS -> profile
-      │   │   ├── index.js                         [ ] entry
-      │   │   ├── replace                              HANDLERS -> PROFILE -> replace
-      │   │   │   ├── index.js                     [ ] entry
+      │   ├── index.js                             [ ]
+      │   ├── profile                                  HANDLERS -> PROFILE
+      │   │   ├── index.js                         [ ]
+      │   │   ├── replace                              HANDLERS -> PROFILE -> REPLACE
+      │   │   │   ├── index.js                     [ ]
       │   │   │   └── index.unit.test.js           [ ]
-      │   │   └── update                               HANDLERS -> PROFILE -> update
-      │   │       ├── index.js                     [ ] entry
+      │   │   └── update                               HANDLERS -> PROFILE -> UPDATE
+      │   │       ├── index.js                     [ ]
       │   │       └── index.unit.test.js           [ ]
-      │   └── users                                    HANDLERS -> users
-      │       ├── index.js                         [ ] entry
-      │       ├── create                               HANDLERS -> USERS -> create
-      │       │   ├── index.js                     [ ] entry
+      │   └── users                                    HANDLERS -> USERS
+      │       ├── index.js                         [ ]
+      │       ├── create                               HANDLERS -> USERS -> CREATE
+      │       │   ├── index.js                     [ ]
       │       │   └── index.unit.test.js           [ ]
-      │       ├── delete                               HANDLERS -> USERS -> delete
-      │       │   ├── index.js                     [ ] entry
+      │       ├── delete                               HANDLERS -> USERS -> DELETE
+      │       │   ├── index.js                     [ ]
       │       │   └── index.unit.test.js           [ ]
-      │       ├── retrieve                             HANDLERS -> USERS -> retrieve
-      │       │   ├── index.js                     [ ] entry
+      │       ├── retrieve                             HANDLERS -> USERS -> RETRIEVE
+      │       │   ├── index.js                     [ ]
       │       │   └── index.unit.test.js           [ ]
-      │       └── search                               HANDLERS -> USERS -> search
-      │           ├── index.js                     [ ] entry
+      │       └── search                               HANDLERS -> USERS -> SEARCH
+      │           ├── index.js                     [ ]
       │           └── index.unit.test.js           [ ]
       ├── middlewares                                  MIDDLEWARES
-      │   ├── index.js                             [ ] entry
-      │   ├── check-content-length                     MIDDLEWARES -> check-content-length
-      │   │   ├── index.js                         [ ] entry
+      │   ├── index.js                             [ ]
+      │   ├── check-content-length                     MIDDLEWARES -> CHECK-CONTENT-LENGTH
+      │   │   ├── index.js                         [ ]
       │   │   └── index.unit.test.js               [ ]
-      │   ├── check-content-type                       MIDDLEWARES -> check-content-type
-      │   │   ├── index.js                         [ ] entry
+      │   ├── check-content-type                       MIDDLEWARES -> CHECK-CONTENT-TYPE
+      │   │   ├── index.js                         [ ]
       │   │   └── index.unit.test.js               [ ]
-      │   └── error-handler                            MIDDLEWARES -> error-handler
-      │       ├── index.js                         [ ] entry
+      │   └── error-handler                            MIDDLEWARES -> ERROR-HANDLER
+      │       ├── index.js                         [ ]
       │       └── index.unit.test.js               [ ]
       ├── schema                                       SCHEMA
-      │   └── users                                    SCHAME -> users
+      │   └── users                                    SCHAME -> USERS
       │       ├── create.json                      [ ]
       │       ├── profile.json                     [ ]
       │       └── search.json                      [ ]
       ...                                          [ ]
       └── validators                                   VALIDATORS
-          ├── errors                                   VALIDATORS -> errors
-          │   ├── messages                             VALIDATORS -> ERRORS -> messages
-          │   │   ├── index.js                     [ ] entry
+          ├── errors                                   VALIDATORS -> ERRORS
+          │   ├── messages                             VALIDATORS -> ERRORS -> MESSAGES
+          │   │   ├── index.js                     [ ]
           │   │   └── index.unit.test.js           [ ]
-          │   └── validation-error                     VALIDATORS -> ERRORS -> validation-error
-          │       ├── index.js                     [ ] entry
+          │   └── validation-error                     VALIDATORS -> ERRORS -> VALIDATION-ERROR
+          │       ├── index.js                     [ ]
           │       └── index.unit.test.js           [ ]
-          ├── profile                                  VALIDATORS -> profile
+          ├── profile                                  VALIDATORS -> PROFILE
           │   ├── replace.js                       [ ]
           │   └── update.js                        [ ]
-          └── users                                    VALIDATORS -> users
+          └── users                                    VALIDATORS -> USERS
               ├── create.js                        [ ]
               └── search.js                        [ ]
   ```
