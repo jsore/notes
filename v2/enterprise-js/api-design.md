@@ -250,14 +250,14 @@ Don't expose internal functions to the user, this adds unnecessary complexity.
 
 <br>
 
-- [ ] E2E tests
+- [x] E2E tests
   - [x] features
   - [x] steps
 - [ ] Delete User
   > - User must provide a user ID to delete
 - [ ] Search Users
   > - Defaults to the last 10 users who've registered
-- [ ] Create User
+- [x] Create User
   > - User must provide email address and password
   > - User may optionally provide a profile, otherwise create empty profile
 - [ ] Retrieve User
@@ -278,6 +278,9 @@ Things to install or implement as I come across them
 
 - [x] processPath ( custom )
   `spec/cucumber/steps/index.js`
+
+- [x] Chance
+  `spec/cucumber/steps/preparation.js`
 
 <br>
 
@@ -306,8 +309,12 @@ __1. E2E tests__ ( Remember: TDD )
   │       ├── sample-data
   │       │   └── javascript-experts.json    [X]
   │       └── steps
-  │           ├── index.js                   [X]
-  │           ├── profile.js                 [X]
+  │           ├── preparation.js             [?]
+  │           ├── cleanup.js                 [?]
+  │           ├── request.js                 [?]
+  │           ├── response.js                [?]
+  │           ├── index.js                   [-] commented out
+  │           ├── profile.js                 [-] commented out
   │           └── utils.js                   [X]
 
   64 scenarios (30 failed, 8 undefined, 26 passed)
@@ -334,9 +341,9 @@ __2. Implementation & implementation tests__
       │   │       └── index.unit.test.js           [ ]
       │   └── users                                    USERS
       │       ├── create                               USERS -> CREATE
-      │       │   ├── index.js                     [ ]
-      │       │   ├── index.integration.test.js    [ ]
-      │       │   └── index.unit.test.js           [ ]
+      │       │   ├── index.js                     [X]
+      │       │   ├── index.integration.test.js    [X]
+      │       │   └── index.unit.test.js           [X]
       │       ├── delete                               USERS -> DELETE
       │       │   ├── index.js                     [ ]
       │       │   ├── index.integration.test.js    [ ]
@@ -362,8 +369,8 @@ __2. Implementation & implementation tests__
       │   └── users                                    HANDLERS -> USERS
       │       ├── index.js                         [ ]
       │       ├── create                               HANDLERS -> USERS -> CREATE
-      │       │   ├── index.js                     [ ]
-      │       │   └── index.unit.test.js           [ ]
+      │       │   ├── index.js                     [X]
+      │       │   └── index.unit.test.js           [X]
       │       ├── delete                               HANDLERS -> USERS -> DELETE
       │       │   ├── index.js                     [ ]
       │       │   └── index.unit.test.js           [ ]
@@ -374,16 +381,16 @@ __2. Implementation & implementation tests__
       │           ├── index.js                     [ ]
       │           └── index.unit.test.js           [ ]
       ├── middlewares                                  MIDDLEWARES
-      │   ├── index.js                             [ ]
+      │   ├── index.js                             [-] doesn't actually exist in project src
       │   ├── check-content-length                     MIDDLEWARES -> CHECK-CONTENT-LENGTH
-      │   │   ├── index.js                         [ ]
-      │   │   └── index.unit.test.js               [ ]
+      │   │   ├── index.js                         [X]
+      │   │   └── index.unit.test.js               [X]
       │   ├── check-content-type                       MIDDLEWARES -> CHECK-CONTENT-TYPE
-      │   │   ├── index.js                         [ ]
-      │   │   └── index.unit.test.js               [ ]
+      │   │   ├── index.js                         [X]
+      │   │   └── index.unit.test.js               [X]
       │   └── error-handler                            MIDDLEWARES -> ERROR-HANDLER
-      │       ├── index.js                         [ ]
-      │       └── index.unit.test.js               [ ]
+      │       ├── index.js                         [X]
+      │       └── index.unit.test.js               [X]
       ├── schema                                       SCHEMA
       │   └── users                                    SCHAME -> USERS
       │       ├── create.json                      [ ]
@@ -393,16 +400,16 @@ __2. Implementation & implementation tests__
       └── validators                                   VALIDATORS
           ├── errors                                   VALIDATORS -> ERRORS
           │   ├── messages                             VALIDATORS -> ERRORS -> MESSAGES
-          │   │   ├── index.js                     [ ]
+          │   │   ├── index.js                     [X]
           │   │   └── index.unit.test.js           [ ]
           │   └── validation-error                     VALIDATORS -> ERRORS -> VALIDATION-ERROR
-          │       ├── index.js                     [ ]
-          │       └── index.unit.test.js           [ ]
+          │       ├── index.js                     [X]
+          │       └── index.unit.test.js           [X]
           ├── profile                                  VALIDATORS -> PROFILE
           │   ├── replace.js                       [ ]
           │   └── update.js                        [ ]
           └── users                                    VALIDATORS -> USERS
-              ├── create.js                        [ ]
+              ├── create.js                        [X]
               └── search.js                        [ ]
   ```
 
