@@ -339,20 +339,20 @@ __2. Implementation & implementation tests__
       │   │       ├── index.js                     [ ]
       │   │       ├── index.integration.test.js    [ ]
       │   │       └── index.unit.test.js           [ ]
-      │   └── users                                    USERS
-      │       ├── create                               USERS -> CREATE
+      │   └── users                                    ENGINES -> USERS
+      │       ├── create                               ENGINES -> USERS -> CREATE
       │       │   ├── index.js                     [X]
       │       │   ├── index.integration.test.js    [X]
       │       │   └── index.unit.test.js           [X]
-      │       ├── delete                               USERS -> DELETE
+      │       ├── delete                               ENGINES -> USERS -> DELETE
       │       │   ├── index.js                     [ ]
       │       │   ├── index.integration.test.js    [ ]
       │       │   └── index.unit.test.js           [ ]
-      │       ├── retrieve                             USERS -> RETRIEVE
-      │       │   ├── index.js                     [ ]
+      │       ├── retrieve                             ENGINES -> USERS -> RETRIEVE
+      │       │   ├── index.js                     [X]
       │       │   ├── index.integration.test.js    [ ]
-      │       │   └── index.unit.test.js           [ ]
-      │       └── search                               USERS -> SEARCH
+      │       │   └── index.unit.test.js           [X]
+      │       └── search                               ENGINES -> USERS -> SEARCH
       │           ├── index.js                     [ ]
       │           ├── index.integration.test.js    [ ]
       │           └── index.unit.test.js           [ ]
@@ -375,8 +375,8 @@ __2. Implementation & implementation tests__
       │       │   ├── index.js                     [ ]
       │       │   └── index.unit.test.js           [ ]
       │       ├── retrieve                             HANDLERS -> USERS -> RETRIEVE
-      │       │   ├── index.js                     [ ]
-      │       │   └── index.unit.test.js           [ ]
+      │       │   ├── index.js                     [X]
+      │       │   └── index.unit.test.js           [X]
       │       └── search                               HANDLERS -> USERS -> SEARCH
       │           ├── index.js                     [ ]
       │           └── index.unit.test.js           [ ]
@@ -393,9 +393,9 @@ __2. Implementation & implementation tests__
       │       └── index.unit.test.js               [X]
       ├── schema                                       SCHEMA
       │   └── users                                    SCHAME -> USERS
-      │       ├── create.json                      [ ]
-      │       ├── profile.json                     [ ]
-      │       └── search.json                      [ ]
+      │       ├── create.json                      [X]
+      │       ├── profile.json                     [X]
+      │       └── search.json                      [X]
       ...                                          [ ]
       └── validators                                   VALIDATORS
           ├── errors                                   VALIDATORS -> ERRORS
@@ -436,7 +436,7 @@ __3. Integration tests & supportive functions__
       │       │   │   ├── delete
       │       │   │   │   └── index.js    [ ]
       │       │   │   ├── get
-      │       │   │   │   └── index.js    [ ]
+      │       │   │   │   └── index.js    [X]
       │       │   │   ├── index
       │       │   │   │   └── index.js    [X]
       │       │   │   ├── search
@@ -458,7 +458,7 @@ __3. Integration tests & supportive functions__
       │       │       ├── delete
       │       │       │   └── index.js    [ ]
       │       │       ├── retrieve
-      │       │       │   └── index.js    [ ]
+      │       │       │   └── index.js    [X]
       │       │       └── search
       │       │           └── index.js    [ ]
       │       └── validate
