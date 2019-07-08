@@ -357,9 +357,9 @@ __2. Implementation & implementation tests__
       │           ├── index.integration.test.js    [ ]
       │           └── index.unit.test.js           [ ]
       ├── handlers                                     HANDLERS
-      │   ├── index.js                             [ ]
+      │   ├── index.js                             [-]
       │   ├── profile                                  HANDLERS -> PROFILE
-      │   │   ├── index.js                         [ ]
+      │   │   ├── index.js                         [-]
       │   │   ├── replace                              HANDLERS -> PROFILE -> REPLACE
       │   │   │   ├── index.js                     [ ]
       │   │   │   └── index.unit.test.js           [ ]
@@ -367,7 +367,7 @@ __2. Implementation & implementation tests__
       │   │       ├── index.js                     [ ]
       │   │       └── index.unit.test.js           [ ]
       │   └── users                                    HANDLERS -> USERS
-      │       ├── index.js                         [ ]
+      │       ├── index.js                         [-]
       │       ├── create                               HANDLERS -> USERS -> CREATE
       │       │   ├── index.js                     [X]
       │       │   └── index.unit.test.js           [X]
@@ -401,7 +401,7 @@ __2. Implementation & implementation tests__
           ├── errors                                   VALIDATORS -> ERRORS
           │   ├── messages                             VALIDATORS -> ERRORS -> MESSAGES
           │   │   ├── index.js                     [X]
-          │   │   └── index.unit.test.js           [ ]
+          │   │   └── index.unit.test.js           [X]
           │   └── validation-error                     VALIDATORS -> ERRORS -> VALIDATION-ERROR
           │       ├── index.js                     [X]
           │       └── index.unit.test.js           [X]
@@ -429,7 +429,7 @@ __3. Integration tests & supportive functions__
       ├── tests
       │   ├── spies
       │   │   └── res
-      │   │       └── index.js            [ ]
+      │   │       └── index.js            [X]
       │   └── stubs
       │       ├── elasticsearch
       │       │   ├── client
@@ -438,14 +438,14 @@ __3. Integration tests & supportive functions__
       │       │   │   ├── get
       │       │   │   │   └── index.js    [ ]
       │       │   │   ├── index
-      │       │   │   │   └── index.js    [ ]
+      │       │   │   │   └── index.js    [X]
       │       │   │   ├── search
       │       │   │   │   └── index.js    [ ]
       │       │   │   └── update
       │       │   │       └── index.js    [ ]
       │       │   └── errors
       │       │       └── not-found
-      │       │           └── index.js    [ ]
+      │       │           └── index.js    [X]
       │       ├── engines
       │       │   ├── profile
       │       │   │   ├── replace
@@ -454,7 +454,7 @@ __3. Integration tests & supportive functions__
       │       │   │       └── index.js    [ ]
       │       │   └── users
       │       │       ├── create
-      │       │       │   └── index.js    [ ]
+      │       │       │   └── index.js    [X]
       │       │       ├── delete
       │       │       │   └── index.js    [ ]
       │       │       ├── retrieve
@@ -462,7 +462,7 @@ __3. Integration tests & supportive functions__
       │       │       └── search
       │       │           └── index.js    [ ]
       │       └── validate
-      │           └── index.js            [ ]
+      │           └── index.js            [X]
       ...
   ```
 
