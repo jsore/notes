@@ -350,12 +350,12 @@ __2. Implementation & implementation tests__
       │       │   └── index.unit.test.js           [ ]
       │       ├── retrieve                             ENGINES -> USERS -> RETRIEVE
       │       │   ├── index.js                     [X]
-      │       │   ├── index.integration.test.js    [ ]
+      │       │   ├── index.integration.test.js    [X]
       │       │   └── index.unit.test.js           [X]
       │       └── search                               ENGINES -> USERS -> SEARCH
-      │           ├── index.js                     [ ]
-      │           ├── index.integration.test.js    [ ]
-      │           └── index.unit.test.js           [ ]
+      │           ├── index.js                     [X]
+      │           ├── index.integration.test.js    [X]
+      │           └── index.unit.test.js           [X]
       ├── handlers                                     HANDLERS
       │   ├── index.js                             [-]
       │   ├── profile                                  HANDLERS -> PROFILE
@@ -378,8 +378,8 @@ __2. Implementation & implementation tests__
       │       │   ├── index.js                     [X]
       │       │   └── index.unit.test.js           [X]
       │       └── search                               HANDLERS -> USERS -> SEARCH
-      │           ├── index.js                     [ ]
-      │           └── index.unit.test.js           [ ]
+      │           ├── index.js                     [X]
+      │           └── index.unit.test.js           [X]
       ├── middlewares                                  MIDDLEWARES
       │   ├── index.js                             [-] doesn't actually exist in project src
       │   ├── check-content-length                     MIDDLEWARES -> CHECK-CONTENT-LENGTH
@@ -396,7 +396,7 @@ __2. Implementation & implementation tests__
       │       ├── create.json                      [X]
       │       ├── profile.json                     [X]
       │       └── search.json                      [X]
-      ...                                          [ ]
+      ...
       └── validators                                   VALIDATORS
           ├── errors                                   VALIDATORS -> ERRORS
           │   ├── messages                             VALIDATORS -> ERRORS -> MESSAGES
@@ -410,7 +410,7 @@ __2. Implementation & implementation tests__
           │   └── update.js                        [ ]
           └── users                                    VALIDATORS -> USERS
               ├── create.js                        [X]
-              └── search.js                        [ ]
+              └── search.js                        [X]
   ```
 
 <br>
@@ -440,7 +440,7 @@ __3. Integration tests & supportive functions__
       │       │   │   ├── index
       │       │   │   │   └── index.js    [X]
       │       │   │   ├── search
-      │       │   │   │   └── index.js    [ ]
+      │       │   │   │   └── index.js    [X]
       │       │   │   └── update
       │       │   │       └── index.js    [ ]
       │       │   └── errors
@@ -460,7 +460,7 @@ __3. Integration tests & supportive functions__
       │       │       ├── retrieve
       │       │       │   └── index.js    [X]
       │       │       └── search
-      │       │           └── index.js    [ ]
+      │       │           └── index.js    [X]
       │       └── validate
       │           └── index.js            [X]
       ...
