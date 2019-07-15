@@ -237,7 +237,42 @@ $ yarn add lodash.isequal lodash.clonedeep --dev
     assert.deepEqual( ...
   ```
 
+<br>
 
+### Object of functions
+
+  ```javascript
+  // src/tests/stubs/elasticsearch/client/search/index.js
+
+  const ES_SEARCH_RESULTS = {
+    took: 0,
+    timed_out: false,
+    _shards: {
+      total: 5, successful: 5, skipped: 0, failed: 0,
+    },
+    hits: {
+      // ...
+    },
+  };
+
+  const SEARCH_REJECT_ERROR = new Error();
+
+  const generate = {
+    success() {
+      return stub().returns(Promise.resolves(ES_SEARCH_RESULTS));
+    },
+    failure() {
+      return stub().returns(Promise.reject(SEARCH_REJECT_ERROR));
+    },
+  };
+
+  export {
+    generate as default,
+    ES_SEARCH_RESULTS,
+  };
+  ```
+
+<br><br>
 
 ###  New Hotness vs Old Busted Hotness
 
