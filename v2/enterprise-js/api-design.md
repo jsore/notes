@@ -103,15 +103,15 @@ determine the response's nature.
   .-----------------------------------------------------------------------------------------------.
   | Code | Response Class | Description                                                           |
   |-----------------------------------------------------------------------------------------------|
-  | 1xx  | Informational  | Request received but not yet fully processed, no client action needed |
+  | 1xx  | Informational  | Request received but not yet fully processed, no client action needed | // hold on
   |------|----------------|-----------------------------------------------------------------------|
-  | 2xx  | Success        | Request successfully received, understood and accepted                |
+  | 2xx  | Success        | Request successfully received, understood and accepted                | // here you go
   |------|----------------|-----------------------------------------------------------------------|
-  | 3xx  | Redirection    | Resource has moved, client needs to take further actions on request   |
+  | 3xx  | Redirection    | Resource has moved, client needs to take further actions on request   | // go away
   |------|----------------|-----------------------------------------------------------------------|
-  | 4xx  | Client Error   | Request syntactically/semantically bad, server refused to process it  |
+  | 4xx  | Client Error   | Request syntactically/semantically bad, server refused to process it  | // you fucked something up
   |------|----------------|-----------------------------------------------------------------------|
-  | 5xx  | Server Error   | Request likely valid but there was an error on the server             |
+  | 5xx  | Server Error   | Request likely valid but there was an error on the server             | // i fucked something up
   '-----------------------------------------------------------------------------------------------'
   ```
 
