@@ -332,22 +332,22 @@ __2. Implementation & implementation tests__
       ├── engines                                      ENGINES
       │   ├── profile                                  ENGINES -> PROFILE
       │   │   ├── replace                              ENGINES -> PROFILE -> REPLACE
-      │   │   │   ├── index.js                     [ ]
-      │   │   │   ├── index.integration.test.js    [ ]
-      │   │   │   └── index.unit.test.js           [ ]
+      │   │   │   ├── index.js                     [X]
+      │   │   │   ├── index.integration.test.js    [X]
+      │   │   │   └── index.unit.test.js           [X]
       │   │   └── update                               ENGINES -> PROFILE -> UPDATE
-      │   │       ├── index.js                     [ ]
-      │   │       ├── index.integration.test.js    [ ]
-      │   │       └── index.unit.test.js           [ ]
+      │   │       ├── index.js                     [X]
+      │   │       ├── index.integration.test.js    [X]
+      │   │       └── index.unit.test.js           [X]
       │   └── users                                    ENGINES -> USERS
       │       ├── create                               ENGINES -> USERS -> CREATE
       │       │   ├── index.js                     [X]
       │       │   ├── index.integration.test.js    [X]
       │       │   └── index.unit.test.js           [X]
       │       ├── delete                               ENGINES -> USERS -> DELETE
-      │       │   ├── index.js                     [ ]
-      │       │   ├── index.integration.test.js    [ ]
-      │       │   └── index.unit.test.js           [ ]
+      │       │   ├── index.js                     [X]
+      │       │   ├── index.integration.test.js    [X]
+      │       │   └── index.unit.test.js           [X]
       │       ├── retrieve                             ENGINES -> USERS -> RETRIEVE
       │       │   ├── index.js                     [X]
       │       │   ├── index.integration.test.js    [X]
@@ -357,23 +357,20 @@ __2. Implementation & implementation tests__
       │           ├── index.integration.test.js    [X]
       │           └── index.unit.test.js           [X]
       ├── handlers                                     HANDLERS
-      │   ├── index.js                             [-]
       │   ├── profile                                  HANDLERS -> PROFILE
-      │   │   ├── index.js                         [-]
       │   │   ├── replace                              HANDLERS -> PROFILE -> REPLACE
-      │   │   │   ├── index.js                     [ ]
-      │   │   │   └── index.unit.test.js           [ ]
+      │   │   │   ├── index.js                     [X]
+      │   │   │   └── index.unit.test.js           [X]
       │   │   └── update                               HANDLERS -> PROFILE -> UPDATE
-      │   │       ├── index.js                     [ ]
-      │   │       └── index.unit.test.js           [ ]
+      │   │       ├── index.js                     [X]
+      │   │       └── index.unit.test.js           [X]
       │   └── users                                    HANDLERS -> USERS
-      │       ├── index.js                         [-]
       │       ├── create                               HANDLERS -> USERS -> CREATE
       │       │   ├── index.js                     [X]
       │       │   └── index.unit.test.js           [X]
       │       ├── delete                               HANDLERS -> USERS -> DELETE
-      │       │   ├── index.js                     [ ]
-      │       │   └── index.unit.test.js           [ ]
+      │       │   ├── index.js                     [X]
+      │       │   └── index.unit.test.js           [X]
       │       ├── retrieve                             HANDLERS -> USERS -> RETRIEVE
       │       │   ├── index.js                     [X]
       │       │   └── index.unit.test.js           [X]
@@ -406,8 +403,8 @@ __2. Implementation & implementation tests__
           │       ├── index.js                     [X]
           │       └── index.unit.test.js           [X]
           ├── profile                                  VALIDATORS -> PROFILE
-          │   ├── replace.js                       [ ]
-          │   └── update.js                        [ ]
+          │   ├── replace.js                       [X]
+          │   └── update.js                        [X]
           └── users                                    VALIDATORS -> USERS
               ├── create.js                        [X]
               └── search.js                        [X]
@@ -420,10 +417,10 @@ __3. Integration tests & supportive functions__
 
   ```
   .
-  ├── .env.example                        [ ]
-  ├── package.json                        [ ]
+  ├── .env.example                        [X]
+  ├── package.json                        [X]
   ├── scripts
-  │   └── e2e.test.sh                     [ ]
+  │   └── e2e.test.sh                     [X]
   └── src
       ...
       ├── tests
@@ -434,7 +431,7 @@ __3. Integration tests & supportive functions__
       │       ├── elasticsearch
       │       │   ├── client
       │       │   │   ├── delete
-      │       │   │   │   └── index.js    [ ]
+      │       │   │   │   └── index.js    [X]
       │       │   │   ├── get
       │       │   │   │   └── index.js    [X]
       │       │   │   ├── index
@@ -442,21 +439,21 @@ __3. Integration tests & supportive functions__
       │       │   │   ├── search
       │       │   │   │   └── index.js    [X]
       │       │   │   └── update
-      │       │   │       └── index.js    [ ]
+      │       │   │       └── index.js    [X]
       │       │   └── errors
       │       │       └── not-found
       │       │           └── index.js    [X]
       │       ├── engines
       │       │   ├── profile
       │       │   │   ├── replace
-      │       │   │   │   └── index.js    [ ]
+      │       │   │   │   └── index.js    [X]
       │       │   │   └── update
-      │       │   │       └── index.js    [ ]
+      │       │   │       └── index.js    [X]
       │       │   └── users
       │       │       ├── create
       │       │       │   └── index.js    [X]
       │       │       ├── delete
-      │       │       │   └── index.js    [ ]
+      │       │       │   └── index.js    [X]
       │       │       ├── retrieve
       │       │       │   └── index.js    [X]
       │       │       └── search
@@ -626,5 +623,8 @@ __Current Structure `vs` Book Structure__
   35 directories, 39 files                       69 directories, 82 files
   ```
 
-<br>
+<br><br>
 
+#### Update Jul 16th
+
+finally got a clean working version implemented with all tests passing

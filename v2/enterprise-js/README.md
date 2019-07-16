@@ -20,9 +20,9 @@ Source and supplemental code: https://github.com/jsore/hobnob
 
 - [x] [Unit/Integration Tests](https://github.com/jsore/notes/blob/master/v2/enterprise-js/unit-integration-tests.md)
 
-- [ ] [API Design](https://github.com/jsore/notes/blob/master/v2/enterprise-js/api-design.md) ( current )
+- [x] [API Design](https://github.com/jsore/notes/blob/master/v2/enterprise-js/api-design.md)
 
-- [ ] [Deployment](https://github.com/jsore/notes/blob/master/v2/enterprise-js/deployment.md)
+- [ ] [Deployment](https://github.com/jsore/notes/blob/master/v2/enterprise-js/deployment.md)  ( current )
 
 - [ ] [CI](https://github.com/jsore/notes/blob/master/v2/enterprise-js/ci.md)
 
