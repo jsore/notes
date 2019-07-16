@@ -272,6 +272,41 @@ $ yarn add lodash.isequal lodash.clonedeep --dev
   };
   ```
 
+<br>
+
+### Dynamic return objects
+
+  ```javascript
+  function getValidPayload(type, context = {}) {
+
+    const lowercaseType = type.toLowerCase();
+    switch (lowercaseType) {
+
+      case 'create user':
+        return {
+          email: 'e@ma.il',
+          password: 'password',
+        };
+      case 'replace user profile':
+        return {                              // <--
+          summary: context.summary || 'foo',  // <--
+        };
+      case 'update user profile':
+        return {                              // <--
+          name: context.name || {             // <--
+            middle: 'd4nyll',                 // <--
+          },
+        };
+
+      default:
+        return undefined;
+    }
+  }
+  ```
+
+
+
+
 <br><br>
 
 ###  New Hotness vs Old Busted Hotness
