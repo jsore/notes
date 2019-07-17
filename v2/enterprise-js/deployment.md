@@ -59,13 +59,14 @@ everything. I'll connect to it through a reverse tunnel for __rsub__ support
 
 __Hostname & address: `hobnob @142.93.241.63`__
 
-  Keep a sensible naming convention
+&nbsp;&nbsp;
+Keep a sensible naming convention
 
   ```
   <environment>.<feature>.<function><replica>
   ```
 
-  Example: machine acting as a load balancer for auth service in the staging env
+&nbsp;&nbsp; Example: machine acting as a load balancer for auth service in the staging env
 
   ```
   staging.auth.lb1
