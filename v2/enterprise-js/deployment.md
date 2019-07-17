@@ -10,7 +10,7 @@ decided to use will be noted, along with reasoning when appropriate.
 
 
 --------------------------------------------------------------------------------
-### VPS Deployment
+### VPS Deployment, Book's Configs
 
 __Books goals:__
 
@@ -57,9 +57,7 @@ everything. I'll connect to it through a reverse tunnel for __rsub__ support
 
 <br>
 
-__Running list of book's config__
-
-Hostname & address: __hobnob @142.93.241.63__
+__Hostname & address: `hobnob @142.93.241.63`__
 
   Keep a sensible naming convention
 
@@ -84,15 +82,14 @@ Hostname & address: __hobnob @142.93.241.63__
 <br>
 
 
-Format: __`<user>@hobnob $`__ for commands to remote server, __`$`__ for local
-commands
+__Ref: `<user>@hobnob $` for commands to remote, `$` for local commands__
 
 <br>
 
 
-Reduced priv user: __`hobnob`__ -> into sudo group: `# usermod -aG sudo hobnob`
+__Reduced priv user: `hobnob` -> into sudo group: `# usermod -aG sudo hobnob`__
 
 <br>
 
 
-As normal, use PKI auth with `ssh-agent` to hold private keys
+__As normal, use PKI auth with `ssh-agent` to hold private keys__
