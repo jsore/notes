@@ -2,15 +2,16 @@
 
 Deploying the CRUD/search API on a VM for worldwide access.
 
-Any deviations from the book's configurations vs what I plan on doing or have
-decided to use will be noted, along with reasoning when appropriate.
+
+&nbsp;&nbps; Any deviations from the book's configurations vs what I plan on doing or have decided <br>
+&nbsp;&nbsp; to use will be noted, along with reasoning when appropriate.
 
 <br><br>
 
 
 
 --------------------------------------------------------------------------------
-### VPS Deployment, Book's Configs
+### VPS Deployment & Config Notes
 
 __Books goals:__
 
@@ -19,15 +20,20 @@ __Books goals:__
 - With a purchased domain...
 - With proper DNS configuration.
 
-&nbsp;&nbsp; Requirements translated: Secure a VPS with Ubuntu. Learn privileged ports. Handle state managed with<br>
-&nbsp;&nbsp;  __PM2__. Use NGINX as a reverse proxy to the API understand DNS architecture.
+Requirements translated: <br>
 
-<br>
+&nbsp;&nbsp; Secure a VPS with Ubuntu. Learn privileged ports. Handle state managed with __PM2__. Use NGINX as a<br>
+&nbsp;&nbsp; reverse proxy to the API understand DNS architecture.
+
+<br><br>
+
 
 
 __I will be using a VirtualBox VM, managed locally__
 
-&nbsp;&nbsp; This should be able to mimic this. I'll connect to it through a reverse tunnel for __rsub__ support
+And that should hopefully be able to mimic this.
+
+&nbsp;&nbsp; I'll connect to it through a reverse tunnel for __rsub__ support
 
   ```
   alias ssh='ssh -R 52698:localhost:52698 admin@127.0.0.1 -p <port>'
@@ -48,12 +54,13 @@ __I will be using a VirtualBox VM, managed locally__
 &nbsp;&nbsp; storage, monitoring, Kubernetes...this may be a bump in the road to solve in the future. I have a  <br>
 &nbsp;&nbsp; live environment on Linode already for my site.
 
-<br>
+<br><br>
+
 
 
 __Hostname & address__
 
-&nbsp;&nbsp; `hobnob @142.93.241.63`
+Coincidentally the author is using the same string as his workhorse user: `hobnob @142.93.241.63`
 
 &nbsp;&nbsp; Note about server names: Keep a sensible naming convention
 
@@ -75,24 +82,33 @@ __Hostname & address__
 
 &nbsp;&nbsp; More 'annecdotes': https://www.ietf.org/rfc/rfc1178
 
-<br>
+<br><br>
+
 
 
 __Document structure for commands__
 
-&nbsp;&nbsp; For commands to remote:`<user>@hobnob $`
-&nbsp;&nbsp; For local commands: `$`
+For commands to remote:`<user>@hobnob $`. Otherwise, for local commands: `$`.
 
-<br>
+<br><br>
+
 
 
 __Reduced priv user__
 
-&nbsp;&nbsp; Create `hobnob` -> into sudo group: `# usermod -aG sudo hobnob`.
+Create `hobnob` then push into sudo group: `# usermod -aG sudo hobnob`.
 
-<br>
+<br><br>
+
 
 
 __Use PKI auth for SSH__
 
-&nbsp;&nbsp; The `ssh-agent` will be in charge of holding private keys.
+My machines have already been secured in this manner, but I'll still take notes. _Knowledge Is Power_.
+
+&nbsp;&nbsp; The `ssh-agent` will be in charge of holding private keys. Each development machine should have its<br>
+&nbsp;&nbsp; own key. Start with checking for existing keys:
+
+  ```
+  $ cd ~/.ssh/ && ls -ahl    # this is where keys are normally stored by default
+  ```
