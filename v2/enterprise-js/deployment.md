@@ -25,7 +25,7 @@ __Books goals:__
 <br>
 
 
-- I will be using a VirtualBox VM, managed locally
+__I will be using a VirtualBox VM, managed locally__
 
 &nbsp;&nbsp; This should be able to mimic this. I'll connect to it through a reverse tunnel for __rsub__ support
 
@@ -51,7 +51,7 @@ __Books goals:__
 <br>
 
 
-- Hostname & address: `hobnob @142.93.241.63`
+__Hostname & address: `hobnob @142.93.241.63`__
 
 &nbsp;&nbsp; Keep a sensible naming convention
 
@@ -76,14 +76,14 @@ __Books goals:__
 <br>
 
 
-- Ref: `<user>@hobnob $` for commands to remote, `$` for local commands
+__Ref: `<user>@hobnob $` for commands to remote, `$` for local commands__
 
 <br>
 
 
-- Reduced priv user: `hobnob` -> into sudo group: `# usermod -aG sudo hobnob`
+__Reduced priv user: `hobnob` -> into sudo group: `# usermod -aG sudo hobnob`__
 
 <br>
 
 
-- As normal, use PKI auth with `ssh-agent` to hold private keys
+__As normal, use PKI auth with `ssh-agent` to hold private keys__
