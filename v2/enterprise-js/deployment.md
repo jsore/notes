@@ -59,7 +59,7 @@ everything. I'll connect to it through a reverse tunnel for __rsub__ support
 
 __Running list of book's config__
 
-- Hostname & address: __hobnob @142.93.241.63__
+Hostname & address: __hobnob @142.93.241.63__
 
   Keep a sensible naming convention
 
@@ -84,16 +84,15 @@ __Running list of book's config__
 <br>
 
 
-- __`<user>@hobnob $`__ for commands to remote server, __`$`__ for local commands
+Format: __`<user>@hobnob $`__ for commands to remote server, __`$`__ for local
+commands
 
 <br>
 
 
-- Reduced priv user: __`hobnob`__ ( `hobnob@hobnob:$` )
-
-  With root perms/throw user into sudo group: `# usermod -aG sudo hobnob`
+Reduced priv user: __`hobnob`__ -> into sudo group: `# usermod -aG sudo hobnob`
 
 <br>
 
 
-- As normal, use PKI auth with `ssh-agent` to hold private keys
+As normal, use PKI auth with `ssh-agent` to hold private keys
