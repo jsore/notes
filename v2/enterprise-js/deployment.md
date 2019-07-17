@@ -51,9 +51,11 @@ __I will be using a VirtualBox VM, managed locally__
 <br>
 
 
-__Hostname & address: `hobnob @142.93.241.63`__
+__Hostname & address__
 
-&nbsp;&nbsp; Keep a sensible naming convention
+&nbsp;&nbsp; `hobnob @142.93.241.63`
+
+&nbsp;&nbsp; Note about server names: Keep a sensible naming convention
 
   ```
   <environment>.<feature>.<function><replica>
@@ -76,14 +78,21 @@ __Hostname & address: `hobnob @142.93.241.63`__
 <br>
 
 
-__Ref: `<user>@hobnob $` for commands to remote, `$` for local commands__
+__Document structure for commands__
+
+&nbsp;&nbsp; For commands to remote:`<user>@hobnob $`
+&nbsp;&nbsp; For local commands: `$`
 
 <br>
 
 
-__Reduced priv user: `hobnob` -> into sudo group: `# usermod -aG sudo hobnob`__
+__Reduced priv user__
+
+&nbsp;&nbsp; Create `hobnob` -> into sudo group: `# usermod -aG sudo hobnob`.
 
 <br>
 
 
-__As normal, use PKI auth with `ssh-agent` to hold private keys__
+__Use PKI auth for SSH__
+
+&nbsp;&nbsp; The `ssh-agent` will be in charge of holding private keys.
