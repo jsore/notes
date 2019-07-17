@@ -51,10 +51,10 @@ everything. I'll connect to it through a reverse tunnel for __rsub__ support
   $ systemctl status elasticsearch
   ```
 
-&nbsp;&nbsp;
-Further, DigitalOcean provides some sort of dashboard for service management:
-VPS, DNS, block storage, monitoring, Kubernetes...this may be a bump in the road
-to solve in the future. I have a live environment on Linode already for my site.
+
+&nbsp;&nbsp; Further, DigitalOcean provides some sort of dashboard for service management: VPS, DNS, block <br>
+&nbsp;&nbsp; storage, monitoring, Kubernetes...this may be a bump in the road to solve in the future. I have a <br>
+&nbsp;&nbsp; live environment on Linode already for my site.
 
 <br>
 
