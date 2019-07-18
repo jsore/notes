@@ -337,33 +337,41 @@ The goal of this whole writeup is to learn tips on how to redeploy a beefier ver
 
 - [ ] Spin up a new Linode VM, CentOS 7.6.x
 
-   Book deviation: Digitial Ocean, Ubuntu 18.04
+      Book deviation: Digitial Ocean, Ubuntu 18.04
 
 <br>
 
 
 - [ ] Running CentOS 7.6.x, 2 CPU/80GB HDD/4GB RAM ( $20/mo )
 
-   Book deviation: Ubuntu 18.04.x, 4GB RAM
+      Book deviation: Ubuntu 18.04.x, 4GB RAM
 
-   Elasticsearch is memory intensive, suggested RAM config of 16-64GB. That's out of scope for my private use<br>
-   server I'll be running, too expensive to justify for a portfolio. This will still be an upgrade from the  <br>
-   current server I'm running though, 1 CPU/50GB HDD/2GB RAM @ $10/mo.
+      Elasticsearch is memory intensive, suggested RAM config of 16-64GB. That's out of scope for my private <br>
+      server I'll be running, too expensive to justify for a portfolio. Will still be an upgrade from the  <br>
+      current server I'm running though, 1 CPU/50GB HDD/2GB RAM @ $10/mo.
+
+<br>
+
+- [ ] Future proofed host naming conventions, current: `cent.jsore.com`
 
 <br>
 
 
-- Security
-  - [ ] sshd & ssh keys
+Security:
+
+
+  - [ ] 2FA on Linode account
+  - [ ] sshd & _new_ ssh keys
   - [ ] firewalld
 
 <br>
 
 
-- 'Custom' modules and installations
+Other self-important functionalities, modules and installations:
+
   - [ ] rsub
   - [ ] bashrc config
-  - [ ] GitHub integration shouldn't be needed, just straight clones ( won't be developing on the remote )
+  - [ ] GitHub integration shouldn't be needed maybe?
   - [ ] ???
 
 <br>
@@ -371,19 +379,17 @@ The goal of this whole writeup is to learn tips on how to redeploy a beefier ver
 
 - [ ] Domain needs to be transferred off existing server, finish book's DNS sections prior to though
 
-   Curious to see what difference the author implemented in their DNS configs. I'm competent and have a full <br>
-   working DNS config set up but haven't played with reverse proxies before, don't know if that'll conflict.
-
-   Current: jsore.com@45.56.74.80
+      Curious to see what difference the author implemented in their DNS configs. I'm competent, have a full<br>
+      working DNS config set, but haven't played with reverse proxies before, don't know if that'll conflict.<br>
 
 <br>
 
 
 - [ ] Mail server migration
 
-   Need to make a decision here: should I keep my original $10/mo box, wipe it and hand roll an mail solution<br>
-   or continue to use Fastmail and point that service at the new box? Logic would dictate that since I'm     <br>
-   advertising myself as a fullstack dev I should back that up, but...until that decision has been made I'll <br>
+   Need to make a decision here: should I keep my original $10/mo box, wipe it and hand roll an mail solution
+   or continue to use Fastmail and point that service at the new box? Logic would dictate that since I'm
+   advertising myself as a fullstack dev I should back that up, but...until that decision has been made I'll
    just continue using Fastmail, specially since I'm job hunting currently and need it up reliably.
 
 <br>
