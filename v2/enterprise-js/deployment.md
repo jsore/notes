@@ -1,10 +1,7 @@
 # Deployment
 
-Deploying the CRUD/search API on a VM for worldwide access.
-
-
-&nbsp;&nbps; Any deviations from the book's configurations vs what I plan on doing or have decided <br>
-&nbsp;&nbsp; to use will be noted, along with reasoning when appropriate.
+Deploying the CRUD/search API on a VM for worldwide access. Any deviations from the book's configurations vs what
+I plan on doing or have decided to use will be noted, along with reasoning when appropriate.
 
 <br><br>
 
@@ -112,3 +109,39 @@ My machines have already been secured in this manner, but I'll still take notes.
   ```
   $ cd ~/.ssh/ && ls -ahl    # this is where keys are normally stored by default
   ```
+
+&nbsp;&nbsp; Then build the key, using the default location for storage and using the 4,096 bit length RSA <br>
+&nbsp;&nbsp; algorithm. Set the additional passphrase when prompted, we're not in a situation where the program<br>
+&nbsp;&nbsp; will run inside an environment where user input isn't possible
+
+  ```
+  # Note: this is a local command, obviously you want the priv SSH key not to be shared
+
+  $ ssh-keygen -t rsa -b 4096 -C email@address.com
+  > ...
+  > Your identification has been saved in $HOME/.shh/id_rsa.    # the private key
+  > Your public key has been saved in $HOME/.ssh/id_rsa.pub.    # the public key
+  ```
+
+&nbsp;&nbsp; Grab the public key as a string and copy it to your clipboard
+
+  ```
+  $ cat ~/.ssh/id_rsa.pubssh-rsa.pubssh-rsa <long string of characters to copy>
+  ```
+
+
+testing `alt+255` or OPTION+SPACE, equal to `&nbsp;` in HTML
+
+no spaces before me
+
+ one normal space before me
+
+  two normal space before me
+
+
+  alt space test with two chars
+
+
+ 
+  U+2002 then U+2003 no other space
+   U+2002 then U+2003 then normal space
