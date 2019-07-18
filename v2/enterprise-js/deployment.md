@@ -28,7 +28,7 @@ Requirements translated: <br>
 
 __I will be using a VirtualBox VM, managed locally__
 
-And that should hopefully be able to mimic this.
+   And that should hopefully be able to mimic this.
 
    I'll connect to it through a reverse tunnel for __rsub__ support
 
@@ -57,7 +57,7 @@ And that should hopefully be able to mimic this.
 
 __Hostname & address__
 
-Coincidentally the author is using the same string as his workhorse user: `hobnob @142.93.241.63`
+   Coincidentally the author is using the same string as his workhorse user: `hobnob @142.93.241.63`
 
    Note about server names: Keep a sensible naming convention
 
@@ -85,7 +85,7 @@ Coincidentally the author is using the same string as his workhorse user: `hobno
 
 __Document structure for commands__
 
-For commands to remote:`<user>@hobnob $`. Otherwise, for local commands: `$`.
+   For commands to remote:`<user>@hobnob $`. Otherwise, for local commands: `$`.
 
 <br><br>
 
@@ -93,7 +93,7 @@ For commands to remote:`<user>@hobnob $`. Otherwise, for local commands: `$`.
 
 __Reduced priv user__
 
-Create `hobnob` then push into sudo group: `# usermod -aG sudo hobnob`.
+   Create `hobnob` then push into sudo group: `# usermod -aG sudo hobnob`.
 
 <br><br>
 
@@ -101,7 +101,7 @@ Create `hobnob` then push into sudo group: `# usermod -aG sudo hobnob`.
 
 __Use PKI auth for SSH__
 
-My machines have already been secured in this manner, but I'll still take notes. _Knowledge Is Power_.
+   My machines have already been secured in this manner, but I'll still take notes. _Knowledge Is Power_.
 
    The `ssh-agent` will be in charge of holding private keys. Each development machine should have its<br>
    own key. Start with checking for existing keys:
