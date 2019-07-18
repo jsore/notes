@@ -149,3 +149,19 @@ no spaces before me
 
 
    test with new macro, u2002+u2003 and normal space
+
+   ```
+   this codeblock was indented with CTRL+SPACE, the macro from the previous line, u2002+2002+space
+   ```
+
+  ```
+  this one is with u2003 + a space
+  ```
+
+ ```
+ this one is just with u2003
+ ```
+
+ ```
+ this one is just with u2002
+ ```
