@@ -357,22 +357,32 @@ The goal of this whole writeup is to learn tips on how to redeploy a beefier ver
 <br>
 
 
-Security:
-
-
-  - [ ] 2FA on Linode account
-  - [ ] sshd & _new_ ssh keys
-  - [ ] firewalld
+- [ ] 2FA on Linode account
 
 <br>
 
 
-Other self-important functionalities, modules and installations:
+- [ ] New SSH keys, `sshd` lockdown but still over port 22
 
-  - [ ] rsub
-  - [ ] bashrc config
-  - [ ] GitHub integration shouldn't be needed maybe?
-  - [ ] ???
+<br>
+
+
+- [ ] Lockdown `firewalld`
+
+<br>
+
+
+- [ ] Configure `rsub`
+
+<br>
+
+
+- [ ] Configure `bashrc`
+
+<br>
+
+
+- [ ] GitHub integration shouldn't be needed maybe?
 
 <br>
 
