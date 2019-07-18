@@ -337,18 +337,19 @@ The goal of this whole writeup is to learn tips on how to redeploy a beefier ver
 
 - [ ] Spin up a new Linode VM, CentOS 7.6.x
 
-      Book deviation: Digitial Ocean, Ubuntu 18.04
+      _Book deviation: Digitial Ocean, Ubuntu 18.04_
 
 <br>
 
 
 - [ ] Running CentOS 7.6.x, 2 CPU/80GB HDD/4GB RAM ( $20/mo )
 
-      Book deviation: Ubuntu 18.04.x, 4GB RAM
+      _Book deviation: Ubuntu 18.04.x, 4GB RAM_
 
-      Elasticsearch is memory intensive, suggested RAM config of 16-64GB. That's out of scope for my private <br>
-      server I'll be running, too expensive to justify for a portfolio. Will still be an upgrade from the  <br>
-      current server I'm running though, 1 CPU/50GB HDD/2GB RAM @ $10/mo.
+      _Elasticsearch is memory intensive, suggested RAM config of 16-64GB. That's out_ <br>
+      _of scope for my private server I'll be running, too expensive to justify for a_ <br>
+      _portfolio. Will still be an upgrade from the current server I'm running though,_ <br>
+      _currently 1 CPU/50GB HDD/2GB RAM @ $10/mo._
 
 <br>
 
@@ -389,18 +390,21 @@ The goal of this whole writeup is to learn tips on how to redeploy a beefier ver
 
 - [ ] Domain needs to be transferred off existing server, finish book's DNS sections prior to though
 
-      Curious to see what difference the author implemented in their DNS configs. I'm competent, have a full<br>
-      working DNS config set, but haven't played with reverse proxies before, don't know if that'll conflict.<br>
+      _Curious to see what difference the author implemented in their DNS configs. I'm_<br>
+      _competent, have a full working DNS config set, but haven't played with reverse_ <br>
+      _proxies before, don't know if that'll conflict._
 
 <br>
 
 
 - [ ] Mail server migration
 
-   Need to make a decision here: should I keep my original $10/mo box, wipe it and hand roll an mail solution
-   or continue to use Fastmail and point that service at the new box? Logic would dictate that since I'm
-   advertising myself as a fullstack dev I should back that up, but...until that decision has been made I'll
-   just continue using Fastmail, specially since I'm job hunting currently and need it up reliably.
+      _Need to make a decision here: should I keep my original $10/mo box, wipe it and_ <br>
+      _hand roll an mail solution or continue to use Fastmail and point that service_   <br>
+      _at the new box? Logic would dictate that since I'm advertising myself as a full_ <br>
+      _stack dev I should back that up, but...until that decision has been made I'll_   <br>
+      _just continue using Fastmail, specially since I'm job hunting currently and_     <br>
+      _need it available reliably._
 
 <br>
 
