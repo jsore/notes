@@ -146,3 +146,6 @@ no spaces before me
   U+2002 then U+2003 no other space
 
    U+2002 then U+2003 then normal space
+
+
+   test with new macro, u2002+u2003 and normal space
