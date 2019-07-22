@@ -28,7 +28,7 @@ Requirements translated: <br>
 
 __I will be using a VirtualBox VM, managed locally__
 
-   And that should hopefully be able to mimic this.
+   ~~And that should hopefully be able to mimic this.~~
 
    I'll connect to it through a reverse tunnel for __rsub__ support
 
@@ -39,8 +39,10 @@ __I will be using a VirtualBox VM, managed locally__
   > admin@127.0.0.1 password: ...
   ```
 
-   The VBox VM is sitting at `10.0.3.15`. Node is already installed, but may take some finangling, <br>
-   local is v10.15.3, VM is v8.16.0. Elasticsearch is also already installed and is apparently running
+   ~~The VBox VM is sitting at `10.0.3.15`. Node is already installed, but may take some finangling,~~ <br>
+   ~~local is v10.15.3, VM is v8.16.0. Elasticsearch is also already installed and is apparently running~~
+
+      I decided to just go with what the book is learning and get familiar with Ubuntu.
 
   ```
   $ curl http://localhost:9200
@@ -58,6 +60,8 @@ __I will be using a VirtualBox VM, managed locally__
 __Hostname & address__
 
    Coincidentally the author is using the same string as his workhorse user: `hobnob @142.93.241.63`
+
+   I'll be going with `foundation` for my new Linode instance's hostname.
 
    Note about server names: Keep a sensible naming convention
 
@@ -234,7 +238,7 @@ Services can register `ufw` profiles. Instead of specifying ports, use the profi
   > Active
   ```
 
-I use CentOS, so this is definitely not revlevant.
+~~I use CentOS, so this is definitely not revlevant.~~
 
 <br><br>
 
@@ -281,7 +285,7 @@ This will also manage the server's time zone and make changes if appropriate. Fo
   jsore:# timedatectl set-timezone UTC
   ```
 
-I've omitted CentOS NTP setup because it's fairly in depth and I'm only running a VBox VM, not a live server. Guide:
+~~I've omitted CentOS NTP setup because it's fairly in depth and I'm only running a VBox VM, not a live server. Guide:~~
 https://www.digitalocean.com/community/tutorials/how-to-configure-ntp-for-use-in-the-ntp-pool-project-on-centos-7
 
 <br><br>
@@ -293,27 +297,26 @@ https://www.digitalocean.com/community/tutorials/how-to-configure-ntp-for-use-in
 
 Software and their library dependencies installations ( Git, Node, Yarn, Java JDK, Elasticsearch )
 
+> Note: The book is using Elasticsearch 6.3.2, I replicated my Mac's environment and used 6.8.0
+
   ```
   remote:$ curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
   remote:$ echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
   remote:$ sudo apt update && sudo apt install yarn git default-jdk
   remote:$ curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
   remote:$ echo 'JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"' | sudo tee --append /etc/environment > /dev/null
-  remote:$ cd && wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.3.2.deb
-  remote:$ sudo dpkg -i elasticsearch-6.3.2.deb
-  remote:$ rm elasticsearch-6.3.2.deb
+  remote:$ cd && wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.8.0.deb
+  remote:$ sudo dpkg -i elasticsearch-6.8.0.deb
+  remote:$ rm elasticsearch-6.8.0.deb
   remote:$ sudo systemctl start elasticsearch.service
   remote:$ sudo systemctl status elasticsearch.service
-
-  // TODO: add CentOS instructions
-
   ```
 
 Application code should reside within `/home/hobnob/` and run as `hobnob` to avoid permission issues.
 
   ```
   remote:$ cd && mkdir projects && cd projects             # create a home
-  remote:$ git clone https://github.com/d4nyll/hobnob.git  # clone the API repo
+  remote:$ git clone https://github.com/<path>/hobnob.git  # clone the API repo
   remote:$ cd hobnob && nvm install && yarn                # install Node and dependencies, then serve
   ```
 
@@ -323,90 +326,306 @@ Application code should reside within `/home/hobnob/` and run as `hobnob` to avo
 
    __Do not run API as `root`, which poses a huge security risk__
 
+Then, set the env variables. Book says `*.env.example` should work out of the box, but my environment differs
+
+  ```
+  remote:$ cd env/
+  remote:$ cp .env.example .env
+  remote:$ cp test.env.example test.env
+  remote:$ cd ../ && yarn run serve
+  ```
+
+Site should be running, but the firewall still needs to be opened
+
+  ```
+  remote:$ sudo ufw allow 8080
+  ```
+
 <br><br>
 
 
 
 --------------------------------------------------------------------------------
-### Replication TODO's
+### PM2 Integration
 
-The goal of this whole writeup is to learn tips on how to redeploy a beefier version of my website. I've decided to move forward and begin migrating to a new server, starting from scratch, but with some changes from what the book is doing.
+The Node process is currently being ran in an ephemeral SSH session, errors are fatal and there's no hooks in place to auto restart the app. Ubuntu's `upstart` daemon and npm package `forever` can solve this, but PM2 seems to be the most complete process manager.
 
-<br>
+Install PM2 as a development dependency
 
+  ```
+  $ yarn add pm2 --dev
+  ```
 
-- [ ] Spin up a new Linode VM, CentOS 7.6.x
+Update `serve` script to execute `pm2 start` instead of `node`
 
-      _Book deviation: Digitial Ocean, Ubuntu 18.04_
+  ```
+  // from
+  "serve": "yarn run build && dotenv -e envs/.env node dist/index.js",
+  // to
+  "serve": "yarn run build && dotenv -e envs/.env pm2 start dist/index.js"
+  ```
 
-<br>
+Push the local changes and pull them into the VM
 
+  ```
+  $ git add -A && git commit -m "Add PM2 process manager"
 
-- [ ] Running CentOS 7.6.x, 2 CPU/80GB HDD/4GB RAM ( $20/mo )
+  $ git checkout master
+  $ git merge --no-ff dev
+  $ git push
 
-      _Book deviation: Ubuntu 18.04.x, 4GB RAM_
+  jsore@foundation:hobnob:$ git remote -v
+  > origin  https://github.com/jsore/hobnob.git (fetch)
+  > origin  https://github.com/jsore/hobnob.git (push)
 
-      _Elasticsearch is memory intensive, suggested RAM config of 16-64GB. That's out_ <br>
-      _of scope for my private server I'll be running, too expensive to justify for a_ <br>
-      _portfolio. Will still be an upgrade from the current server I'm running though,_ <br>
-      _currently 1 CPU/50GB HDD/2GB RAM @ $10/mo._
+  jsore@foundation:hobnob:$ git pull --no-commit origin
+  ```
 
-<br>
+Re-run `yarn` to install `pm2` and re-serve it
 
-- [ ] Future proofed host naming conventions, current: `cent.jsore.com`
+  ```
+  jsore@foundation:hobnob:$ yarn
+  jsore@foundation:hobnob:$ yarn run serve
+  > ...
+  > ┌───────┬────┬──────┬────────┬─────────┬─────┬───────────┐
+  > │ Name  │ id │ mode │ status │ restart │ cpu │ memory    │
+  > ├───────┼────┼──────┼────────┼─────────┼─────┼───────────┤
+  > │ index │ 0  │ fork │ online │ 0       │ 0%  │ 29.8 MB   │
+  > └───────┴────┴──────┴────────┴─────────┴─────┴───────────┘
+  ```
 
-<br>
-
-
-- [ ] 2FA on Linode account
-
-<br>
-
-
-- [ ] New SSH keys, `sshd` lockdown but still over port 22
-
-<br>
-
-
-- [ ] Lockdown `firewalld`
-
-<br>
-
-
-- [ ] Configure `rsub`
-
-<br>
-
-
-- [ ] Configure `bashrc`
+Process is now being managed by PM2 instead of `jsore` user.
 
 <br>
 
 
-- [ ] GitHub integration shouldn't be needed maybe?
+__PM2 CLI Reference__
+
+Pull up the CLI tool dashboard ( mouse-over interaction )
+
+  ```
+  jsore@foundation:hobnob:$ npx pm2 monit
+  ┌─ Process list ─────────────────────────────────────┐┌─ Global Logs ────────────────────────────────────────┐
+  │[ 0] index         Mem:  51 MB    CPU:  0 %  online ││ index > Hobnob API server running on port 8080.      │
+  │                                                    ││                                                      │
+  └────────────────────────────────────────────────────┘└──────────────────────────────────────────────────────┘
+  ┌─ Custom metrics (http://bit.ly/code-metrics) ─┐┌─ Metadata ─ ──────────────────────────────────────────────┐
+  │ Heap Size                              20.29  ││ App Name      index                                       │
+  │ Heap Usage                             73.36  ││ Version       0.1.0                                       │
+  │ Used Heap Size                         14.88  ││ Restarts      1                                           │
+  │ Active requests                            0  ││ Uptime        34m                                         │
+  │ Active handles                             4  ││ Script path   /home/jsore/projects/hobnob/dist/index.js   │
+  │ Event Loop Latency                      0.96  ││ Script args   N/A                                         │
+  └───────────────────────────────────────────────┘└───────────────────────────────────────────────────────────┘
+   left/right: switch boards | up/down/mouse: scroll | Ctrl-C: exit     To go further check out https://pm2.io/
+  ```
+
+Kill a process manaully to see PM2's process restart in action
+
+  ```
+  jsore@foundation:hobnob:$ npx pm2 list
+  ┌───────┬────┬───────┬──────┬────────┬─────────┬─────┬───────────┐
+  │ Name  │ id │ pid   │ mode │ status │ restart │ cpu │ memory    │
+  ├───────┼────┼───────┼──────┼────────┼─────────┼─────┼───────────┤
+  │ index │ 0  │ 19747 │ fork │ online │ 0       │ 0%  │ 50.1 MB   │
+  └───────┴────┴───────┴──────┴────────┴─────────┴─────┴───────────┘
+
+  jsore@foundation:hobnob:$ kill 19747
+
+  jsore@foundation:hobnob:$ npx pm2 list    # note the updated PID
+  ┌───────┬────┬───────┬──────┬────────┬─────────┬─────┬───────────┐
+  │ Name  │ id │ pid   │ mode │ status │ restart │ cpu │ memory    │
+  ├───────┼────┼───────┼──────┼────────┼─────────┼─────┼───────────┤
+  │ index │ 0  │ 21263 │ fork │ online │ 1       │ 0%  │ 50.1 MB   │
+  └───────┴────┴───────┴──────┴────────┴─────────┴─────┴───────────┘
+  ```
+
+Automatically restart PM2 itself should it be terminated ( ex: during reboot )
+
+  ```
+  jsore@foundation:hobnob:$ npx pm2 startup
+  [PM2] Init System found: systemd
+  [PM2] To setup the Startup Script, copy/paste the following command:
+  sudo env PATH=$PATH:/home/jsore/.nvm/ ... startup systemd -u jsore --hp /home/jsore
+
+  # run what it told you to
+  jsore@foundation:hobnob:$ sudo env PATH=$PATH:/home/jsore/.nvm/versions/node/v10.15.3/bin /home/jsore/projects/hobnob/node_modules/pm2/bin/pm2 startup systemd -u jsore --hp /home/jsore
+  > [PM2] Init System found: systemd
+  > ...
+  > Target path
+  > /etc/systemd/system/pm2-jsore.service
+  > Command list
+  > [ 'systemctl enable pm2-jsore' ]
+  > [PM2] Writing init configuration in /etc/systemd/system/pm2-jsore.service
+  > [PM2] Making script booting at startup...
+  > [PM2] [-] Executing: systemctl enable pm2-jsore...
+  > Created symlink /etc/systemd/system/multi-user.target.wants/pm2-jsore.service → /etc/systemd/system/pm2-jsore.service.
+  > [PM2] [v] Command successfully executed.
+  ```
+
+<br><br>
+
+
+
+--------------------------------------------------------------------------------
+### Standardized ( Privileged ) Ports
+
+API is currently running on `8080` but standard API requests go to `80` So, change `SERVER_PORT` entry within `envs/.env` to `=80` then delete the app and re-run `serve`
+
+  ```
+  $ git add -A && git commit -m "Update Express listen port"
+  $ git checkout master && git merge --no-ff dev && git push
+  # i was actually on master branch when I made the change, not dev, so actually:
+  $ git checkout dev && git pull origin master:dev
+
+  # ... scratch that, git isn't tracking /envs/*, manual update to local and remote required
+  ```
+
+This won't entirely fix the issue because port `80` is a priviledged port and Node by default doesn't have permission to access that port. The PM2 process will fail after 15 restart attempts. Confirm the issue is indeed an `EACCES` issue from the logs
+
+  ```
+  jsore@foundation:hobnob:$ tail -n11 /home/jsore/.pm2/logs/index-error.log
+  >    at Object.<anonymous> (/home/jsore/projects/hobnob/dist/index.js:136:20)
+  >    at Module._compile (internal/modules/cjs/loader.js:701:30)
+  >    at Object.Module._extensions..js (internal/modules/cjs/loader.js:712:10)
+  >    at Module.load (internal/modules/cjs/loader.js:600:32)
+  >    at tryModuleLoad (internal/modules/cjs/loader.js:539:12)
+  >    at Function.Module._load (internal/modules/cjs/loader.js:531:3)
+  >  code: 'EACCES',
+  >  errno: 'EACCES',
+  >  syscall: 'listen',
+  >  address: '0.0.0.0',
+  >  port: 80 }
+  ```
+
+Remember to try to solve this by running the Node process as `root`. Should someone find a vulnerability in the app then exploit it, they'd be able to do everything `root` could on the server. Mitigate this risk by always running the process as a normal user.
 
 <br>
 
 
-- [ ] Domain needs to be transferred off existing server, finish book's DNS sections prior to though
+__Option 1: Hack to de-escalate privileges__
 
-      _Curious to see what difference the author implemented in their DNS configs. I'm_<br>
-      _competent, have a full working DNS config set, but haven't played with reverse_ <br>
-      _proxies before, don't know if that'll conflict._
+Initiate the process as `root` with `sudo` then update user and group identities of the process later
 
-<br>
-
-
-- [ ] Mail server migration
-
-      _Need to make a decision here: should I keep my original $10/mo box, wipe it and_ <br>
-      _hand roll an mail solution or continue to use Fastmail and point that service_   <br>
-      _at the new box? Logic would dictate that since I'm advertising myself as a full_ <br>
-      _stack dev I should back that up, but...until that decision has been made I'll_   <br>
-      _just continue using Fastmail, specially since I'm job hunting currently and_     <br>
-      _need it available reliably._
+  ```javascript
+  // set env variables SUDO_UID and SUDO_GID, then:
+  app.listen(process.env.SERVER_PORT, async () => {
+    const sudoGid = parseInt(process.env.SUDO_GID);
+    const sudoUid = parseInt(process.env.SUDO_UID);
+    if (sudoGid) { process.setuid(sudoGid) }
+    if (sudoUid) { process.setuid(sudoUid) }
+    ...
+  });
+  ```
 
 <br>
 
 
-- [ ] HTTPS via NGINX reverse proxy
+__Option 2: Set capabilities__
+
+When a process requires privileges to do something it checks with a list of capabilities. If it has it, it can run. Instead of running as `root`, you can grant Node processes a capability, for example, binding to privileged ports
+
+  ```
+  # set
+  jsore@foundation:hobnob:$ sudo setcap CAP_NET_BIND_SERVICE=+ep $(which node)
+  # confirm
+  jsore@foundation:hobnob:$ sudo getcap $(which node)
+  > ~/.nvm/versions/node/v8.9.0/bin/node = cap_net_bind_service+ep
+  jsore@foundation:hobnob:$ npx pm2 delete 0; yarn run serve    # should bind to port 80 successfully
+  ```
+
+Major fallbacks: If Node.js version gets updated with nvm, capabilities need to be re-set for the new version. Plus, this capability allows binding to _all_ privileged ports, a potential vulnerability. To unset run `sudo setcap -r $(which node)`
+
+<br>
+
+
+__Option 3: Use authbind utility to set capabalities__
+
+`authbind` lets users without superuser permissions access to privileged network services with better control
+
+  ```
+  jsore@foundation:hobnob:$ sudo apt install authbind
+
+  # if the user can access the <port> file, they can bind to it
+  jsore@foundation:hobnob:$ sudo touch /etc/authbind/byport/80
+
+  # bring the configuration file under the user running API server...
+  jsore@foundation:hobnob:$ sudo chown jsore /etc/authbind/byport/80
+
+  # ...and grant access only to that user, readonly
+  jsore@foundation:hobnob:$ sudo chmod 500 /etc/authbind/byport/80
+
+  jsore@foundation:hobnob:$ npx pm2 delete 0; authbind --deep yarn run serve
+  ```
+
+<br>
+
+
+__Option 4: Use iptables to redirect traffic__
+
+Route all traffic entering on `80` to `8080`
+
+  ```
+  jsore@foundation:hobnob:$ sudo iptables -t nat -I PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080
+  ```
+
+<br>
+
+
+__Option 5: Use a reverse proxy server to redirect port -> port__ ( preferred method )
+
+Proxies are intermediary servers used by clients to indeirectly access other servers. A proxy 'acts' as the client.
+
+Reverse proxies are the same, but flipped around
+
+  ```
+  Reverse
+   Proxy
+     ⬇
+
+  1. Reverse proxy receives request
+  2. It relays request to proxied service ( eg: Express app )
+  3. It receives the response from the service
+  4. It sends the response back to the client(s)
+
+    ⬆
+  Proxy
+  ```
+
+Client is oblivious, to it the response came directly from the reverse proxy.
+
+NGINX is the most popular service to achieve this option. It's scalable, can function as a web server and as a proxy to reduce the load on back-end HTTP or mail servers.
+
+<br><br>
+
+
+
+--------------------------------------------------------------------------------
+### NGINX & DNS
+
+Ubuntu ships with `nginx` already installed, check with `apt-cache show nginx` but don't use it. Install from the official NGINX repository to ensure we always use the most up to date version.
+
+Add NGINX's package repository to list of repo's Ubuntu searches for when it tries to download a package. First create a uniquely named file in `/etc/apt/sources.list.d/` and add an entry for NGINX repo there
+
+  ```
+  jsore@foundation:hobnob:$ echo "deb http://nginx.org/packages/ubuntu/ bionic nginx" | sudo tee -a /etc/apt/sources.list.d/nginx.list
+
+  jsore@foundation:hobnob:$ echo "deb-src http://nginx.org/packages/ubuntu/ bionic nginx" | sudo tee -a /etc/apt/sources.list.d/nginx.list
+  ```
+
+Add the public GPG key NGINX signed their package with so that `apt` knows how to check its integrity and authenticity:
+
+  ```
+  jsore@foundation:hobnob:$ sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys ABF5BD827BD9BF62
+  jsore@foundation:hobnob:$ sudo apt update && sudo apt install nginx
+  ```
+
+Should be installed, but not running yet
+
+  ```
+  jsore@foundation:hobnob:$ sudo systemctl status nginx.service
+  ● nginx.service - nginx - high performance web server
+     Loaded: loaded (/lib/systemd/system/nginx.service; enabled; vendor preset: enabled)
+     Active: inactive (dead)
+       Docs: http://nginx.org/en/docs/
+  ```
