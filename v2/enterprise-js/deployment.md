@@ -498,7 +498,7 @@ This won't entirely fix the issue because port `80` is a priviledged port and No
   >  port: 80 }
   ```
 
-Remember to try to solve this by running the Node process as `root`. Should someone find a vulnerability in the app then exploit it, they'd be able to do everything `root` could on the server. Mitigate this risk by always running the process as a normal user.
+Remember to never try to solve this by running the Node process as `root`. Should someone find a vulnerability in the app then exploit it, they'd be able to do everything `root` could on the server. Mitigate this risk by always running the process as a normal user.
 
 <br>
 
@@ -594,14 +594,19 @@ Reverse proxies are the same, but flipped around
 
 Client is oblivious, to it the response came directly from the reverse proxy.
 
-NGINX is the most popular service to achieve this option. It's scalable, can function as a web server and as a proxy to reduce the load on back-end HTTP or mail servers.
-
 <br><br>
 
 
 
 --------------------------------------------------------------------------------
 ### NGINX & DNS
+
+NGINX is the most popular service to achieve option 5 ( reverse proxy ). It's scalable, can function as a web server as well as a proxy to reduce the load on back-end HTTP or mail servers.
+
+<br>
+
+
+__NGINX Installation__
 
 Ubuntu ships with `nginx` already installed, check with `apt-cache show nginx` but don't use it. Install from the official NGINX repository to ensure we always use the most up to date version.
 
@@ -628,4 +633,330 @@ Should be installed, but not running yet
      Loaded: loaded (/lib/systemd/system/nginx.service; enabled; vendor preset: enabled)
      Active: inactive (dead)
        Docs: http://nginx.org/en/docs/
+  ```
+
+<br>
+
+
+__NGINX Config__
+
+Configure NGINX before you try to start it up to avoid possible future conflicts with default settings. Config files are stored at `/etc/nginx`
+
+  ```
+  jsore@foundation:hobnob:$ cd /etc/nginx && ls
+  > conf.d
+  > fastcgi_params
+  > koi-utf
+  > koi-win
+  > mime.types
+  > modules
+  > nginx.conf        <-- main config file
+  > scgi_params
+  > uwsgi_params
+  > win-utf
+  ```
+
+<br>
+
+
+Main config, default comments removed:
+
+  ```
+  user  nginx;
+  worker_processes  1;
+  error_log  /var/log/nginx/error.log warn;
+  pid        /var/run/nginx.pid;
+
+  events {
+      worker_connections  1024;
+  }
+
+  http {
+      include       /etc/nginx/mime.types;
+      default_type  application/octet-stream;
+      log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                        '$status $body_bytes_sent "$http_referer" '
+                        '"$http_user_agent" "$http_x_forwarded_for"';
+      access_log  /var/log/nginx/access.log  main;
+      sendfile        on;
+      keepalive_timeout  65;
+      include /etc/nginx/conf.d/*.conf;
+  }
+  ```
+
+<br>
+
+
+The NGINX server is comprised of _simple_ or _block_ __modules__ that are controlled by __directives__ defined here. Simple modules can have one or multiple parameters with each space delineated, directive ends with semicolon
+
+  ```
+  error_log  /var/log/nginx/error.log warn;    # 2 params
+  pid        /var/run/nginx.pid;               # 1 param
+  ```
+
+Block modules start with a name with directives wrapped in `{}`
+
+  ```
+  ##  the Events module
+  events {
+      ...     ##  module directives ( instructions )
+  }
+
+  ##  the HTTP module
+  http {
+      ...   ##  module directives ( instructions )
+  }
+  ```
+
+<br>
+
+
+Context is scoped with the `main` context envoloping top-level directives, blocks contain their own scope.
+
+  ```
+  ##  main context
+
+  ##  main ⤵
+  ##       pid, top-level directive
+  pid        /var/run/nginx.pid;
+
+  ##  main ⤵
+  ##       events, top-level directive
+  events {
+      ##  main ⤵
+      ##       events ⤵
+      ##              worker_connections
+      worker_connections  1024;
+  }
+  ```
+
+<br>
+
+
+To route requests for a service, a `http --> server` block directive needs to exist, which contains unique directives itself. Example, including the most common `server` directives
+
+  ```
+  http {
+      server {
+          listen         ##  port service is to listen on, default is 80
+          server_name    ##  domain name applicable to this block
+          location       ##  request processing based on URL path, also where server root is defined
+          ...
+      }
+  }
+  ```
+
+In NGINX reverse proxies, `location` normally contains a __prefix__ `root` ( resource root ) and `proxy_pass` ( URL to relay to )
+
+- NGINX receives request matching `listen` and `server_name` directives
+- pass request to `server` block
+- request's URL path is extracted and matches with `location` prefixes are attempted
+- if match found, process request as dictated by curretn `location` block
+- if multiple prefix matches, most specific `location` block takes precedence
+
+<br>
+
+
+Add a server block for `/` path, change `hobnob/envs/.env` `SERVER_PORT` back to `8080`, then start the API server and NGINX service to test
+
+  ```
+  jsore@foundation:hobnob:$ npx pm2 delete 0; yarn run serve
+
+  jsore@foundation:hobnob:$ sudo systemctl reload nginx.service
+  > nginx.service is not active, cannot reload.
+
+  # ...okay then...
+
+  jsore@foundation:hobnob:$ sudo systemctl start nginx.service
+  jsore@foundation:hobnob:$ sudo systemctl status nginx.service
+  > ● nginx.service - nginx - high performance web server
+  >    Loaded: loaded (/lib/systemd/system/nginx.service; enabled; vendor preset: enabled)
+  >    Active: active (running) since Tue 2019-07-23 17:28:22 UTC; 9s ago
+  ```
+
+<br>
+
+
+__NGINX Config - Modularization__
+
+It's better practice to split the `conf` file into smaller files, one for each service. The most common syntax for this is to spread them across two directories, `/etc/nginx/sites-available` and `/etc/nginx/sites-enabled`. Configuration files for each service go into `sites-available`, to enable a service a __symbolic link__ needs to be created from `sites-enabled` to a `sites-available` file. The `sites-enabled` directory needs to be linked to the main conf file with an `include` directive in the conf file.
+
+  ```
+  # /etc/nginx/nginx.conf
+
+  ...
+  http {
+    ...
+    include /etc/nginx/conf.d/*.conf;
+    include /etc/nginx/sites-enabled/*;    # <-- add this
+  }
+  ```
+
+  ```
+  jsore@foundation:nginx:$ sudo mkdir sites-available sites-enabled
+  jsore@foundation:nginx:$ sudo touch sites-available/api    # <-- temporary name until domain name picked
+  ```
+
+  ```
+  # /etc/nginx/sites-available/api
+
+  server {
+      listen 80 default_server;
+      location / {
+          proxy_pass http://localhost:8080;
+      }
+  }
+  ```
+
+      __Always use full paths when making symbolic links__
+
+  ```
+  # https://explainshell.com/explain?cmd=ln+-s
+  jsore@foundation:nginx:$ sudo ln -s /etc/nginx/sites-available/api /etc/nginx/sites-enabled/
+  ```
+
+<br>
+
+
+__DNS__
+
+Resolves a FQDN into an IP
+
+  ```
+  Request for address of FQDN
+
+  client
+    ⤷ 1st: /etc/hosts
+                 ⤸
+    ⬑ 'not found'
+
+    ⤷ 2nd: Resolving NS ( ISP ) cache
+                 ⤸
+    ⬑ 'not found'
+
+    ⤷ 3rd: Top Level Domain NS
+                              ⤸
+    ⬑ 'IP of Authoritative NS'
+
+    ⤷ Authoritative NS
+                  ⤸
+    ⬑ 'IP of FQDN'
+
+    ⤷ Website
+  ```
+
+<br>
+
+
+Zone files define DNS Zones, which is any distinct contiguous portion of the domain namespace that is managed by a single entity. Boundaries of a DNS zone are confined to a single domain. This is _almost_ akin to saying a DNS zone is the same as a domain.
+
+Zones contain __records__, each record is a mapping between a __hostname__ and a __resource__.
+
+<br>
+
+
+The book is using Digital Ocean's DNS dashboard, `hobnob.social` domain and is using `api.hobnob.social` for the API.
+
+1. Namecheap DNS settings
+
+  ```
+  ns1.digitalocean.com
+  ns2.digitalocean.com
+  ns3.digitalocean.com
+  ```
+
+2. DO account -> Add a domain -> `hobnob.social` then move to section to update records for that domain
+
+`NS` records: what domain nameserver is used for resolving hostnames to IPs
+
+  ```
+  dig NS hobnob.social
+
+  hobnob.social. 1799 IN NS ns1.digitalocean.com.
+  hobnob.social. 1799 IN NS ns2.digitalocean.com.
+  hobnob.social. 1799 IN NS ns3.digitalocean.com.
+  ```
+
+`A` records: map hostnames to IPs
+
+  ```
+  # $ORIGIN hobnob.social ?
+  ...
+  # we want api.hobnob.social to point to server running the API server
+  api    IN    A    142.93.241.63
+
+  # direct traffic going to hobnob.social to that same IP
+  @      IN    A    142.93.241.63    # @ -> $ORIGIN substitute
+
+  # catch-all: send all traffic not specified with a record here
+  *      IN    A    142.93.241.63    # not good practice due to malicious sub-domain hijacking
+  ```
+
+`SOA` records: mandatory, describes the zone
+
+  ```
+  hobnob.social.  IN  SOA  ns1.digitalocean.com.  dan.danyll.com  ( <serial>, <refresh>, <retry>, <expiry>, <negativeTTL> )
+  ```
+
+  - `ns1.digitalocean.com`: primary master nameserver, most uptodate zone file, with optional mirrored slaves
+  - `serial`: version counter
+  - `refresh`: how often slaves ping master to see if it needs to be updated
+  - `retry`: time between failed `refresh` attempts
+  - `expiry`: how long a zone file should be deemed valid
+  - `negativeTTL`: how long the NS will cache a failed lookup
+
+<br>
+
+
+__NGINX Config - With DNS__
+
+After updating DNS for the `api` subdomain, update NGINX config files to bear the name of the domain.
+
+  ```
+  # rename the file and reset the sym link
+  jsore@foundation:nginx:$ cd /etc/nginx/sites-available
+  jsore@foundation:nginx:$ sudo mv api api.hobnob.social
+  jsore@foundation:nginx:$ cd /etc/nginx/sites-enabled
+  jsore@foundation:nginx:$ sudo rm api
+  jsore@foundation:nginx:$ sudo ln -s /etc/nginx/sites-available/api.hobnob.social \
+    /etc/nginx/sites-enabled/
+  ```
+
+Add a `server_name` directive to the `api` conf file
+
+  ```
+  ...
+      ...
+      listen 80 default_server;
+      server_name api.hobnob.social;
+      location ...
+  ```
+
+Load the changes
+
+  ```
+  jsore@foundation:nginx:$  sudo systemctl reload nginx.service
+  ```
+
+Then delete the existing process, re-serve it and test it
+
+  ```
+  jsore@foundation:hobnob:$ npx pm2 monit    # bring up dashboard before re-launching for STDOUT
+
+  # new shell session
+  jsore@foundation:hobnob:$ npx pm2 delete 0; yarn run serve
+
+  # send a request from somewhere outside of the server
+  # we should be getting a response of 'Cannot GET'
+  $ curl http://api.jsore.com/
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <title>Error</title>
+    </head>
+    <body>
+    <pre>Cannot GET /</pre>
+    </body>
+    </html>
   ```
