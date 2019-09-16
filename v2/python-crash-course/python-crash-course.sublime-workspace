@@ -1,0 +1,731 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"bacground",
+				"background-color\tproperty"
+			],
+			[
+				"margin-",
+				"margin-bottom\tproperty"
+			],
+			[
+				"mar",
+				"margin-bottom\tproperty"
+			],
+			[
+				"margin",
+				"margin-left\tproperty"
+			],
+			[
+				"grid-tem",
+				"grid-template-columns\tproperty"
+			],
+			[
+				"grid-te",
+				"grid-template-columns\tproperty"
+			],
+			[
+				"back",
+				"background-color\tproperty"
+			],
+			[
+				"document",
+				"document.getElementsByTagName('head')[0"
+			],
+			[
+				"grid-temp",
+				"grid-template-rows\tproperty"
+			],
+			[
+				"handlerTo",
+				"handlerToRouteMap"
+			],
+			[
+				"pageNot",
+				"pageNotFoundView〔variable〕"
+			],
+			[
+				"pageNotF",
+				"pageNotFoundHandler"
+			],
+			[
+				"CURRE",
+				"CURRENT_ENVIRONMENT"
+			],
+			[
+				"process",
+				"process.env.SERVER_PORT"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "getting-started.md",
+			"settings":
+			{
+				"buffer_size": 0,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"package",
+				"Package Control: Install Package"
+			],
+			[
+				"markdo",
+				"Markdown Preview: Preview in Browser"
+			],
+			[
+				"markd",
+				"Markdown Preview: Preview in Browser"
+			],
+			[
+				"mark",
+				"Markdown Preview: Preview in Browser"
+			],
+			[
+				"markdow",
+				"Markdown Preview: Preview in Browser"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"mar",
+				"Markdown Preview: Preview in Browser"
+			],
+			[
+				"packa",
+				"Package Control: Install Package"
+			],
+			[
+				"pack",
+				"Package Control: Install Package"
+			],
+			[
+				"markdown",
+				"Markdown Preview: Preview in Browser"
+			],
+			[
+				"m",
+				"Markdown Preview: Preview in Browser"
+			],
+			[
+				"package control",
+				"Package Control: Install Package"
+			],
+			[
+				"package control: install",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 119.0,
+		"history":
+		[
+			"view.set_name(\"Gherkin: Create User\")",
+			"view.set_name(\"Gherkin: General\")",
+			"view.set_name(\"src/index\")",
+			"view.set_name(\"index\")",
+			"view.set_name(\"src/index.js\")",
+			"view.set_name(\"/index.js\")",
+			"view.set_name(\"index.js\")",
+			"view.set_name( \"index.js\" )",
+			"view.set_name( \"steps/index.js\" )",
+			"view.set_name( \"index.js\" )",
+			"view.set_name( \"index.js\""
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/var/folders/k5/7hwhn1ns2rsg8jk615_fm_g40000gn/T/rsub-bkq6gw/.env",
+		"/Users/justin/Core/Dev/Pub/jsore/src/routes/maintenance/index.js",
+		"/Users/justin/Core/Dev/Pub/jsore/src/views/view-template.html",
+		"/Users/justin/Downloads/fontawesome-free-5.10.2-web/css/all.css",
+		"/Users/justin/Core/Dev/Pub/hobnob/package.json",
+		"/Users/justin/Core/Dev/cent-backup/html/node/app/index.ts",
+		"/Users/justin/Core/Dev/cent-backup/html/node/app/templates.ts",
+		"/Users/justin/Core/Dev/cent-backup/html/node/server.js",
+		"/Users/justin/Core/Dev/Pub/jsore/package.json",
+		"/Users/justin/Core/Dev/Pub/jsore/src/views/temp/index.html",
+		"/Users/justin/Core/Dev/Pub/jsore/.gitignore",
+		"/Users/justin/Core/Dev/Pub/jsore/src/views/temp/styles.css",
+		"/var/folders/k5/7hwhn1ns2rsg8jk615_fm_g40000gn/T/rsub-c4h7ik/.gitignore",
+		"/Users/justin/Desktop/Tyler Tech.txt",
+		"/Users/justin/Core/Docs/Resumes/Resume Tips.md",
+		"/Users/justin/Core/Dev/Pub/jsore/easton.js",
+		"/Users/justin/Core/Dev/Pub/e/index.html",
+		"/Users/justin/Core/Dev/Pub/jsore/src/routes/page-not-found/index.js",
+		"/Users/justin/Core/Dev/Pub/jsore/dist/assets/favicon.png",
+		"/Users/justin/Core/Dev/Pub/jsore/src/views/header/index.js",
+		"/Users/justin/Core/Dev/Pub/jsore/envs/.env",
+		"/Users/justin/Core/Dev/Pub/jsore/src/utils/priv/load-dev-server.js",
+		"/Users/justin/Library/Application Support/Sublime Text 3/Packages/Babel/JavaScript (Babel).sublime-syntax",
+		"/Users/justin/Core/Dev/Pub/jsore/src/views/view-template.js",
+		"/Users/justin/Library/Application Support/Sublime Text 3/Packages/User/something.sublime-syntax",
+		"/var/folders/k5/7hwhn1ns2rsg8jk615_fm_g40000gn/T/rsub-mw19x7/.env",
+		"/var/folders/k5/7hwhn1ns2rsg8jk615_fm_g40000gn/T/rsub-_t4q2p/.gitignore",
+		"/var/folders/k5/7hwhn1ns2rsg8jk615_fm_g40000gn/T/rsub-rz9zrv/package.json",
+		"/var/folders/k5/7hwhn1ns2rsg8jk615_fm_g40000gn/T/rsub-xkq071/load-dev-server.js",
+		"/var/folders/k5/7hwhn1ns2rsg8jk615_fm_g40000gn/T/rsub-1_rxk4/index.js",
+		"/Users/justin/.bash_profile",
+		"/var/folders/k5/7hwhn1ns2rsg8jk615_fm_g40000gn/T/rsub-2aj7dy/.bashrc",
+		"/Users/justin/Core/Dev/Pub/jsore/src/utils/inject-dependencies.js",
+		"/Users/justin/Core/Dev/Pub/jsore/src/views/maintenance/index.js",
+		"/Users/justin/Core/Dev/Pub/jsore/src/views/footer/index.js",
+		"/Users/justin/Core/Dev/Pub/jsore/dist/content-scripts/page-not-found/redirectTimer.js",
+		"/Users/justin/Core/Dev/Pub/jsore/src/views/page-not-found/index.html",
+		"/Users/justin/Core/Dev/Pub/jsore/src/views/maintenance/index.html",
+		"/Users/justin/Core/Dev/Pub/jsore/src/views/footer/index.html",
+		"/Users/justin/Core/Dev/Pub/jsore/src/views/header/index.html",
+		"/Users/justin/Core/Dev/Pub/jsore/src/utils/generateViewTemplate.js",
+		"/Users/justin/Core/Dev/Pub/jsore/src/views/generator.js",
+		"/Users/justin/Core/Dev/Pub/jsore/node_modules/handlebars/dist/handlebars.js",
+		"/Users/justin/Core/Dev/Pub/jsore/src/views/maintenance/index2.html",
+		"/Users/justin/Core/Dev/Pub/jsore/src/views/header/index.handlebars",
+		"/Users/justin/Core/Dev/Pub/jsore/src/views/footer/index.handlebars",
+		"/Users/justin/Core/Dev/Pub/jsore/src/views/maintenance/index.handlebars",
+		"/Users/justin/Core/Dev/Pub/jsore/src/handlers/home/index.js",
+		"/Users/justin/Archive/apache.txt",
+		"/Users/justin/Core/TechNotes/linode.txt",
+		"/Users/justin/Core/Dev/Pub/bkmrks/bookmark-management-idea.md",
+		"/Users/justin/Core/Dev/Pub/jsore/src/errors/messages/index.js",
+		"/Users/justin/Core/Dev/Pub/jsore/src/errors/generators/index.js",
+		"/Users/justin/Core/Dev/Pub/jsore/src/utils/nuclear-root-redirect.js",
+		"/Users/justin/Downloads/p/p",
+		"/Users/justin/Core/Dev/Pub/bkmrks/abuse-backup_07-31-19.html",
+		"/Users/justin/Core/Dev/Pub/bkmrks/bookmarks_7-31-19_count-870.html",
+		"/Users/justin/Core/Dev/Pub/jsore/dist/styles/styles.css",
+		"/Users/justin/Core/Dev/Pub/jsore/src/content-scripts/page-not-found/redirect-to-home.js",
+		"/Users/justin/Core/Dev/Pub/jsore/src/content-scripts/page-not-found/redirectToHome.js",
+		"/Users/justin/Core/Dev/Pub/jsore/dist/scripts/page-not-found/redirectToHome.js",
+		"/Users/justin/Core/Dev/Pub/jsore/src/utils/priv/loadDevServer.js",
+		"/Users/justin/Core/Dev/Pub/jsore/src/utils/injectDependencies.js",
+		"/var/folders/k5/7hwhn1ns2rsg8jk615_fm_g40000gn/T/rsub-8qie8r/api.jsore.com",
+		"/var/folders/k5/7hwhn1ns2rsg8jk615_fm_g40000gn/T/rsub-9ycrzc/.env",
+		"/Users/justin/Core/Dev/Pub/jsore/src/utils/priv/loadDevelopmentServer.js",
+		"/Users/justin/Core/Dev/Pub/jsore/src/utils/priv/getDevelopmentKeys.js",
+		"/Users/justin/Core/Dev/Pub/jsore/priv/getDevelopmentKeys.js",
+		"/var/folders/k5/7hwhn1ns2rsg8jk615_fm_g40000gn/T/rsub-4_sgdz/config",
+		"/Users/justin/Core/Dev/Pub/jsore/dist/styles.css",
+		"/Users/justin/Core/Dev/Pub/jsore/dist/index.html",
+		"/Users/justin/Core/Dev/Pub/jsore/routes/maintenance/redirect/index.js",
+		"/Users/justin/Core/Dev/Pub/jsore/index.js",
+		"/Users/justin/Core/Dev/Pub/jsore/routes/http/index.js",
+		"/var/folders/k5/7hwhn1ns2rsg8jk615_fm_g40000gn/T/rsub-1cvi5n/01-user-motd",
+		"/var/folders/k5/7hwhn1ns2rsg8jk615_fm_g40000gn/T/rsub-rxr1d9/90-updates-available",
+		"/var/folders/k5/7hwhn1ns2rsg8jk615_fm_g40000gn/T/rsub-q93k0k/50-landscape-sysinfo",
+		"/var/folders/k5/7hwhn1ns2rsg8jk615_fm_g40000gn/T/rsub-26hkf8/10-help-text",
+		"/var/folders/k5/7hwhn1ns2rsg8jk615_fm_g40000gn/T/rsub-geueo9/00-header",
+		"/var/folders/k5/7hwhn1ns2rsg8jk615_fm_g40000gn/T/rsub-giydk9/97-hwe-overlayroot",
+		"/Users/justin/Core/Dev/Pub/hobnob/.gitignore",
+		"/Users/justin/Core/Docs/Resume Tips.md",
+		"/var/folders/k5/7hwhn1ns2rsg8jk615_fm_g40000gn/T/rsub-7aqnvi/jsore.com",
+		"/var/folders/k5/7hwhn1ns2rsg8jk615_fm_g40000gn/T/rsub-phiwti/jsore.com",
+		"/Users/justin/Core/Dev/Pub/jsore/routes/index.js",
+		"/Users/justin/Library/Application Support/Sublime Text 3/Packages/SublimeCodeIntel/SublimeCodeIntel.sublime-settings",
+		"/Users/justin/Library/Application Support/Sublime Text 3/Packages/User/SublimeCodeIntel.sublime-settings",
+		"/Users/justin/Library/Application Support/Sublime Text 3/Packages/User/Default (OSX).sublime-keymap",
+		"/Users/justin/Library/Application Support/Sublime Text 3/Packages/SublimeCodeIntel/libs/codeintel2/config",
+		"/Users/justin/.codeintel/config",
+		"/Users/justin/Library/Application Support/Sublime Text 3/Packages/SublimeCodeIntel/Default (OSX).sublime-keymap",
+		"/Users/justin/Core/Dev/Pub/hobnob/src/index.js",
+		"/Users/justin/Core/TechNotes/migration-log.txt",
+		"/var/folders/k5/7hwhn1ns2rsg8jk615_fm_g40000gn/T/rsub-_wtw1i/.gitignore",
+		"/Applications/Python 3.7/ReadMe.rtf",
+		"/Users/justin/Core/Dev/Pub/hobnob/scripts/e2e.test.sh",
+		"/Users/justin/Core/Dev/cent-backup/html/node/app/styles.css",
+		"/var/folders/k5/7hwhn1ns2rsg8jk615_fm_g40000gn/T/rsub-6dqxjr/index.js",
+		"/var/folders/k5/7hwhn1ns2rsg8jk615_fm_g40000gn/T/rsub-qstnyt/package.json",
+		"/var/folders/k5/7hwhn1ns2rsg8jk615_fm_g40000gn/T/rsub-ik2zip/styles.css",
+		"/var/folders/k5/7hwhn1ns2rsg8jk615_fm_g40000gn/T/rsub-csty6n/index.html",
+		"/var/folders/k5/7hwhn1ns2rsg8jk615_fm_g40000gn/T/rsub-f2s8oj/package.json",
+		"/Users/justin/.ssh/config",
+		"/var/folders/k5/7hwhn1ns2rsg8jk615_fm_g40000gn/T/rsub-x2i67n/index.js",
+		"/var/folders/k5/7hwhn1ns2rsg8jk615_fm_g40000gn/T/rsub-dic19i/styles.css",
+		"/var/folders/k5/7hwhn1ns2rsg8jk615_fm_g40000gn/T/rsub-2dxv93/index.html",
+		"/var/folders/k5/7hwhn1ns2rsg8jk615_fm_g40000gn/T/rsub-07da89/index.js",
+		"/var/folders/k5/7hwhn1ns2rsg8jk615_fm_g40000gn/T/rsub-em1hhm/jsore.com",
+		"/var/folders/k5/7hwhn1ns2rsg8jk615_fm_g40000gn/T/rsub-c5qrwd/styles.css",
+		"/var/folders/k5/7hwhn1ns2rsg8jk615_fm_g40000gn/T/rsub-tw64t7/package.json",
+		"/var/folders/k5/7hwhn1ns2rsg8jk615_fm_g40000gn/T/rsub-pwu33_/index.html",
+		"/var/folders/k5/7hwhn1ns2rsg8jk615_fm_g40000gn/T/rsub-v1ige1/package.json",
+		"/var/folders/k5/7hwhn1ns2rsg8jk615_fm_g40000gn/T/rsub-qnqs3b/index.js",
+		"/var/folders/k5/7hwhn1ns2rsg8jk615_fm_g40000gn/T/rsub-g_s3v7/index.html",
+		"/var/folders/k5/7hwhn1ns2rsg8jk615_fm_g40000gn/T/rsub-z9iihy/package.json",
+		"/var/folders/k5/7hwhn1ns2rsg8jk615_fm_g40000gn/T/rsub-c0bp4k/nginx.conf",
+		"/var/folders/k5/7hwhn1ns2rsg8jk615_fm_g40000gn/T/rsub-utzwxi/jsore.com",
+		"/var/folders/k5/7hwhn1ns2rsg8jk615_fm_g40000gn/T/rsub-e6ww_z/api.jsore.com",
+		"/var/folders/k5/7hwhn1ns2rsg8jk615_fm_g40000gn/T/rsub-ql85vc/index.js",
+		"/var/folders/k5/7hwhn1ns2rsg8jk615_fm_g40000gn/T/rsub-k5gzft/index.html",
+		"/var/folders/k5/7hwhn1ns2rsg8jk615_fm_g40000gn/T/rsub-9ugvej/jsore.com",
+		"/var/folders/k5/7hwhn1ns2rsg8jk615_fm_g40000gn/T/rsub-s0ol_x/api.jsore.com",
+		"/var/folders/k5/7hwhn1ns2rsg8jk615_fm_g40000gn/T/rsub-ytvvx_/nginx.conf",
+		"/var/folders/k5/7hwhn1ns2rsg8jk615_fm_g40000gn/T/rsub-fbdhkq/package.json",
+		"/var/folders/k5/7hwhn1ns2rsg8jk615_fm_g40000gn/T/rsub-pwzql0/index.js",
+		"/var/folders/k5/7hwhn1ns2rsg8jk615_fm_g40000gn/T/rsub-6cvtoo/index.html",
+		"/var/folders/k5/7hwhn1ns2rsg8jk615_fm_g40000gn/T/rsub-ly8qbb/index.html",
+		"/var/folders/k5/7hwhn1ns2rsg8jk615_fm_g40000gn/T/rsub-ql0_pw/index.js"
+	],
+	"find":
+	{
+		"height": 23.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"assets",
+			"1445px",
+			"document",
+			"contentScript",
+			"contact",
+			"h3",
+			"padding",
+			"2rem",
+			"4rem",
+			"max",
+			"button",
+			"true",
+			"b3b3b3",
+			"e6e6e6",
+			"page-content-text",
+			"page",
+			"page-content-text",
+			"link",
+			"nav-links",
+			"Jsore",
+			"GitHub",
+			"LinkedIn",
+			"display",
+			"margin",
+			"column",
+			"Documentation",
+			"2rem",
+			"rem",
+			"column",
+			"Express",
+			"p",
+			"h4",
+			"nbsp",
+			"padding",
+			"30rem",
+			"h3",
+			"wra",
+			"specific",
+			"linkedin",
+			"808080",
+			"a6a6a6",
+			"content",
+			"div",
+			"90",
+			"a6a6a6",
+			"Contact",
+			"Resume",
+			"About",
+			"Resume",
+			"kbd",
+			"view",
+			"generatePartials",
+			"which",
+			"retrievedView",
+			"heading-nav",
+			"mobile-nav-links",
+			"items",
+			"icon-wrapper",
+			"icon",
+			"p",
+			"mobile-nav-container",
+			"div",
+			"10px",
+			"relative",
+			"none",
+			"transform",
+			"2s",
+			"translateX",
+			"mobile-nav-mobile-nav-links",
+			"container",
+			"fa-bars",
+			"bars",
+			"links",
+			"pointer",
+			"transform",
+			"chevron-i",
+			"after",
+			"chevron-menu",
+			"2s",
+			"fa-chevron-circle-down",
+			"chevron-menu",
+			"dn",
+			"fa-chevron-circle-down",
+			"chevron-a-link",
+			"child",
+			"block",
+			"unset",
+			"hover",
+			"chevron",
+			"white",
+			"fadeInAnimation",
+			"active",
+			"in",
+			"none",
+			"id",
+			"auto",
+			"ba",
+			"absolute",
+			"b",
+			"padding",
+			"hidden",
+			"visibility",
+			"4rem",
+			"2rem",
+			"bottom",
+			"9rem",
+			"18px",
+			"4rem",
+			"20rem",
+			"div",
+			"bfbfbf",
+			"0px",
+			"77",
+			"3",
+			"1",
+			"154",
+			"rgba",
+			"black",
+			"38px",
+			"48px",
+			"white",
+			"100px",
+			"number",
+			"end",
+			"link",
+			"4rem",
+			"3rem",
+			"2rem"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "getting-started.md",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.clone": 156,
+							"bracket_highlighter.clone_locations":
+							{
+								"close":
+								{
+								},
+								"icon":
+								{
+								},
+								"open":
+								{
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.clone_regions":
+							[
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content"
+							],
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+								},
+								"icon":
+								{
+								},
+								"open":
+								{
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content"
+							],
+							"syntax": "Packages/MarkdownEditing/Markdown.sublime-syntax",
+							"tabs_extra_last_activated": 1568663383.95,
+							"tabs_extra_last_activated_sheet_index": 0,
+							"tabs_extra_spawned": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 98.0
+	},
+	"output.mdpopups":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "python-crash-course.sublime-project",
+	"replace":
+	{
+		"height": 42.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": false,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 110.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
