@@ -394,3 +394,222 @@ Watch for nonsensical input before acting on it
 Store relatable data, key-value pairs
 
 Values can be any object creatable in Python e.g. strings, lists, other dictionaries
+
+  > `dictionaries.py`
+
+
+__Dictionary__
+
+  ```python
+  alien_0 = {'color': 'green', 'points': 5}
+  ```
+
+__Set__
+
+  ```python
+  alien_2 = {'green', 'orange', 10}
+  print(alien_0['color'])   # green
+  print(alien_0['points'])  # 5
+  ```
+
+__Get a value after a dictionary is defined__
+
+  ```python
+  new_points = alien_0['points']
+  print(f"You got {new_points}")
+  ```
+
+__Add new values__
+
+  ```python
+  alien_0['x_position'] = 0
+  alien_0['y_position'] = 25
+  print(alien_0)
+  ```
+
+__Modify values__
+
+  ```python
+  alien_1 = {'x_pos': 0, 'y_pos': 25, 'speed': 'medium'}
+  print(f"Start pos: {alien_1['x_pos']}")
+  if alien_1['speed'] == 'slow':  # move the alien right
+      x_increment = 1
+  elif alien_1['speed'] == 'medium':
+      x_increment = 2
+  else:
+      x_increment = 3
+  alien_1['x_pos'] = alien_1['x_pos'] + x_increment  # old+new
+  print(f"New pos: {alien_1['x_pos']}")
+  ```
+
+__Delete values__
+
+  ```python
+  del alien_1['x_pos']
+  ```
+
+__Get values__
+
+  ```python
+  print(alien_1)            # {'x_pos': 0, 'y_pos': 25, 'speed': 'medium'}
+  print(alien_1['points'])  # Traceback: KeyError 'points'
+
+  point_value = alien_1.get('points', 'Some default value')
+  print(point_value)        # Some default value
+
+  point_value = alien_1.get('points')  # no default argument
+  print(point_value)  # "None" ( "no value exists" )
+  ```
+
+<br>
+
+__Looping Dictionaries__
+
+  > `dictionary-loops.py`
+
+  - `for key, value in some_dictionary`
+
+  ```python
+  friends = ['phil', 'sarah']
+  for name in favorite_languages.keys():
+      print(f"Hi {name.title()}.")
+      if name in friends:
+          language = favorite_languages[name].title()
+          print(f"\t{name.title()}, your favorite language is {language}")
+      if 'erin' not in favorite_languages.keys():
+          print("Please finish survey")
+  ```
+
+<br><br>
+
+--------------------------------------------------------------------------------
+# Ch. 7. User Input
+
+The `input()` method awaits input from `STDIN` and pauses an application until it gets it
+
+  > `input.py`
+
+  - `+=` to update variable value
+  - `input()` interprets strings by default, convert the value with `int()` for numbers
+  - Modulo operator `%` returns remainder after dividing a number
+  - is something divisible by 2?
+  - `while` loops
+  - Quit values for exiting prompts
+  - Flags, determine whether or not the entire program is active, allows for there to be multiple exit events across multiple conditional tests
+  - Break'ing out of any kind of loop, for directing the flow of the program
+  - Using Continue to return to beginning of loop
+  - Use `while` loops with modifying lists and dictionaries, not `for`, difficult for Python to track the list's items
+
+
+<br><br>
+
+--------------------------------------------------------------------------------
+# Ch. 8. Functions
+
+  > `functions.py`
+  > `modifying_list_args.py`
+  > `pizza.py` & `making_pizzas.py`
+
+  - Positional vs keyword arguments, dictionaries and lists of values as args
+  - Default values in definition parameters
+  - Python returning from a function
+  - `None` to set a variable without a value assigned to it
+  - Individual functions should have singular individual task
+  - Send copy of list to a function to preserve the original variable, preventing the function from mutating a list with slices
+  - Passing arbitrary number of args with `*some_parameter` `**a_key_value_pair`
+  - Function modules
+
+
+<br><br>
+
+--------------------------------------------------------------------------------
+# Classes
+
+  > `classes.py`
+
+OOP style dictates that __classes__ should represent real-world things and situations, __objects__ should be based off those classes. Classes define general behavior that a whole category of objects can have. Each object is automatically equipped with the general behavior with whatever unique traits desired.
+
+Objects: __instantiations__
+
+Classes: __instances__
+
+Classes should be stored in individual modules and their instances imported.
+
+<br>
+
+Model a class representing a dog. What do I know about pet dogs? They have a name, and age,  ( the information ), most sit and roll over ( the behaviors ).
+
+  ```python
+  class Dog:
+      """
+      A simple model of a dog.
+      """
+
+      def __init__(self, name, age):
+          """
+          Initialize name and age attributes.
+          """
+          self.name = name
+          self.age = age
+
+      def sit(self):
+          """
+          Simulate a dog sitting in response to a command.
+          """
+          print(f"{self.name.title()} is now sitting. Arf.")
+
+      def roll_over(self):
+          """
+          Simulate a dog rolling over in response to a command.
+          """
+          print(f"{self.name.title()} rolled over! Bark.")
+
+      ...
+  ```
+
+__The `__init__(self, params)` method__
+
+Python runs this automatically when a new instance is created. The `self` parameter is mandatory, it gives that instance access to attributes and methods in the class. Every method call on an instance automatically passes it.
+
+__Calling Dog()__
+
+The `self` parameter is passed to `Dog()` automatically, don't need to pass it. It'll need to be passed whatever parameters ( the parameters with the instance's `__init__()` method ), which is the information we want stored within the class.
+
+__Any variable prepended with `self`__
+
+These are called __attributes__. Example: `self.name`, `self.age`. These are available to every method in the class and can be accessed from any created instance of the class. The parameters passed to the class when instnace is created are assigned to these `self` variables.
+
+<br>
+
+  > A class is a set of instructions for Python on how to make an instance
+
+<br>
+
+__Example of creating an instance__
+
+  ```python
+  from dog import Dog
+
+  # create instances
+  # __init__() will set these args as attributes
+  my_dog = Dog('Willie', 6)
+  your_dog = Dog('Stella', 5)
+
+  # access some attributes
+  print(f"My dog's name is {my_dog.name}")
+  print(f"My dog is {my_dog.age} years old")
+
+  # access some methods on the class
+  my_dog.sit()        # Willie is now sitting. Arf.
+  my_dog.roll_over()  # Willie rolled over! Bark.
+
+  # access some attributes
+  print(f"\nYour dog's name is {your_dog.name}")
+  print(f"Your dog is {your_dog.age} years old")
+
+  # access some methods on the class
+  your_dog.sit()        # Stella is now sitting. Arf.
+  your_dog.roll_over()  # Stella rolled over! Bark.
+  ```
+
+
