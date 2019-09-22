@@ -612,4 +612,13 @@ __Example of creating an instance__
   your_dog.roll_over()  # Stella rolled over! Bark.
   ```
 
+<br>
 
+  > `car.py, my_car.py`
+
+  - importing classes
+  - inheritance
+  - instances as attributes
+  - call methods from parent class with `super()`
+  - overriding parent class methods
+  - importing module classes for file brevity
