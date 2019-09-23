@@ -1,15 +1,11 @@
-"""
-A set of classes that can be used to represent gas and electric cars.
-"""
+"""A set of classes that can be used to represent gas and electric cars."""
 
 class Car:
-    """
-    A simple attempt to represent a car.
-    """
+    """A simple attempt to represent a car."""
+
     def __init__(self, make, model, year):
-        """
-        Initialize attributes to describe a car.
-        """
+        """Initialize attributes to describe a car."""
+
         # assign values to class
         self.make = make
         self.model = model
@@ -18,16 +14,14 @@ class Car:
         self.odometer_reading = 0
 
     def get_descriptive_name(self):
-        """
-        Return a neatly formatted descriptive name.
-        """
+        """Return a neatly formatted descriptive name."""
+
         long_name = f"{self.year} {self.make} {self.model}"
         return long_name.title()
 
     def read_odometer(self):
-        """
-        Print a statement showing the car's mileage.
-        """
+        """Print a statement showing the car's mileage."""
+
         print(f"This car has {self.odometer_reading} miles on it.")
 
     def update_odometer(self, mileage):
@@ -43,33 +37,28 @@ class Car:
             print("You can't roll back an odometer.")
 
     def increment_odometer(self, miles):
-        """
-        Add the given amount to the odometer reading
-        """
+        """Add the given amount to the odometer reading"""
+
         self.odometer_reading += miles
 
 
 class Battery:
-    """
-    A simple attempt to model a battery for an electric car.
-    """
+    """A simple attempt to model a battery for an electric car."""
+
     # set the class with a defaulted battery size
     def __init__(self, battery_size=75):
-        """
-        Initialize the battery's attributes.
-        """
+        """Initialize the battery's attributes."""
+
         self.battery_size = battery_size
 
     def describe_battery(self):
-        """
-        Prints a statement describing the battery's size.
-        """
+        """Prints a statement describing the battery's size."""
+
         print(f"This car has a {self.battery_size}-kWh battery.")
 
     def get_range(self):
-        """
-        Prints a statement about the range this battery provides.
-        """
+        """Prints a statement about the range this battery provides."""
+
         if self.battery_size == 75:
             range = 260
         elif self.battery_size == 100:
@@ -80,9 +69,8 @@ class Battery:
 
 # subclass of Car
 class ElectricCar(Car):
-    """
-    Models aspects of a car, specific to electric vehicles.
-    """
+    """Models aspects of a car, specific to electric vehicles."""
+
     def __init__(self, make, model, year):
         """
         Initialize attributes of the parent class.
