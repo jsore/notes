@@ -614,11 +614,11 @@ __Example of creating an instance__
 
 <br>
 
-  > `car.py, my_car.py`
+  > `car.py, my_car.py, my_electric_car.py`
 
   - importing classes
   - inheritance
   - instances as attributes
   - call methods from parent class with `super()`
   - overriding parent class methods
-  - importing module classes for file brevity
+  - importing module classes for file brevity instead of having overly-long class definitions
