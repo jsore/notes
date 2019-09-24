@@ -34,18 +34,46 @@ class AlienInvasion:
         while True:
             # keep these isolated for simplicity
             self._check_events()
+            # after checking for events update ship position
+            self.ship.update()
+            # then update the screen
             self._update_screen()
 
 
     def _check_events(self):
-        """Respond to keypresses and mouse events"""
+        """Respond to keypresses and mouse events."""
 
         # .get() returns list of events fired since last call
         # any key/mouse event fires this for loop
         for event in pygame.event.get():
+
             # window's close button clicked
             if event.type == pygame.QUIT:
                 sys.exit()
+
+            # ship movement: flag on/off
+            elif event.type == pygame.KEYDOWN:
+                self._check_keydown_events(event)
+            elif event.type == pygame.KEYUP:
+                self._check_keyup_events(event)
+
+
+    def _check_keydown_events(self, event):
+        """Respond to keypresses."""
+
+        if event.key == pygame.K_RIGHT:
+            self.ship.moving_right = True
+        elif event.key == pygame.K_LEFT:
+            self.ship.moving_left = True
+
+
+    def _check_keyup_events(self, event):
+        """Respond to key releases."""
+
+        if event.key == pygame.K_RIGHT:
+            self.ship.moving_right = False
+        elif event.key == pygame.K_LEFT:
+            self.ship.moving_left = False
 
 
     def _update_screen(self):

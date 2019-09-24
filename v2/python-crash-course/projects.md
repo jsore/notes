@@ -44,6 +44,7 @@ __Pygame window & user input responses__
   - Pygame surfaces, where game elements can be displayed
   - Setting up an 'event loop' ( not the same as JS ) with a `for` loop
   - __Helper Methods__ does work inside a class but shouldn't be called through an instance, denoted by a leading underscore `_some_method`
+  - Keypress are registered as `KEYDOWN` events
 
   > `settings.py`
 
