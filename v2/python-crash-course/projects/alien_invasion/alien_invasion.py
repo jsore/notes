@@ -32,23 +32,31 @@ class AlienInvasion:
         """Start the main loop for the game."""
 
         while True:
+            # keep these isolated for simplicity
+            self._check_events()
+            self._update_screen()
 
-            # watch for keyboard/mouse events
-            # .get() returns list of events fired since last call
-            # any key/mouse event fires this for loop
-            for event in pygame.event.get():
 
-                # window's close button clicked
-                if event.type == pygame.QUIT:
-                    sys.exit()
+    def _check_events(self):
+        """Respond to keypresses and mouse events"""
 
-            # redraw screen on each pass through loop
-            self.screen.fill(self.settings.bg_color)
-            self.ship.blitme()
+        # .get() returns list of events fired since last call
+        # any key/mouse event fires this for loop
+        for event in pygame.event.get():
+            # window's close button clicked
+            if event.type == pygame.QUIT:
+                sys.exit()
 
-            # then make the most recently drawn screen visible
-            # draw empty screen on each pass through while loop
-            pygame.display.flip()
+
+    def _update_screen(self):
+        """Redraw the screen on each pass through main while loop."""
+
+        self.screen.fill(self.settings.bg_color)
+        self.ship.blitme()
+
+        # then make the most recently drawn screen visible
+        # draw empty screen on each pass through while loop
+        pygame.display.flip()
 
 
 # only run when file is called directly
