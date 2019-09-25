@@ -36,7 +36,7 @@ Pygame helps with visuals, we'll focus on the actual logic. Basically a re-make 
 
 <br>
 
-__Pygame window & user input responses__
+__ch12. Pygame window & user input responses__
 
   > `alien_invasion.py`
 
@@ -54,3 +54,14 @@ __Pygame window & user input responses__
 
   - Class representing the player's ship
   - All game elements in Pygame are `rect`s ( rectangles )
+
+  > `bullet.py`
+
+  - Sprites
+  - Using `copy()` on a `for` loop to modify a list while it's being looped over
+
+<br>
+
+__ch13. Element interaction__
+
+Create moving enemy alien fleet.

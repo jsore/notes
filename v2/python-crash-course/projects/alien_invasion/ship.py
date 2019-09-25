@@ -15,7 +15,7 @@ class Ship:
         # let us place the ship in the correct location
         self.screen_rect = ai_game.screen.get_rect()
         # load image and get its rect
-        self.image = pygame.image.load('images/ship.bmp')
+        self.image = pygame.image.load('images/ship.bmp').convert()
         # get access to the ship's surface after image loads
         self.rect = self.image.get_rect()
 

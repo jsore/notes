@@ -12,3 +12,11 @@ class Settings:
         # ship settings
         # increase speed on each pass through for loop
         self.ship_speed = 1.5
+
+        # bullet settings
+        self.bullet_speed = 1.0
+        self.bullet_width = 3
+        self.bullet_height = 15
+        self.bullet_color = (60, 60, 60)
+        # accuracy > quantity
+        self.bullets_allowed = 3
