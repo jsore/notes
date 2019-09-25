@@ -7,22 +7,7 @@ hopes that:<br>
 
 <br>
 
-<b>"The more I write, the more I digest"</b>
-
-<br>
-
-It worked for my Net+ along with the foundation of the rest of the stuff I know, so why should
-I not keep that ball rolling?
-
-<br>
-
-`¯\_(ツ)_/¯`
-
-<br>
-
-Turns out, some shit is kinda hard to understand without some live examples and/or someone to
-hold your hand throughout the portion of code review that I like to call <b>"What the hell is
-going on"</b>
+    > The more I write, the more I digest
 
 <br>
 
@@ -70,3 +55,6 @@ Current:
 
 - Rediscovering JavaScript
     - https://github.com/jsore/notes/tree/master/v2/rediscovering-js
+
+- Python Crash Course
+    - https://github.com/jsore/notes/tree/master/v2/python-crash-course
