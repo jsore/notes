@@ -64,4 +64,14 @@ __ch12. Pygame window & user input responses__
 
 __ch13. Element interaction__
 
-Create moving enemy alien fleet.
+Create moving enemy alien fleet, with collision detection for interactions with bullets/aliens/ship.
+
+  > `alien.py`
+
+  -
+
+  > `alien_invasion.py`
+
+  - Order that methods are placed in a class doesn't matter to the program itself
+  - __Floor division__, `x // y`, divide two numbers and drop any remainders, whole numbers only
+  - Nested `for` loops
