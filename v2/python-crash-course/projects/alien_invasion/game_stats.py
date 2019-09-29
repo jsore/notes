@@ -8,11 +8,14 @@ class GameStats:
         self.settings = ai_game.settings
         self.reset_stats()
 
-        # flag for ending the game when user runs out of ships
-        self.game_active = True
+        # flag for ending or starting a game
+        # start the game in inactive status to let user
+        # choose to hit the Play button if desired
+        self.game_active = False
 
 
     def reset_stats(self):
         """Initialize statistics that can change during the game."""
 
         self.ships_left = self.settings.ship_limit
+        self.score = 0

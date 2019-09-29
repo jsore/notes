@@ -77,3 +77,19 @@ Create moving enemy alien fleet, with collision detection for interactions with 
   - __Floor division__, `x // y`, divide two numbers and drop any remainders, whole numbers only
   - Nested `for` loops
   - `if not <condition_to_test>:` blocks and `pygame_element.empty()`
+
+  > `game_stats.py`
+
+  - Class for tracking statistics for current game
+
+<br>
+
+__ch14. Play button & increasing game difficulty__
+
+  > `button.py`
+
+  - Pygame doesn't have a builtin class for buttons, creates a filled & labeled rectangle
+  - Text rendering with Pygame, string is converted to an image
+  - Using `rect.collidepoint()` to check if a collision happens at a certain cordinate
+  - `if <condition_to_test> and not <condition_to_test>`
+
