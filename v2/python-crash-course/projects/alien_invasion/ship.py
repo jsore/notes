@@ -58,3 +58,11 @@ class Ship:
 
         # self.rect is the current location
         self.screen.blit(self.image, self.rect)
+
+
+    def center_ship(self):
+        """Center the ship on the screen."""
+
+        self.rect.midbottom = self.screen_rect.midbottom
+        # reset x to track ship's exact pos
+        self.x = float(self.rect.x)

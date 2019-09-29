@@ -11,10 +11,12 @@ class Settings:
 
         # ship settings
         # increase speed on each pass through for loop
-        self.ship_speed = 1.5
+        self.ship_speed = 6.5
+        self.ship_limit = 3
 
         # bullet settings
-        self.bullet_speed = 1.0
+        # self.bullet_speed = 1.0
+        self.bullet_speed = 10.0
         self.bullet_width = 3
         self.bullet_height = 15
         self.bullet_color = (60, 60, 60)
@@ -22,7 +24,9 @@ class Settings:
         self.bullets_allowed = 3
 
         # alien settings
-        self.alien_speed = 1.0
+        self.alien_speed = 3.0
         self.fleet_drop_speed = 10
         # 1 for right, -1 for left
         self.fleet_direction = 1
+
+        #

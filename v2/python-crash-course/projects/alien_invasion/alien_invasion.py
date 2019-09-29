@@ -1,13 +1,16 @@
 # Galaga clone
 
 import sys  # for exiting game when user quits
+from time import sleep  # pause when a ship gets hit
 
 import pygame  # game functionality
 
 from settings import Settings  # game settings class
+from game_stats import GameStats
 from ship import Ship  # user's spaceship
 from bullet import Bullet
 from alien import Alien
+
 
 
 class AlienInvasion:
@@ -29,6 +32,9 @@ class AlienInvasion:
         # self.settings.screen_height = self.screen.get_rect().height
         pygame.display.set_caption("Alien Invasion")
 
+        # create instance for tracking game stats
+        self.stats = GameStats(self)
+
         # pass current instance of class ( self ) for reference
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
@@ -44,15 +50,15 @@ class AlienInvasion:
         # main loop
         while True:
 
-            # keep these isolated for simplicity
+            # look for user input events
             self._check_events()
 
-            # after checking for events update ship position
-            self.ship.update()
-
-            self._update_bullets()
-
-            self._update_aliens()
+            # these should only run when the game is active
+            if self.stats.game_active:
+                # after checking for events update positions
+                self.ship.update()
+                self._update_bullets()
+                self._update_aliens()
 
             # then update the screen
             self._update_screen()
@@ -126,6 +132,28 @@ class AlienInvasion:
         # sanity check to confirm bullets are removed
         # print(len(self.bullets))
 
+        self._check_bullet_alien_collisions()
+
+
+    def _check_bullet_alien_collisions(self):
+        """Respond to bullet-alien collisions."""
+
+        # check for bullets that've hit aliens
+        #
+        # groupcollide() returns a dictionary of bullets and
+        # the alien the bullet collides with, identified by
+        # comparing overlapping rects
+        #
+        # the True arguments dictate whether or not collided
+        # items should be deleted
+        collisions = pygame.sprite.groupcollide(
+                self.bullets, self.aliens, True, True)
+
+        # repopulate the fleet when empty
+        if not self.aliens:
+            self.bullets.empty()
+            self._create_fleet()
+
 
     def _create_alien(self, alien_number, row_number):
         """Create an alien and place it in a row."""
@@ -188,6 +216,35 @@ class AlienInvasion:
         self.settings.fleet_direction *= -1
 
 
+    def _ship_hit(self):
+        """Respond to the ship being hit by an alien."""
+
+        if self.stats.ships_left > 0:
+            # dcrement ship count, get rid of remaining bullets
+            # and aliens, create new fleet and center the ship
+            self.stats.ships_left -= 1
+            self.aliens.empty()
+            self.bullets.empty()
+            self._create_fleet()
+            self.ship.center_ship()
+
+            # pause to let user notice the collision and regroup
+            sleep(0.5)
+        else:
+            self.stats.game_active = False
+
+
+    def _check_aliens_bottom(self):
+        """Check if aliens reach bottom of the screen."""
+
+        screen_rect = self.screen.get_rect()
+        for alien in self.aliens.sprites():
+            if alien.rect.bottom >= screen_rect.bottom:
+                # treat same as if ship got hit
+                self._ship_hit()
+                break
+
+
     def _update_aliens(self):
         """Update the positions of all aliens in the fleet."""
 
@@ -195,6 +252,15 @@ class AlienInvasion:
         # change its direction
         self._check_fleet_edges()
         self.aliens.update()
+
+        # alien-ship collisions are bad
+        # returns 1st alien that collided with ship
+        if pygame.sprite.spritecollideany(self.ship, self.aliens):
+            # print("Ship is hit")
+            self._ship_hit()
+
+        # aliens shouldn't be allowed to reach the bottom
+        self._check_aliens_bottom()
 
 
     def _update_screen(self):

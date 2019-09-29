@@ -68,10 +68,12 @@ Create moving enemy alien fleet, with collision detection for interactions with 
 
   > `alien.py`
 
-  -
+  - Call each element's `update()` method to move a large set of elements
+  - Collision detection ( `sprite.groupcollide()` )
 
   > `alien_invasion.py`
 
   - Order that methods are placed in a class doesn't matter to the program itself
   - __Floor division__, `x // y`, divide two numbers and drop any remainders, whole numbers only
   - Nested `for` loops
+  - `if not <condition_to_test>:` blocks and `pygame_element.empty()`
