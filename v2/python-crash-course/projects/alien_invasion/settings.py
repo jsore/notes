@@ -13,9 +13,9 @@ class Settings:
         # increase speed on each pass through for loop
         self.ship_limit = 3
 
-        # bullet settings
-        # self.bullet_speed = 1.0
+        # static bullet settings
         self.bullet_width = 3
+        # self.bullet_width = 300
         self.bullet_height = 15
         self.bullet_color = (60, 60, 60)
         # accuracy > quantity
@@ -26,6 +26,10 @@ class Settings:
 
         # how fast the difficulty increases
         self.speedup_scale = 1.1
+
+        # increase hit point value as difficulty climbs
+        self.score_scale = 1.5
+
         # group the changing settings together
         self.initialize_dynamic_settings()
 
@@ -45,9 +49,12 @@ class Settings:
 
 
     def increase_speed(self):
-        """Increase speed settings."""
+        """Increase speed settings & alien point values."""
 
         self.ship_speed *= self.speedup_scale
         self.bullet_speed *= self.speedup_scale
         self.alien_speed *= self.speedup_scale
+
+        self.alien_points = int(self.alien_points * self.score_scale)
+        # print(self.alien_points)
 

@@ -130,6 +130,7 @@ class AlienInvasion:
             self.stats.reset_stats()
             self.stats.game_active = True
             self.sb.prep_score()
+            self.sb.prep_level()
             self.aliens.empty()
             self.bullets.empty()
             self._create_fleet()
@@ -184,15 +185,26 @@ class AlienInvasion:
 
         # this is the dictionary Pygame returns for collisions
         if collisions:
-            # add and re-draw
-            self.stats.score += self.settings.alien_points
+
+            # loop through the collisions dictionary, which
+            # is keys of bullets and values of aliens that
+            # bullet has hit, and award points for each hit
+            for aliens in collisions.values():
+                self.stats.score += self.settings.alien_points * len(aliens)
+
+            # re-draw
             self.sb.prep_score()
+            self.sb.check_high_score()
 
         # repopulate the fleet when empty
         if not self.aliens:
             self.bullets.empty()
             self._create_fleet()
             self.settings.increase_speed()
+
+            # and increase level counter
+            self.stats.level += 1
+            self.sb.prep_level()
 
 
     def _create_alien(self, alien_number, row_number):
