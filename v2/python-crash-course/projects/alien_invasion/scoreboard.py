@@ -1,4 +1,8 @@
 import pygame.font
+from pygame.sprite import Group
+
+# add ability to create a group of ships to represent lives left
+from ship import Ship
 
 
 class Scoreboard:
@@ -6,6 +10,9 @@ class Scoreboard:
 
     def __init__(self, ai_game):
         """Initialize scorekeeping attributes."""
+
+        # need this accessible to create a group of ships
+        self.ai_game = ai_game
 
         self.screen = ai_game.screen
         self.screen_rect = self.screen.get_rect()
@@ -19,6 +26,9 @@ class Scoreboard:
         self.prep_score()
         self.prep_high_score()
         self.prep_level()
+
+        # group of ships to show lives left
+        self.prep_ships()
 
 
     def prep_score(self):
@@ -64,6 +74,17 @@ class Scoreboard:
         self.level_rect.top = self.score_rect.bottom + 10
 
 
+    def prep_ships(self):
+        """Show how many ships (lives) are left."""
+
+        self.ships = Group()
+        for ship_number in range(self.stats.ships_left):
+            ship = Ship(self.ai_game)
+            ship.rect.x = 10 + ship_number * ship.rect.width
+            ship.rect.y = 10
+            self.ships.add(ship)
+
+
     def check_high_score(self):
         """Check if there's a new high score."""
 
@@ -81,3 +102,6 @@ class Scoreboard:
         self.screen.blit(self.score_image, self.score_rect)
         self.screen.blit(self.high_score_image, self.high_score_rect)
         self.screen.blit(self.level_image, self.level_rect)
+
+        # lives left
+        self.ships.draw(self.screen)

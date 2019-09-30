@@ -1,12 +1,17 @@
 import pygame
+from pygame.sprite import Sprite
 
-class Ship:
+
+# inherit sprite class to use its grouping functionality
+class Ship(Sprite):
     """A class to manage the user's ship"""
 
     # init with reference to current instance of AlienInvasion
     # class for access to all game resources
     def __init__(self, ai_game):
         """Initialize the ship and set its starting point"""
+
+        super().__init__()
 
         # make it easier to access screen in all class methods
         self.screen = ai_game.screen

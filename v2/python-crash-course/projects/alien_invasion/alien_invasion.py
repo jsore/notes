@@ -131,6 +131,7 @@ class AlienInvasion:
             self.stats.game_active = True
             self.sb.prep_score()
             self.sb.prep_level()
+            self.sb.prep_ships()
             self.aliens.empty()
             self.bullets.empty()
             self._create_fleet()
@@ -275,6 +276,7 @@ class AlienInvasion:
             # dcrement ship count, get rid of remaining bullets
             # and aliens, create new fleet and center the ship
             self.stats.ships_left -= 1
+            self.sb.prep_ships()
             self.aliens.empty()
             self.bullets.empty()
             self._create_fleet()
