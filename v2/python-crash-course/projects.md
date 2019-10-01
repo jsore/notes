@@ -173,4 +173,9 @@ Python parses a CSV file's headers first, as the first line.
 
   - Custom module to easily quit pygame, matplotlib, plottly, etc etc
 
+  > `eq_explore_data.py`
+
+  - Basic pything -> JSON syntax, display a map filled with earthquake data
+  - Python converts JSON to a disctionary
+
 
