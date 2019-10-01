@@ -21,7 +21,7 @@ __Web Applications__ Ch 18, 19, 20
 With Django, let users keep a journal of topics they've learned and deploy the app.
 
 
-<br>
+<br><br>
 
 --------------------------------------------------------------------------------
 ### Project 1
@@ -92,4 +92,85 @@ __ch14. Play button & increasing game difficulty__
   - Text rendering with Pygame, string is converted to an image
   - Using `rect.collidepoint()` to check if a collision happens at a certain cordinate
   - `if <condition_to_test> and not <condition_to_test>`
+
+
+<br><br>
+
+--------------------------------------------------------------------------------
+### Project 2
+
+  > Visualizing Data
+
+Exploring data through visual representations, using mathematical plotting library __Matplotlib__.
+
+  ```
+  $ mkdir mpl && cd mpl
+  $ python -m pip install --user matplotlib
+  ```
+
+<br>
+
+__ch15. Generating data__
+
+Example basic syntax
+
+  > `mpl_squares.py`
+
+  ```python
+  # simple line graph
+  import matplotlib.pyplot as plt
+
+  squares = [1, 4, 9, 16, 25]  # 1 -> 5 squared
+
+  # fig represents entire figure or collection of plots
+  # ax represents a single plot in the figure
+  fig, ax = plt.subplots()
+  ax.plot(squares)
+
+  # open Matplotlib's viewer
+  plt.show()
+  ```
+
+  > `scatter_squares.py`
+
+  - A list comprehension to generate a list of values automatically
+  - Colormaps
+
+  > `random_walk.py`
+
+  - RandomWalk class to make random decisions
+  - Practical use cases: nature, physics, biology, chemistry, economics
+  - Styling scatter plots
+
+  > `die.py`
+
+  - Use __Plotly__ for interactive visualizations ( useful for visualizing in browsers )
+  - Visualize a dice being rolled
+
+  ```
+  $ python -m pip install --user plotly
+  ```
+
+  - Histograms to show how often a result occurs
+  - Using `list()` to convert to a list explicitly
+  - My first original __list comprehension__
+
+<br>
+
+__ch16. Downloading data__ ( CSV and JSON )
+
+Python includes a `csv` module for parsing CSV, which will be used with Matplotlib to chart downloaded weather data from two different climates. The `json` module will be used with Plotly to display JSON earthquake data. Obviously CSV is harder for humans to read but easy for programs.
+
+Python parses a CSV file's headers first, as the first line.
+
+  > `sitka_highs.py`
+
+  - Using `enumerate()` to extract values
+  - Accessing values from a specific column from a `for` loop
+  - Shadows between plotted series with `fill_between()`
+
+  > `quit.py`
+
+  - Custom module to easily quit pygame, matplotlib, plottly, etc etc
+
 
