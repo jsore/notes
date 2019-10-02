@@ -231,3 +231,102 @@ Python's Requests package simplifies API calls
 
   - Parsing API responses for top articles from Hacker News
   - The `operator.itemgetter()` method
+
+
+<br><br>
+
+--------------------------------------------------------------------------------
+### Project 3
+
+  > Web Apps
+
+Using the Django __web framework__ to build a journal system that lets users track information they've learned.
+
+<br>
+
+__Spec and setup__
+
+Specs describe a project's goals, it's functionality, appearance and interface.
+
+  > Write a web app called Learning Log that allows users to log topics they're interested in and to make journal entries about each topic. The home page will describe the site and invite users to register or log in. Once logged in the user can create new topics, add new entries and read and edit existing entries.
+
+Spin up an isolated virtual environment '`ll_env`' using `venv` module
+
+  ```
+  $ mkdir learning_log && cd learning_log
+  $ python -m venv ll_env
+  ```
+
+Now activate it using `activate` script
+
+  ```
+  $ source ll_env/bin/activate
+  (ll_env) $
+  ```
+
+Enter `deactivate` command to deeactivate a virtual environment.
+
+Now install django with the environment activated
+
+  ```
+  (ll_env)$ pip install django
+  ```
+
+Django and anything else you install in this environemtn will only be available when it's active.
+
+<br>
+
+Create a new Django project
+
+  ```
+  (ll_env)$ django-admin startproject learning_log .
+  (ll_env)$ ls
+  > learning_log/  ll_env/  manage.py
+  (ll_env)$ ls learning_log
+  > __init__.py  settings.py  urls.py  wsgi.py
+  ```
+
+  - `manage.py`  takes in commands and feeds them to Django to run
+  - `settings.py`  how Django interacts with your system and manages the project
+  - `urls.py`  what pages to build when an endpoint is hit
+  - `wsgi.py`  web server gateway interface, helps Django serve files it builds
+
+Django stores most project info in a SQLite database. Anytime the DB is modified, it's referred as having been __migrated__. Use `python` command anytime a `manage.py` command is run
+
+  ```
+  (ll_env)$ python manage.py migrate  # builds the DB
+  ```
+
+After the initial DB migration, review project's current state
+
+  ```
+  (ll_env)$ python manage.py runserver
+  > Watching for file changes with StatReloader
+  > Performing system checks...
+  >
+  > System check identified no issues (0 silenced).
+  > October 02, 2019 - 22:21:07
+  > Django version 2.2.6, using settings 'learning_log.settings'
+  > Starting development server at http://127.0.0.1:8000/
+  > Quit the server with CONTROL-C.
+  ```
+
+With the server running, go to the splash page at the specified address. Django builds the page at that URL when a URL is visited.
+
+<br>
+
+Django __projects__ are groups of __apps__ working together. Tell Django to create the initial app files
+
+  ```
+  (ll_env)$ python manage.py startapp learning_logs
+  (ll_env)$ ls
+  > db.sqlite3     learning_log/  learning_logs/<--new  ll_env/        manage.py
+  (ll_env)$ ls learning_logs
+  > __init__.py  admin.py     apps.py      migrations/  models.py    tests.py     views.py
+  ```
+
+  > `models.py`
+
+  - Tell Django how to work with the data stored in the app
+
+
