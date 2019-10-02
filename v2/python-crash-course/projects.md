@@ -178,4 +178,56 @@ Python parses a CSV file's headers first, as the first line.
   - Basic pything -> JSON syntax, display a map filled with earthquake data
   - Python converts JSON to a disctionary
 
+<br>
 
+__ch17. API basics in Python__
+
+Python's Requests package simplifies API calls
+
+  ```
+  $ python -m pip install --user requests
+  python-crash-course/projects/mpl $ mkdir api
+  ```
+
+  > `python_repos.py`
+
+  - Basic API syntax with Requests module
+
+  ```python
+  # automatically issue API calls to grab most starred Python
+  # projects on GitHub and process responses
+
+  import requests
+
+  url = 'https://api.github.com/search/repositories?q=language:python&sort=stars'
+  headers = {'Accept': 'application/vnd.github.v3+json'}
+
+  # the call
+  r = requests.get(url, headers=headers)
+  print(f"Status code: {r.status_code}")
+
+  # storing the response
+  response_dict = r.json()
+
+  print(response_dict.keys())
+  ```
+
+  - Failed attempt at using lambdas in a ternary
+  - Monitor rate limits available
+
+  ```
+  https://api.github.com/rate_limit
+  ```
+
+  > `python_repos_visual.py`
+
+  - Using raw HTML in Plotly on text elements
+
+  > `hn_article.py`
+
+  - Parsing API responses from Hacker News, for a single article
+
+  > `hn_submissions.py`
+
+  - Parsing API responses for top articles from Hacker News
+  - The `operator.itemgetter()` method
