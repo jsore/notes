@@ -23,6 +23,7 @@ With Django, let users keep a journal of topics they've learned and deploy the a
 
 <br><br>
 
+
 --------------------------------------------------------------------------------
 ### Project 1
 
@@ -34,9 +35,11 @@ Pygame helps with visuals, we'll focus on the actual logic. Basically a re-make 
   $ python -m pip install --user pygame
   ```
 
-<br>
 
-__ch12. Pygame window & user input responses__
+<br><br>
+
+
+#### ch12. Pygame window & user input responses
 
   > `alien_invasion.py`
 
@@ -60,9 +63,11 @@ __ch12. Pygame window & user input responses__
   - Sprites
   - Using `copy()` on a `for` loop to modify a list while it's being looped over
 
-<br>
 
-__ch13. Element interaction__
+<br><br>
+
+
+#### ch13. Element interaction
 
 Create moving enemy alien fleet, with collision detection for interactions with bullets/aliens/ship.
 
@@ -82,9 +87,11 @@ Create moving enemy alien fleet, with collision detection for interactions with 
 
   - Class for tracking statistics for current game
 
-<br>
 
-__ch14. Play button & increasing game difficulty__
+<br><br>
+
+
+#### ch14. Play button & increasing game difficulty
 
   > `button.py`
 
@@ -95,6 +102,7 @@ __ch14. Play button & increasing game difficulty__
 
 
 <br><br>
+
 
 --------------------------------------------------------------------------------
 ### Project 2
@@ -108,9 +116,11 @@ Exploring data through visual representations, using mathematical plotting libra
   $ python -m pip install --user matplotlib
   ```
 
-<br>
 
-__ch15. Generating data__
+<br><br>
+
+
+#### ch15. Generating data
 
 Example basic syntax
 
@@ -155,9 +165,11 @@ Example basic syntax
   - Using `list()` to convert to a list explicitly
   - My first original __list comprehension__
 
-<br>
 
-__ch16. Downloading data__ ( CSV and JSON )
+<br><br>
+
+
+#### ch16. Downloading data ( CSV and JSON )
 
 Python includes a `csv` module for parsing CSV, which will be used with Matplotlib to chart downloaded weather data from two different climates. The `json` module will be used with Plotly to display JSON earthquake data. Obviously CSV is harder for humans to read but easy for programs.
 
@@ -178,9 +190,11 @@ Python parses a CSV file's headers first, as the first line.
   - Basic pything -> JSON syntax, display a map filled with earthquake data
   - Python converts JSON to a disctionary
 
-<br>
 
-__ch17. API basics in Python__
+<br><br>
+
+
+#### ch17. API basics in Python
 
 Python's Requests package simplifies API calls
 
@@ -235,6 +249,7 @@ Python's Requests package simplifies API calls
 
 <br><br>
 
+
 --------------------------------------------------------------------------------
 ### Project 3
 
@@ -242,9 +257,11 @@ Python's Requests package simplifies API calls
 
 Using the Django __web framework__ to build a journal system that lets users track information they've learned.
 
-<br>
 
-__Spec and setup__
+<br><br>
+
+
+#### ch18. Spec and general setup
 
 Specs describe a project's goals, it's functionality, appearance and interface.
 
@@ -254,6 +271,7 @@ Spin up an isolated virtual environment '`ll_env`' using `venv` module
 
   ```
   $ mkdir learning_log && cd learning_log
+
   $ python -m venv ll_env
   ```
 
@@ -261,7 +279,8 @@ Now activate it using `activate` script
 
   ```
   $ source ll_env/bin/activate
-  (ll_env) $
+
+  (ll_env)…/learning_log$
   ```
 
 Enter `deactivate` command to deeactivate a virtual environment.
@@ -269,21 +288,26 @@ Enter `deactivate` command to deeactivate a virtual environment.
 Now install django with the environment activated
 
   ```
-  (ll_env)$ pip install django
+  (ll_env)…/learning_log$ pip install django
   ```
 
-Django and anything else you install in this environemtn will only be available when it's active.
+Django and anything else you install in this environment will only be available when it's active.
 
-<br>
 
-Create a new Django project
+<br><br>
+
+
+Create a new Django project, which builds a new directory titled `learning_log` under the current directory `learning_log` ( so, `learning_log/learning_log` )
 
   ```
-  (ll_env)$ django-admin startproject learning_log .
-  (ll_env)$ ls
+  (ll_env)…/learning_log$ django-admin startproject learning_log .
+
+  (ll_env)…/learning_log$ ls
   > learning_log/  ll_env/  manage.py
-  (ll_env)$ ls learning_log
+
+  (ll_env)…/learning_log$ ls learning_log
   > __init__.py  settings.py  urls.py  wsgi.py
+
   ```
 
   - `manage.py`  takes in commands and feeds them to Django to run
@@ -294,13 +318,13 @@ Create a new Django project
 Django stores most project info in a SQLite database. Anytime the DB is modified, it's referred as having been __migrated__. Use `python` command anytime a `manage.py` command is run
 
   ```
-  (ll_env)$ python manage.py migrate  # builds the DB
+  (ll_env)…/learning_log$ python manage.py migrate  # builds the DB
   ```
 
 After the initial DB migration, review project's current state
 
   ```
-  (ll_env)$ python manage.py runserver
+  (ll_env)…/learning_log$ python manage.py runserver
   > Watching for file changes with StatReloader
   > Performing system checks...
   >
@@ -313,20 +337,90 @@ After the initial DB migration, review project's current state
 
 With the server running, go to the splash page at the specified address. Django builds the page at that URL when a URL is visited.
 
-<br>
-
 Django __projects__ are groups of __apps__ working together. Tell Django to create the initial app files
 
   ```
-  (ll_env)$ python manage.py startapp learning_logs
-  (ll_env)$ ls
+  (ll_env)…/learning_log$ python manage.py startapp learning_logs
+
+  (ll_env)…/learning_log$ ls
   > db.sqlite3     learning_log/  learning_logs/<--new  ll_env/        manage.py
-  (ll_env)$ ls learning_logs
+
+  (ll_env)…/learning_log$ ls learning_logs
   > __init__.py  admin.py     apps.py      migrations/  models.py    tests.py     views.py
   ```
 
-  > `models.py`
+
+<br><br>
+
+
+  > `projects/django/learning_log/learning_logs/models.py`
 
   - Tell Django how to work with the data stored in the app
+  - Three main steps anytime we want to modify the data Learning Log or other Django apps manage:
+    1. modify `models.py`
+    2. call `makemigrations` on `learning_logs` ( or whatever you called `startapp` on )
+    3. tell Django to `migrate` the project
 
 
+<br><br>
+
+
+Models need to be activated from `settings.py` under `INSTALLED_APPS[]`. Place your apps *before* the default Django apps in order to override default behaviors if required. Then you need to tell Django to modify the DB so it can store info related to the model you've added:
+
+  ```
+  (ll_env)…/learning_log$ python manage.py makemigrations learning_logs
+  > Migrations for 'learning_logs':
+  >   learning_logs/migrations/0001_initial.py
+  >     - Create model Topic
+  ```
+
+^ That ^ migration will create a table for the new model, `Topic`, in the DB, and the `makemigrations` command will tell Django how to modify the DB in order to store that info, via creating a new file '`0001_initial.py`'
+
+  ```
+  (ll_env)…/learning_log$ ls learning_logs/migrations
+  > 0001_initial.py  __init__.py      __pycache__/
+  ```
+
+The migrration then needs to be applied to have Django update the DB
+
+  ```
+  (ll_env)…/learning_log$ python manage.py migrate
+  > Operations to perform:
+  >   Apply all migrations: admin, auth, contenttypes, learning_logs, sessions
+  > Running migrations:
+  >   Applying learning_logs.0001_initial... OK  <-- confirmation of successful migration
+  ```
+
+
+<br><br>
+
+
+Models can be manipulated through Django's __admin site__, dependent on a user's priveleges. Create a superuser
+
+  ```
+  (ll_env)…/learning_log$ python manage.py createsuperuser
+  > Username (leave blank to use 'justin'): ll_admin
+  > Email address:  <-- optionally leave blank
+  > Password:  <-- will get stored as a hash
+  > Password (again):
+  > Superuser created successfully.
+  ```
+
+The `User` and `Group`, among some others, are models Django creates in the admin site automatically. Any models we create need to be added ( registered ) manually, via `learning_logs/admin.py`. Example:
+
+  ```python
+  from django.contrib import admin
+
+  # import the module you want to register
+  from .models import Topic
+
+  # register Topic with admin site
+  admin.site.register(Topic)
+  ```
+
+The superuser account we created should now be able to access the admin site at
+
+  ```
+  http://localhost:8000/admin/
+  Manage users and groups and work with data related to models you've added.
+  ```
