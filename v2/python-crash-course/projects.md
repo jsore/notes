@@ -267,6 +267,10 @@ Specs describe a project's goals, it's functionality, appearance and interface.
 
   > Write a web app called Learning Log that allows users to log topics they're interested in and to make journal entries about each topic. The home page will describe the site and invite users to register or log in. Once logged in the user can create new topics, add new entries and read and edit existing entries.
 
+
+<br><br>
+
+
 Spin up an isolated virtual environment '`ll_env`' using `venv` module
 
   ```
@@ -352,6 +356,7 @@ Django __projects__ are groups of __apps__ working together. Tell Django to crea
 
 <br><br>
 
+__The `Topic` model__
 
   > `projects/django/learning_log/learning_logs/models.py`
 
@@ -359,7 +364,7 @@ Django __projects__ are groups of __apps__ working together. Tell Django to crea
   - Three main steps anytime we want to modify the data Learning Log or other Django apps manage:
     1. modify `models.py`
     2. call `makemigrations` on `learning_logs` ( or whatever you called `startapp` on )
-    3. tell Django to `migrate` the project
+    3. tell Django to `migrate` the project to commit the created migrations
 
 
 <br><br>
@@ -424,3 +429,14 @@ The superuser account we created should now be able to access the admin site at
   http://localhost:8000/admin/
   Manage users and groups and work with data related to models you've added.
   ```
+
+
+<br><br>
+
+
+__The `Entry` model__
+
+  > `projects/django/learning_log/learning_logs/models.py`
+
+  - __Many-to-one__ relationships, for example, each entry needs to be associated with a Topic
+  - Using __cascading deletes__ on sub-associations if a Topic key is deleted
