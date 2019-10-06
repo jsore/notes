@@ -47,4 +47,8 @@ class Entry(models.Model):
         """Return a string representation of the model."""
 
         # tell Django what to show when referring to an entry
-        return f"{self.text[:50]}..."
+        snip = f"{self.text}"
+        if len(snip) >= 50:
+            return f"{snip[:50]}..."
+        else:
+            return f"{snip}"

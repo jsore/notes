@@ -440,3 +440,61 @@ __The `Entry` model__
 
   - __Many-to-one__ relationships, for example, each entry needs to be associated with a Topic
   - Using __cascading deletes__ on sub-associations if a Topic key is deleted
+
+To demonstrate the connectoin between Topics and their Entries, after migrating the DB to include the new `Entry` class, which contains a `models.ForeignKey(Topic, …)` attribute, register the model in the admin site and click 'Add' next to the Entry listing. Each entry you add will have a drop down selection box containing a Topic to choose from.
+
+
+<br><br>
+
+__Django's shell__
+
+Useful for testing and troubleshooting a project. Bring up the shell's interactive environment with `manage.py`
+
+  ```
+  (ll_env)…/learning_log$ python manage.py shell  # launches a Python interpreter
+
+  # example usage
+  >>> from learning_logs.models import Topic
+  >>> Topic.objects.all()  # method returns a queryselect list
+  <QuerySet [<Topic: Chess>, <Topic: Rock Climbing>]>
+
+  # loop to get topic ID's
+  >>> topics = Topic.objects.all()
+  >>> for topic in topics:
+  ...   print(topic.id, topic)
+  ...
+  1 Chess
+  2 Rock Climbing
+
+  # now that we know ID's, we can access a spcific object
+  >>> t = Topic.objects.get(id=1)
+  >>> t.text
+  'Chess'
+  >>> t.date_added
+  datetime.datetime(2019, 10, 3, 20, 47, 39, 163140, tzinfo=<UTC>)
+  ```
+
+A note about accessing attributes that defines a `ForeignKey` connection between datapoints: use the name of the related model followed by `_set`:
+
+  ```
+  >>> t = Topic.objects.get(id=1)
+  …
+  >>> t.entry_set.all()  # get all entry models for this topic
+  <QuerySet [<Entry: The opening is the first part of the game, roughly...>, <Entry: In the opening phase of the game, it's important t...>]>
+  ```
+
+Remember to `CTRL D` and restart the shell after a model is modified to see the changes you've made reflect.
+
+
+<br><br>
+
+
+__Webpages__
+
+Require three stages: defining URL patterns, writing views, writing templates.
+
+  > `projects/django/learning_log/learning_log/urls.py`
+  >
+  > `projects/django/learning_log/learning_logs/urls.py`
+
+  - Define URL maps

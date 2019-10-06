@@ -1,5 +1,8 @@
 """learning_log URL Configuration
 
+projects/django/learning_log/learning_log/urls.py
+
+
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.2/topics/http/urls/
 Examples:
@@ -13,9 +16,16 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
-from django.urls import path
 
+from django.contrib import admin
+from django.urls import path, include
+
+# defines urls accessible, 1st argument being subpath's root
 urlpatterns = [
+
+    # default
     path('admin/', admin.site.urls),
+
+    # my schemas
+    path('', include('learning_logs.urls')),
 ]
