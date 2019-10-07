@@ -1,0 +1,18 @@
+<!-- projects/learning_log/learning_logs/templates/learning_logs/topics.html -->
+
+{% extends "learning_logs/base.html" %}
+
+{% block content %}
+
+  <p>Topics</p>
+
+  <ul>
+    <!-- loop through context topics -->
+    {% for topic in topics %}
+      <li>{{topic}}</li>
+    {% empty %}
+      <li>No topics have been added yet.</li>
+    {% endfor %}
+  </ul>
+
+{% endblock content %}

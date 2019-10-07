@@ -440,6 +440,7 @@ __The `Entry` model__
 
   - __Many-to-one__ relationships, for example, each entry needs to be associated with a Topic
   - Using __cascading deletes__ on sub-associations if a Topic key is deleted
+  - Python ternaries!
 
 To demonstrate the connectoin between Topics and their Entries, after migrating the DB to include the new `Entry` class, which contains a `models.ForeignKey(Topic, …)` attribute, register the model in the admin site and click 'Add' next to the Entry listing. Each entry you add will have a drop down selection box containing a Topic to choose from.
 
@@ -498,3 +499,48 @@ Require three stages: defining URL patterns, writing views, writing templates.
   > `projects/django/learning_log/learning_logs/urls.py`
 
   - Define URL maps
+
+  > `projects/django/learning_log/learning_logs/views.py`
+
+  - Writing custom views
+
+View functions should take in info from a request, prep the data needed to generate a page then send the data back to the browser, often by using a template for defining what a page looks like
+
+
+<br><br>
+
+
+__Templates, best practices__
+
+Directory structure: with `app_name` being the name of the directory Django creates when the initial `python manage.py startapp`:
+
+  ```
+project_root
+.
+├── app_name  (learning_logs)
+│   └── templates
+│       ├── app_name  (learning_logs)
+│       │   ├── base.html   <-- parent inherited template
+│       │   └── index.html  <-- home page
+│       ├──
+        │   └── index.html  <--
+│   ├── METADATA
+│   ├── RECORD
+│   ├── WHEEL
+│   ├── entry_points.txt
+│   └── top_level.txt
+└── easy_install.py
+  ```
+
+Django uses __template tags__ ( `{% %}` ) to generate dynamic content. Child templates define what gets inserted into the parent by using `block` tags ( `{% block content %}{% endblock content %}` )
+
+  ```html
+  <p>
+    <!-- using a url block template -->
+    <a href="{% url 'learning_logs:index' %}">Learning Log</a>
+  </p>
+
+  <!-- the child will define 'content' to be inserted here -->
+  {% block content %}{% endblock content %}
+
+  ```

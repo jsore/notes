@@ -36,6 +36,7 @@ class Entry(models.Model):
     text = models.TextField()
     date_added = models.DateTimeField(auto_now_add=True)
 
+
     class Meta:
         """Extra info for managing this model."""
 
@@ -43,12 +44,10 @@ class Entry(models.Model):
         # than one entry instead of 'Entrys'
         verbose_name_plural = 'entries'
 
+
     def __str__(self):
         """Return a string representation of the model."""
 
         # tell Django what to show when referring to an entry
-        snip = f"{self.text}"
-        if len(snip) >= 50:
-            return f"{snip[:50]}..."
-        else:
-            return f"{snip}"
+        txt = f"{self.text}"
+        return f"{txt[:50]}..." if len(txt) >= 50 else f"{txt}"

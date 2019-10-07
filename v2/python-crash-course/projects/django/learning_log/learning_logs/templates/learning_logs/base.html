@@ -1,0 +1,11 @@
+<!-- projects/learning_log/learning_logs/templates/learning_logs/base.html -->
+<!-- base, inherited parent template -->
+
+<p>
+  <!-- views.index(), pulled from learning_logs/urls.py -->
+  <!-- 'namespace:unique_namespace_url' -->
+  <a href="{% url 'learning_logs:index' %}">Learning Log</a> -
+  <a href="{% url 'learning_logs:topics' %}">Topics</a>
+</p>
+
+{% block content %}{% endblock content %}
