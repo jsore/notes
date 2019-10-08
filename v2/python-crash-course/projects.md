@@ -449,7 +449,7 @@ To demonstrate the connectoin between Topics and their Entries, after migrating 
 
 __Django's shell__
 
-Useful for testing and troubleshooting a project. Bring up the shell's interactive environment with `manage.py`
+Work with a project's data in a terminal session. Useful for testing and troubleshooting a project. Bring up the shell's interactive environment with `manage.py`
 
   ```
   (ll_env)…/learning_log$ python manage.py shell  # launches a Python interpreter
@@ -517,19 +517,19 @@ Directory structure: with `app_name` being the name of the directory Django crea
   ```
 project_root
 .
-├── app_name  (learning_logs)
-│   └── templates
-│       ├── app_name  (learning_logs)
-│       │   ├── base.html   <-- parent inherited template
-│       │   └── index.html  <-- home page
-│       ├──
-        │   └── index.html  <--
-│   ├── METADATA
-│   ├── RECORD
-│   ├── WHEEL
-│   ├── entry_points.txt
-│   └── top_level.txt
-└── easy_install.py
+└── app_name  (learning_logs)
+    └── templates
+        ├── app_name  (learning_logs)
+        │   ├── base.html          <-- parent inherited template
+        │   ├── some_view.html     <-- a urls.py endpoint
+        │   ├── another_view.html  <-- a urls.py endpoint
+        │   └── index.html         <-- home page
+        ├── another_app_name
+        │   ├── base.html
+        │   ├── some_view.html
+        │   ├── another_view.html
+        │   └── index.html
+        _
   ```
 
 Django uses __template tags__ ( `{% %}` ) to generate dynamic content. Child templates define what gets inserted into the parent by using `block` tags ( `{% block content %}{% endblock content %}` )
@@ -544,3 +544,10 @@ Django uses __template tags__ ( `{% %}` ) to generate dynamic content. Child tem
   {% block content %}{% endblock content %}
 
   ```
+
+
+<br><br>
+
+
+#### ch19. User Accounts
+

@@ -9,7 +9,10 @@
   <ul>
     <!-- loop through context topics -->
     {% for topic in topics %}
-      <li>{{topic}}</li>
+      <!-- urls.py views.topic requires an id, examine the topic and retrieve it -->
+      <li>
+        <a href="{% url 'learning_logs:topic' topic.id %}">{{ topic }}</a>
+      </li>
 
     {% empty %}
       <li>No topics have been added yet.</li>
