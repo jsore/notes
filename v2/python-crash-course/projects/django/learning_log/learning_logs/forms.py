@@ -27,7 +27,7 @@ class EntryForm(forms.ModelForm):
     class Meta:
         model = Entry
         fields = ['text']
-        labels = {'text': 'Entry:'}
+        labels = {'text': ''}
         # HTML widget form element, overrides Django's
         # default widget choices to stretch the input
         widgets = {'text': forms.Textarea(attrs={'cols': 80})}

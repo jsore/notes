@@ -77,10 +77,20 @@ def new_entry(request, topic_id):
         # no data submitted yet, show a blank form
         form = EntryForm()
     else:
-        # data was submitted, send a POST of the request
+        # data was submitted, create new instance of EntryForm
+        # populated with request POST data
         form = EntryForm(data=request.POST)
         if form.is_valid():
+            # create a new entry object but don't save it yet...
             new_entry = form.save(commit=False)
+            # ...because we need to set the new entry's topic
+            # before saving the entry, which got pulled at
+            # the beginning of this function
             new_entry.topic = topic
+            # now we can save it and refresh the topic page
             new_entry.save()
             return redirect('learning_logs:topic', topic_id=topic_id)
+
+    # display blank form or form with errors of invalid input
+    context = {'topic': topic, 'form': form}
+    return render(request, 'learning_logs/new_entry.html', context)

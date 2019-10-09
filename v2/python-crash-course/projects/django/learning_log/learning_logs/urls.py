@@ -26,7 +26,7 @@ urlpatterns = [
     #     'url_to_match',
     #     function_to_call_from_views.py,
     #     name_of_this_url_pattern='use_this_to_reference_this_url'
-    #)
+    # )
 
     # home page
     path('', views.index, name='index'),
