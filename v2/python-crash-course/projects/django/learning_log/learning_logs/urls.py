@@ -36,4 +36,10 @@ urlpatterns = [
 
     # details for specific topic, stores topic ID in topic_id
     path('topics/<int:topic_id>/', views.topic, name='topic'),
+
+    # add a topic
+    path('new_topic/', views.new_topic, name='new_topic'),
+
+    # add an entry for a topic
+    path('new_entry/<int:topic_id>/', views.new_entry, name='new_entry'),
 ]

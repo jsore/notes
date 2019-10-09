@@ -551,3 +551,16 @@ Django uses __template tags__ ( `{% %}` ) to generate dynamic content. Child tem
 
 #### ch19. User Accounts
 
+User registration, authentication and form-based attack preventions tactics. Django automates a lot of validation and DB insertions, simplest method of creating a form is with __ModelForm__
+
+  > `# projects/django/learning_log/learning_logs/forms.py`
+
+  - Examples of ease of use of Django's input validations and DB insertions
+  - Nested `Meta` classes
+  - Dealing with POST requests in Python/Django
+
+  > `projects/learning_log/learning_logs/templates/learning_logs/new_topic.html`
+
+  - Example of a basic input form
+  - Cross site forgery prevention template tags `{% csrf_token %}`
+  - Render form elements as a paragraph with `{{ form.as_p }}`

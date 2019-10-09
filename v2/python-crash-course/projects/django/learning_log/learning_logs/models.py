@@ -1,3 +1,5 @@
+# projects/django/learning_log/learning_logs/models.py
+#
 # how to work with data stored in the app
 #
 # users create topics and entries supporting the topic, to be
