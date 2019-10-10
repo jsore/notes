@@ -4,7 +4,7 @@
 
 from django import forms
 
-# the model that needs a form
+# the models that needs a form
 from .models import Topic, Entry
 
 

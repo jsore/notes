@@ -4,6 +4,9 @@
 #
 # users create topics and entries supporting the topic, to be
 # displayed as text along with the timestamp of the entry
+#
+# for each class defined in this list of models, Django creates
+# a table, SQLite by default
 
 from django.db import models
 
