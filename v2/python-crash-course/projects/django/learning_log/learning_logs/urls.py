@@ -42,4 +42,8 @@ urlpatterns = [
 
     # add an entry for a topic
     path('new_entry/<int:topic_id>/', views.new_entry, name='new_entry'),
+
+    # edit an existing entry
+    path('edit_entry/<int:entry_id>/', views.edit_entry, name='edit_entry'),
+
 ]
