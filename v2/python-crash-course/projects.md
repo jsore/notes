@@ -564,3 +564,18 @@ User registration, authentication and form-based attack preventions tactics. Dja
   - Example of a basic input form
   - Cross site forgery prevention template tags `{% csrf_token %}`
   - Render form elements as a paragraph with `{{ form.as_p }}`
+
+
+<br><br>
+
+
+__The user management app__
+
+Isolate user interaction functionalities under a new app in this project.
+
+  ```
+  (ll_env)…/learning_log$ python manage.py startapp users
+
+  (ll_env)…/learning_log$ ls
+  db.sqlite3     learning_log/  learning_logs/ ll_env/        manage.py      users/
+  ```
