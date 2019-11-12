@@ -9,6 +9,9 @@ from .forms import TopicForm, EntryForm
 
 # only the home, login and registration page are unrestricted
 # to unauthenticated or non-registered users
+#
+# learning_log/learning_log/settings.py LOGIN_URL tells Django
+# to redirect these restricted requests to the login page
 
 
 # running for your life, it's Shia LaBeouf
