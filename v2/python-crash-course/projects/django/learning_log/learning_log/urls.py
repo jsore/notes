@@ -27,5 +27,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     # my schemas
+    path('users/', include('users.urls')),
     path('', include('learning_logs.urls')),
 ]

@@ -11,7 +11,9 @@
   <!-- action = send form back to edit_entry() for processing -->
   <form action="{% url 'learning_logs:edit_entry' entry.id %}" method='post'>
 
+    <!-- cross site request forgery protection -->
     {% csrf_token %}
+    <!-- render form elements as paragraphs -->
     {{ form.as_p }}
     <button name="submit">Save changes</button>
 

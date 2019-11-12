@@ -569,13 +569,131 @@ User registration, authentication and form-based attack preventions tactics. Dja
 <br><br>
 
 
-__The user management app__
+__The user management app's basic functions__
 
 Isolate user interaction functionalities under a new app in this project.
 
   ```
+  # just as a recap, make sure your environment is active
+  …/learning_log$ source ll_env/bin/activate  # not active
+  (ll_env)…/learning_log$  # active, ready for commands
+
+  (ll_env)…/learning_log$ ls
+  db.sqlite3     learning_log/  learning_logs/ ll_env/        manage.py
+
+  # tell Django to build a new app for this business logic
   (ll_env)…/learning_log$ python manage.py startapp users
 
   (ll_env)…/learning_log$ ls
   db.sqlite3     learning_log/  learning_logs/ ll_env/        manage.py      users/
   ```
+
+Then don't forget that we need a link to the `edit_entry` page from within each entry
+
+  ```html
+  <!-- projects/learning_log/learning_logs/templates/learning_logs/topic.html -->
+
+  …
+  {% for entry in entries %}
+    <li>
+      …
+      <p>
+        <a href="{% url 'learning_logs:edit_entry' entry.id %}">Edit entry</a>
+      </p>
+    </li>
+  …
+  ```
+
+
+<br><br>
+
+
+__User account registrations__
+
+Setting up user registration and authorization system, primarily using Django's builtin user authentication system. The `Topic` model will also need to be modified, so that every topic belongs to a certain user.
+
+
+<br><br>
+
+
+Include the `users` app into the overall project and make an endpoint for it
+
+  ```python
+  # projects/django/learning_log/learning_log/settings.py
+
+  …
+  # include the new users app in the overall project
+  INSTALLED_APPS = [
+      'learning_logs',
+      'users',
+      …
+  …
+  ```
+
+  ```python
+  # projects/django/learning_log/learning_log/urls.py
+
+  …
+  urlpatterns = [
+      …
+      # my schemas
+      path('users/', include('users.urls')),
+      path('', include('learning_logs.urls')),
+      …
+  …
+  ```
+
+Now URL's starting with `users` can be hit, such as `localhost/users/login/`
+
+
+<br><br>
+
+
+Django includes a default `login` page for us to use.
+
+For example: `http://localhost:8000/users/login`. The word `users` in a URL would tell Django to look in `users/urls.py` and `login` tells it to send requests to Django's default `login` view.
+
+  ```python
+  # new urls.py from within learning_log/users for urls in this namespace
+
+  from django.urls import path, include
+  app_name = 'users'
+
+  urlpatterns = [
+      # default auth urls that Django has defined
+      path('', include('django.contrib.auth.urls')),
+  ]
+  ```
+
+
+<br><br>
+
+
+Note that what Django is actually providing is a view function for `users/…` requests, a template still needs to be created. By default the auth views look for templates inside a `registration` folder.
+
+  ```
+  (ll_env)…/learning_log$ mkdir users/templates
+  (ll_env)…/learning_log$ mkdir users/templates/registration
+  (ll_env)…/learning_log$ touch users/templates/registration/login.html
+  ```
+
+The login view sends a form to the template, it's up to us to display the form and add a submit button, which is done via `.../registration/login.html`
+
+
+<br><br>
+
+
+After adding templates and functionalities to login/logout ( and testing it actually works by using the user I've already created for the admin.py page ), utilize Django's `UserCreationForm` for user registrations, with a custom view function and template.
+
+Similar to how the urls schema was defined in `users/urls.py`, add the route for the registration page first.
+
+  ```python
+  from . import views
+  ...
+  urlpatterns = [
+      ...
+      # url.com/users/register
+      path('register/', views.register, name='register'),
+  ```
+
+Note that it's best practice to include a confirmation user registration email or method.
