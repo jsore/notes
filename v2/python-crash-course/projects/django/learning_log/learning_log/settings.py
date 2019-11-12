@@ -123,3 +123,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+# my settings
+
+# for the redirect to login page if user registration check
+# fails, mandated by the decorator in topics() definition
+# from .../learning_log/learning_logs/views.py
+LOGIN_URL = 'users:login'

@@ -697,3 +697,20 @@ Similar to how the urls schema was defined in `users/urls.py`, add the route for
   ```
 
 Note that it's best practice to include a confirmation user registration email or method.
+
+
+<br><br>
+
+
+Users should be able to own their data, access can be restricted by using `@login_required` decorator. A __decorator__ is a directive placed just before a function definition that Python will apply to the function before it runs, to alter how the function code behaves.
+
+  ```python
+  # project/django/learning_log/learning_logs/views.py
+  …
+  from django.contrib.auth.decorators import login_required
+  …
+  @login_required
+  def topics(request):
+    """Show all topics."""
+    …
+  ```

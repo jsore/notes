@@ -1,9 +1,14 @@
 # project/learning_log/learning_logs/views.py
 
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 
 from .models import Topic, Entry
 from .forms import TopicForm, EntryForm
+
+
+# only the home, login and registration page are unrestricted
+# to unauthenticated or non-registered users
 
 
 # running for your life, it's Shia LaBeouf
@@ -14,8 +19,17 @@ def index(request):
 
 
 # he's brandishing a knife, it's Shia LaBeouf
+@login_required
 def topics(request):
-    """Show all topics."""
+    """
+    Show all topics.
+
+    Access to Topic data is restricted to registered users
+    only, restricted via @login_required decorator/directive.
+
+    If a user isn't registered, they'll be redirected to the
+    login page.
+    """
 
     # queryset to hold data
     topics = Topic.objects.order_by('date_added')
@@ -27,6 +41,7 @@ def topics(request):
 
 
 # lurking in the shadows...
+@login_required
 def topic(request, topic_id):
     """Show a single topic and all its entries."""
 
@@ -40,6 +55,7 @@ def topic(request, topic_id):
 
 
 # hollywood superstar Shia LaBeof
+@login_required
 def new_topic(request):
     """Add a new topic."""
 
@@ -68,6 +84,7 @@ def new_topic(request):
     return render(request, 'learning_logs/new_topic.html', context)
 
 
+@login_required
 def new_entry(request, topic_id):
     """Add a new entry for a topic."""
 
@@ -96,6 +113,7 @@ def new_entry(request, topic_id):
     return render(request, 'learning_logs/new_entry.html', context)
 
 
+@login_required
 def edit_entry(request, entry_id):
     """Edit an existing entry."""
 
