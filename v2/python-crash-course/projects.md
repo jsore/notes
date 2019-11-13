@@ -447,6 +447,9 @@ To demonstrate the connectoin between Topics and their Entries, after migrating 
 
 <br><br>
 
+
+
+----
 __Django's shell__
 
 Work with a project's data in a terminal session. Useful for testing and troubleshooting a project. Bring up the shell's interactive environment with `manage.py`
@@ -490,6 +493,7 @@ Remember to `CTRL D` and restart the shell after a model is modified to see the 
 <br><br>
 
 
+----
 __Webpages__
 
 Require three stages: defining URL patterns, writing views, writing templates.
@@ -510,6 +514,7 @@ View functions should take in info from a request, prep the data needed to gener
 <br><br>
 
 
+----
 __Templates, best practices__
 
 Directory structure: with `app_name` being the name of the directory Django creates when the initial `python manage.py startapp`:
@@ -569,6 +574,7 @@ User registration, authentication and form-based attack preventions tactics. Dja
 <br><br>
 
 
+----
 __The user management app's basic functions__
 
 Isolate user interaction functionalities under a new app in this project.
@@ -607,6 +613,8 @@ Then don't forget that we need a link to the `edit_entry` page from within each 
 
 <br><br>
 
+
+----
 
 __User account registrations__
 
@@ -714,3 +722,108 @@ Users should be able to own their data, access can be restricted by using `@logi
     """Show all topics."""
     …
   ```
+
+
+<br><br>
+
+
+----
+
+__Connecting data to specific users__
+
+Connect data to users that submitted the data. Data ownership is a heirarchy, topics being parents to each entry submitted about the topic. This means the topics are the highest level of data available, which does the job of tracing back down to every individual topic entry.
+
+Update the `Topic` model by adding a foriegn key relationship to a user, then migrate the DB and update the views to only show data associated with the currently logged in user.
+
+  ```python
+  # projects/django/learning_log/learning_logs/models.py
+
+  …
+  from django.contrib.auth.models import User
+  …
+  class Topic(models.Model):
+      …
+      owner = models.ForeignKey(User, on_delete=models.CASCADE)
+  ```
+
+
+<br><br>
+
+
+Now migrate the DB for it to store the connection between each topic and a user.
+
+Bring up a shell session to review existing user IDs. Import the User model into the shell session then review the users' username and ID.
+
+  ```
+  (ll_env)…/learning_log$ python manage.py shell
+  >>> from django.contrib.auth.models import User
+  >>> User.objects.all()
+  <QuerySet [<User: ll_admin>, <User: jsore>, <User: basic_test_account>]>
+
+  >>> for user in User.objects.all():
+  >>>     print(user.username, user.id)
+  ll_admin 1
+  jsore 2
+  basic_test_account 3
+  ```
+
+With this info we can migrate the DB. Provide Python with a arbitrary user to tie the existing topics into.
+
+  ```
+  (ll_env)…/learning_log$ python manage.py makemigrations learning_logs
+    You are trying to add a non-nullable field 'owner' to topic without a default; we can't do that (the database needs something to populate existing rows).
+  Please select a fix:
+   1) Provide a one-off default now (will be set on all existing rows with a null value for this column)
+   2) Quit, and let me add a default in models.py
+  Select an option: 1  <-- HERE is telling to use a default user for existing DB entries
+  Please enter the default value now, as valid Python
+  The datetime and django.utils.timezone modules are available, so you can do e.g. timezone.now
+  Type 'exit' to exit this prompt
+  >>> 1  <-- HERE is giving Python the ID of the user to assign the existing topics to
+  Migrations for 'learning_logs':
+    learning_logs/migrations/0003_topic_owner.py
+      - Add field owner to topic
+  ```
+
+We're trying to add a required, '`non-nullable`', field to an existing model ( `topic` ) without a default specified. Django let's you set it at this point.
+
+Now execute the migration
+
+  ```
+  (ll_env)…/learning_log$ python manage.py migrate
+  ```
+
+Verify the results are as expected
+
+  ```
+  (ll_env)…/learning_log$ python manage.py shell
+
+  >>> from learning_logs.models import Topic
+  >>> for topic in Topic.objects.all():
+  >>>     print(topic, topic.owner)
+  Chess ll_admin
+  Rock Climbing ll_admin
+  Python ll_admin
+  ```
+
+
+<br><br>
+
+
+Time to restrict topic access to the appropriate users, only display the topics that logged in user wrote. Add to the `topics()` function:
+
+  ```python
+  …
+  def topics(request):
+      topics = Topic.objects.filter(owner=request.user).order_by('date+added')
+  ```
+
+Then be sure to protect against random URL guessing for a logged in user different from a Topic's owner, both the `/topics/<id>` and `/edit_entry/<id>` endpoints in `topic()` and `edit_entry()` functions. They should both throw 404's.
+
+After that, all that's left is to fix the `new_topic` endpoint and associate new topics to the current user.
+
+
+<br><br>
+
+
+This project's functionality is now complete, only styles are left and the actual deployment.

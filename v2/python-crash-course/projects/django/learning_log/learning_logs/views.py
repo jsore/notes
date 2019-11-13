@@ -2,6 +2,7 @@
 
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.http import Http404
 
 from .models import Topic, Entry
 from .forms import TopicForm, EntryForm
@@ -35,7 +36,9 @@ def topics(request):
     """
 
     # queryset to hold data
-    topics = Topic.objects.order_by('date_added')
+    # access the request.user object and assign an owner to
+    # the query Topic.objects.filter(…)
+    topics = Topic.objects.filter(owner=request.user).order_by('date_added')
 
     # context dictionary supplies names as keys for template's
     # data access, values are data needed to be sent to template
@@ -50,6 +53,11 @@ def topic(request, topic_id):
 
     # our db queries for this endpoint
     topic = Topic.objects.get(id=topic_id)
+
+    # ensure the topic belongs to the current user 1st
+    if topic.owner != request.user:
+        raise Http404
+
     entries = topic.entry_set.order_by('-date_added')
 
     # send the data to the view
@@ -79,7 +87,14 @@ def new_topic(request):
         # are defined in models.py
         if form.is_valid():
             # example of ease of use of Django's DB insertions
-            form.save()
+
+            # we don't want the topic submitted, it needs to
+            # be altered by assigning an owner to itself...
+            new_topic = form.save(commit=False)
+            new_topic.owner = request.user
+            # ...now we can commit the new_topic to the DB
+            new_topic.save()
+
             return redirect('learning_logs:topics')
 
     # display blank form or form with errors of invalid input
@@ -122,6 +137,10 @@ def edit_entry(request, entry_id):
 
     entry = Entry.objects.get(id=entry_id)
     topic = entry.topic
+
+    # un-authed user access prevention
+    if topic.owner != request.user:
+        raise Http404
 
     if request.method != 'POST':
         # initial request, create the form pre-fill with
