@@ -827,3 +827,9 @@ After that, all that's left is to fix the `new_topic` endpoint and associate new
 
 
 This project's functionality is now complete, only styles are left and the actual deployment.
+
+
+<br><br>
+
+
+#### ch20. Styles and Deployment
