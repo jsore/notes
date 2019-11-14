@@ -833,3 +833,11 @@ This project's functionality is now complete, only styles are left and the actua
 
 
 #### ch20. Styles and Deployment
+
+Using Django-bootstrap4. This app downloads Bootstrap's dependencies, places them appropriately in the project and makes styling directives available in your project's templates.
+
+  ```
+  (ll_env)…/learning_log$ pip install django-bootstrap4
+  ```
+
+Then add `bootstrap4` to `settings.py`'s installed app list and rewrite your HTML to include Bootstrap selectors as needed.
