@@ -2,19 +2,28 @@
 
 {% extends "learning_logs/base.html"  %}
 
+{% load bootstrap4 %}
+
+{% block page_header %}
+  <h3>Edit Existing Entry</h3>
+{% endblock page_header %}
+
 {% block content %}
-  <p>Add a new topic:</p>
+  <p>Add a new topic, titled:</p>
 
   <!-- send data from form submit to views.new_topic() as a POST -->
-  <form action="{% url 'learning_logs:new_topic' %}" method='post'>
+  <form action="{% url 'learning_logs:new_topic' %}" method='post' class="form">
 
     <!-- cross-site request forgery prevention -->
     {% csrf_token %}
 
     <!-- render form elements, as paragraph elements -->
-    {{ form.as_p }}
+    {% bootstrap_form form %}
 
-    <button name="submit">Add topic</button>
+    {% buttons %}
+      <button name='submit' class="btn btn-primary">Add topic</button>
+    {% endbuttons %}
+
   </form>
 
 {% endblock content %}

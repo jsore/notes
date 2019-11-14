@@ -2,6 +2,12 @@
 
 {% extends "learning_logs/base.html" %}
 
+{% load bootstrap4 %}
+
+{% block page_header %}
+  <h3>Edit Existing Entry</h3>
+{% endblock page_header %}
+
 {% block content %}
 
   <p><a href="{% url 'learning_logs:topic' topic.id %}">{{ topic }}</a></p>
@@ -9,13 +15,14 @@
   <p>Edit entry:</p>
 
   <!-- action = send form back to edit_entry() for processing -->
-  <form action="{% url 'learning_logs:edit_entry' entry.id %}" method='post'>
+  <form action="{% url 'learning_logs:edit_entry' entry.id %}" method='post' class="form">
 
-    <!-- cross site request forgery protection -->
     {% csrf_token %}
-    <!-- render form elements as paragraphs -->
-    {{ form.as_p }}
-    <button name="submit">Save changes</button>
+    {% bootstrap_form form %}
+
+    {% buttons %}
+      <button name='submit' class="btn btn-primary">Save changes</button>
+    {% endbuttons %}
 
   </form>
 

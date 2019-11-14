@@ -2,24 +2,33 @@
 
 {% extends "learning_logs/base.html" %}
 
+{% block page_header %}
+  <h1>Topics</h1>
+{% endblock page_header %}
+
 {% block content %}
-
-  <p>Topics</p>
-
   <ul>
     <!-- loop through context topics -->
     {% for topic in topics %}
-      <!-- urls.py views.topic requires an id, examine the topic and retrieve it -->
-      <li>
+
+      <li><h3>
+        <!-- urls.py views.topic requires an id, examine the topic and retrieve it -->
         <a href="{% url 'learning_logs:topic' topic.id %}">{{ topic }}</a>
-      </li>
+      </h3></li>
 
     {% empty %}
-      <li>No topics have been added yet.</li>
+      </ul>
+      <h3>No topics have been added yet.</h3>
 
     {% endfor %}
   </ul>
 
-  <a href="{% url 'learning_logs:new_topic' %}">Add a new topic</a>
+  <h4>
+    <small class="text-muted">
+      <a href="{% url 'learning_logs:new_topic' %}">
+        Add a new topic
+      </a>
+    </small>
+  </h4>
 
 {% endblock content %}

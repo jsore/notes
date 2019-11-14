@@ -7,11 +7,21 @@
 <!-- templates can be shared across different project apps -->
 {% extends "learning_logs/base.html" %}
 
+<!-- load dependencies here in order to use custom bootstrap4 template tags -->
+{% load bootstrap4 %}
+
+{% block page_header %}
+  <h2>Log in to your account</h2>
+{% endblock page_header %}
+
 {% block content %}
 
+  <!-- not needed any more, django-bootstrap handles errors automatically -->
+  <!--
   {% if form.errors %}
     <p>Your username and password didn't match, please try again.</p>
   {% endif %}
+  -->
 
   <!--
     the login view should be handling this template, set via action=".."
@@ -19,11 +29,17 @@
     the login view sends a form to the template, it's up to us to display the
     form and add a submit button
   -->
-  <form method="post" action="{% url 'users:login' %}">
+  <form method="post" action="{% url 'users:login' %}" class="form">
 
     {% csrf_token %}
-    {{ form.as_p }}
-    <button name="submit">Log in</button>
+
+    <!-- {{ form.as_p }} -->
+    {% bootstrap_form form %}
+
+    <!-- <button name="submit">Log in</button> -->
+    {% buttons %}
+      <button name="submit" class="btn btn-primary">Log in</button>
+    {% endbuttons %}
 
     <!-- send users home after successfull login -->
     <input type="hidden" name="next" value="{% url 'learning_logs:index' %}" />
