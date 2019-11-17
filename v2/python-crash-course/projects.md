@@ -1185,3 +1185,5 @@ For Error pages. Within the root `learning_logs` folder create a new `templates`
   # 404 and 500 error pages
   'DIRS': [os.path.join(BASE_DIR, 'templates')],
   ```
+
+Don't forget to push changes to Heroku
