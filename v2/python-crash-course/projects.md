@@ -841,3 +841,113 @@ Using Django-bootstrap4. This app downloads Bootstrap's dependencies, places the
   ```
 
 Then add `bootstrap4` to `settings.py`'s installed app list and rewrite your HTML to include Bootstrap selectors as needed.
+
+
+<br><br>
+
+
+----
+
+__Deploying with Heroku__
+
+1. Signup with a free account and download the Heroku CLI
+
+  ```
+  https://devcenter.heroku.com/articles/heroku-cli/
+  ```
+
+Follow the install instructions for your OS.
+
+  ```
+  $ brew tap heroku/brew && brew install heroku
+  ```
+
+
+<br><br>
+
+
+2. Instal packges Django needs in order to serve projects
+
+For managing the DB Heroku uses
+
+  ```
+  (ll_env)…/learning_log$ pip install psycopg2==2.7.*
+  ```
+
+Handles configurations for the app to run properly on Heroku servers
+
+  ```
+  (ll_env)…/learning_log$ pip install django-heroku
+  ```
+
+Provides the server capable of serving apps in a live environment
+
+  ```
+  (ll_env)…/learning_log$ pip install gunicorn
+  ```
+
+
+<br><br>
+
+
+3. Use `freeze` to generate a `requirements.txt`
+
+The `freeze` command writes out the names of the packages currently installed in the project. Pipe it out to a new file.
+
+  ```
+  (ll_env)…/learning_log$ pip freeze > requirements.txt
+  ```
+
+Some of these packages were installed manually by yourself or automatically as dependencies of these packages.
+
+Heroku installs all these packages when the application is deployed, recreating our environment.
+
+
+<br><br>
+
+
+4. Specify the Python runtime Heroku should use
+
+Make sure to use the correct ( your current ) Python version, saved in a file `runtime.txt`
+
+  ```
+  (ll_env)…/learning_log$ echo python-3.7.2 > runtime.txt
+  ```
+
+
+<br><br>
+
+
+5. Define Heroku environment settings in `settings.py`
+
+
+<br><br>
+
+
+6. Tell Heroku what process it needs to start to properly serve the project
+
+This will be defined in what's called a `Procfile` file ( binary, no extension ). We need to tell Heroku to use gunicorn as a server and to use the settings from `projects/django/learning_log/wsgi.py` to launch the app, with a `log-file` flag to tell Heroku what kinds of events to log.
+
+  ```
+  (ll_env)…/learning_log$ echo 'web: gunicorn learning_log.wsgi --log-file -' > Procfile
+  ```
+
+
+<br><br>
+
+
+7. Git version control
+
+Git is already configured on my system, not getting into install steps here. But, the book's recommended `gitignore` files are
+
+  ```
+  # we can recreate this directory automatically at anytime
+  ll_env/
+
+  # contains the .pyc files generated when Django runs .py files
+  __pycache__/
+
+  # bad habbit to track changes to the local DB, might accidentally
+  # overwrite a live DB when local is pushed to to the server
+  *.sqlite3
+  ```

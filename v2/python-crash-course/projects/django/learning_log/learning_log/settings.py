@@ -129,8 +129,12 @@ STATIC_URL = '/static/'
 
 
 # my settings
-
+#
 # for the redirect to login page if user registration check
 # fails, mandated by the decorator in topics() definition
 # from .../learning_log/learning_logs/views.py
 LOGIN_URL = 'users:login'
+
+# import and fire function to define Heroku settings
+import django_heroku
+django_heroku.settings(locals())
