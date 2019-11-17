@@ -951,3 +951,115 @@ Git is already configured on my system, not getting into install steps here. But
   # overwrite a live DB when local is pushed to to the server
   *.sqlite3
   ```
+
+
+<br><br>
+
+
+8. Push to Heroku
+
+Login to the CLI then tell Heroku to build an empty project. This generates a name of two words and a number, can be changed later. Finish deploying by pushing the project's master branch to Heroku, who then builds the project on its servers using these files.
+
+  ```
+  (ll_env)…/learning_log$ heroku login
+
+  (ll_env)…/learning_log$ heroku create
+
+  (ll_env)…/learning_log$ git push heroku master
+  ```
+
+
+<br><br>
+
+
+Make sure your project is in a __clean repo/directory__, don't do what I did with this Notes repo. I fixed mine by using a subtree
+
+First failed attempt, no remote set
+
+  ```
+  (ll_env)…/learning_log$ git push heroku master
+    fatal: 'heroku' does not appear to be a git repository
+    fatal: Could not read from remote repository.
+  ```
+
+Second, access rights
+
+  ```
+  (ll_env)…/learning_log$ cd ..
+
+  (ll_env)…/django$ git subtree push --prefix learning_log heroku master
+    You need to run this command from the toplevel of the working tree.
+  ```
+
+Third, oops still no remote
+
+  ```
+  (ll_env)…/learning_log$ cd ~/obfuscated/path/to-notes-repo-root/notes
+
+  (ll_env)…/notes$
+
+  (ll_env)…/notes$ git subtree push --prefix v2/…/projects/django/learning_log heroku master
+    git push using:  heroku master
+    fatal: 'heroku' does not appear to be a git repository
+    fatal: Could not read from remote repository.
+  ```
+
+Success, add the remote then push a subtree
+
+  ```
+  (ll_env)…/notes$ cd v2/…/projects/django/learning_log
+
+  (ll_env)…/learning_log$ heroku git:remote -a whispering-dawn-01813
+    set git remote heroku to https://git.heroku.com/whispering-dawn-01813.git
+
+  (ll_env)…/learning_log$ cd -
+
+  (ll_env)…/notes$ git remote -v
+    heroku  https://git.heroku.com/whispering-dawn-01813.git (fetch)
+    heroku  https://git.heroku.com/whispering-dawn-01813.git (push)
+    origin  git@github.com-jsore:jsore/notes.git (fetch)
+    origin  git@github.com-jsore:jsore/notes.git (push)
+
+  (ll_env)…/notes$ git subtree push --prefix v2/…/projects/django/learning_log heroku master
+    git push using:  heroku master
+    Enumerating objects: …
+    …
+    Total 8275 (delta 2209), reused 7854 (delta 2064)
+    remote: Compressing source files... done.
+    remote: Building source:
+    remote:
+    remote: -----> Python app detected
+    …
+    remote: -----> Launching...
+    remote:        Released v5
+    remote:        https://whispering-dawn-01813.herokuapp.com/ deployed to Heroku
+    remote:
+    remote: Verifying deploy... done.
+    To https://git.heroku.com/whispering-dawn-01813.git
+     * [new branch]        7caa5b5e90c546b05c0d6d642f4368e60bc793fc -> master
+  ```
+
+
+<br><br>
+
+
+The project is now deployed but not configured. Confirm running status first
+
+  ```
+  (ll_env)…/learning_log$ heroku ps
+    …
+    === web (Free): gunicorn learning_log.wsgi --log-file - (1)
+    web.1: up 2019/11/17 15:52:51 -0600 (~ 12m ago)
+  ```
+
+You should see the process defined by `Procfile` has been started at the STDOUT line starting with `===` and the project's URL should be the line above it.
+
+Heroku's free tier allows a deployment to be active for 550 hours a month. At that time a customizable server error splash page is thrown up in its place.
+
+Open the app in a browser with `heroku open` or with the provided URL.
+
+
+<br><br>
+
+
+
