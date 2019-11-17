@@ -62,7 +62,8 @@ ROOT_URLCONF = 'learning_log.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        # 404 and 500 error page templates
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -148,3 +149,6 @@ if os.environ.get('DEBUG') == 'TRUE':
     DEBUG = True  # now we can set the bool value
 if os.environ.get('DEBUG') == 'FALSE':
     DEBUG = False
+# ...or to test on local dev what prod should look like,
+# replace that with this
+#DEBUG = False
