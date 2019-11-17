@@ -1062,4 +1062,126 @@ Open the app in a browser with `heroku open` or with the provided URL.
 <br><br>
 
 
+9. Setup DB on Heroku
 
+Setup the live DB with a `migrate` and apply all migrations already completed during development.
+
+Heroku and Python commands can be arn with `heroku run`
+
+  ```
+  # issue the command
+  (ll_env)…/learning_log$ heroku run python manage.py migrate
+  # terminal session gets created by Heroku
+    Running python manage.py migrate on ⬢ whispering-dawn-01813...
+    …
+  # Django applies defualt migrations and development migrations
+    Running migrations:
+      Applying …
+      …
+      Applying sessions.0001_initial... OK
+  ```
+
+Take note that the app can be used just as it could on local dev environment, but no data was carried over to prod ( again, this is the normal practice, local data is almost always just test data ), including usernames/password hashes.
+
+
+<br><br>
+
+
+10. Refine Heroku deployment
+
+Create a superuser then make it secure by changing `DEBUG` setting to `False` to deny users from seeing extra info in error messages.
+
+A bash terminal session can be initiated connected to the Heroku server. Using this make the superuser to let us access the admin site on the live app
+
+  ```
+  (ll_env)…/learning_log$ heroku run bash
+    Running bash on ⬢ whispering-dawn-01813... up, run.7930 (Free)
+  ~ $
+
+  ~ $ ls
+    db.sqlite3  learning_log  learning_logs  ll_env  manage.py  Procfile  requirements.txt
+    runtime.txt  staticfiles  users
+
+  ~ $ python manage.py createsuperuser
+    Username (leave blank to use 'u32489'): ll_admin_prod
+    Email address: ( left blank, just hit enter )
+    Password:
+    Password (again):
+    Superuser created successfully.
+
+  ~ $ exit
+  (ll_env)…/learning_log$
+  ```
+
+The app's `/admin/` endpoint should now be available to `ll_admin_prod`
+
+
+<br><br>
+
+
+Update the URL to a friendly name, not already taken by others
+
+  ```
+  (ll_env)…/learning_log$ heroku apps:rename jsore-learning-log
+  ```
+
+Now the site will be accessible from `https://jsore-learning-log.herokuapp.com`
+
+Don't forget to update your Git remote to `jsore-learning-log`
+
+
+<br><br>
+
+
+Set `DEBUG` setting in production's environment with an env var, tell `settings.py` to look for the var when a project is run on Heroku. Also an example of changing a local file then pushing the changes up to Heroku's remote.
+
+  ```python
+  # …/projects/django/learning_log/learning_log/settings.py
+  …
+  # Heroku settings
+  import django_heroku
+  django_heroku.settings(locals())
+
+  # reads the value of supplied env variable where project is running
+  #
+  # returns the value if the var is set, otherwise it returns 'None'
+  if os.environ.get('DEBUG') == 'TRUE':
+      DEBUG = True
+  if os.environ.get('DEBUG') == 'FALSE':
+      DEBUG = False
+  ```
+
+This function __returns the value if the var is set, otherwise it returns `None`__
+
+Now, commit and push the code change to Heroku
+
+  ```
+  (ll_env)…/learning_log$ git add learning_log/* && git commit -m "Enforce a DEBUG check on start"
+
+  (ll_env)…/learning_log$ cd ~/obfuscated/path/to-notes-repo-root/notes
+
+  (ll_env)…/notes$ git subtree push --prefix v2/…/projects/django/learning_log heroku master
+  ```
+
+And set the `settings.py` `DEBUG` value for Heroku
+
+  ```
+  (ll_env)…/learning_log$ heroku config:set DEBUG='FALSE'  # remember, string not a bool
+  ```
+
+This automatically restarts the project. Test by trying to visit an undefined endpoint in prod and dev. Prod's version should through a generic not found page, dev's should give the full stack trace.
+
+
+<br><br>
+
+
+----
+
+__Custom Templates__
+
+For Error pages. Within the root `learning_logs` folder create a new `templates` directory, write the app's universal splash page templates and update `settings.py` `TEMPLATES` field to include
+
+  ```python
+  # 404 and 500 error pages
+  'DIRS': [os.path.join(BASE_DIR, 'templates')],
+  ```
