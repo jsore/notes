@@ -138,3 +138,13 @@ LOGIN_URL = 'users:login'
 # import and fire function to define Heroku settings
 import django_heroku
 django_heroku.settings(locals())
+
+# read value of DEBUG setting
+#
+# returns the value if the supplied variable is actually set
+# otherwise os.environ.get() returns 'None' - it's working
+# with Strings, not Bools
+if os.environ.get('DEBUG') == 'TRUE':
+    DEBUG = True  # now we can set the bool value
+if os.environ.get('DEBUG') == 'FALSE':
+    DEBUG = False
