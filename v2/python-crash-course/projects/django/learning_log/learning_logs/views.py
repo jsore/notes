@@ -1,6 +1,6 @@
 # project/learning_log/learning_logs/views.py
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
 
@@ -51,8 +51,22 @@ def topics(request):
 def topic(request, topic_id):
     """Show a single topic and all its entries."""
 
-    # our db queries for this endpoint
-    topic = Topic.objects.get(id=topic_id)
+
+    # endpoint to query from the DB
+
+
+    # topic = Topic.objects.get(id=topic_id)
+    #
+    # if a user manually requests a topic or entry that does
+    # not exist, Django will try to render the nonexistant
+    # page but won't have enough info to do so, which causes
+    # it to throw a 500 error
+    #
+    # this behavior is more acurately a 404 error, this
+    # method fixes this, it'll try to get the requested
+    # object from the DB and if it doesn't exist raises
+    # a 404 exception
+    topic = get_object_or_404(Topic, id=topic_id)
 
     # ensure the topic belongs to the current user 1st
     if topic.owner != request.user:
