@@ -7,6 +7,25 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 
 
+class PublishedManager(models.Manager):
+    """Custom QuerySet model manager to retrieve any published Post."""
+
+    # get_queryset() method of a manager returns the QuerySet
+    # that will be executed
+    #
+    # override that method to include a custom filter in the
+    # final QuerySet
+    def get_queryset(self):
+        return super(
+            PublishedManager,
+            self
+        ).get_queryset()\
+         .filter(status='published')
+
+
+# will have a relationship with Django's django.contrib.auth
+# authentication framework's User model, a relationship
+# defined by the author field ( ForeignKey )
 class Post(models.Model):
     """Data model for blog posts."""
 
@@ -59,6 +78,17 @@ class Post(models.Model):
         choices=STATUS_CHOICES,
         default='draft'
     )
+
+
+    # use the default 'objects' manager to get results
+    objects = models.Manager()
+    # ex: >>> Post.objects.all()
+
+    # use custom manager we've defined, which filters Post
+    # objects retrieved from the DB for posts that have a
+    # status of only 'published'
+    published = PublishedManager()
+    # ex: >>> Post.published.filter(title__startswith='First')
 
 
     class Meta:

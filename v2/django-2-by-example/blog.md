@@ -287,9 +287,13 @@ Start the project with designing blog data schema by defining the data models fo
 
 Model's are a Python class that subclasses `django.db.models.Model`, each attribute within represting a DB field. Django creates a table for each model defined within `models.py` and provides a practical API to query objects in the DB.
 
-`…/blog/packtblog/blog/models.py`
-
+  > `…/blog/packtblog/blog/models.py`
+  >
   > - Define a `Post` model
+
+  > `…/blog/packtblog/blog/settings.py`
+  >
+  > - Activate the blog model within INSTALLED_APPS
 
 
 <br><br>
@@ -325,12 +329,106 @@ Each time a field is added removed or changed or if new models are added a new m
 --------------------------------------------------------------------------------
 ### Admin Sites for Models
 
+Begin by creating a new superuser `python manage.py createsuperuser` and register the first model in the admin site
+
+  > `…/blog/packtblog/blog/admin.py`
+  >
+  > - Register Post model
+  > - Add a post at `http://localhost:8000/admin/blog/post/add/`
+  > - Customize how models are displayed by using a custom class that inherits from `ModelAdmin`
+
 
 <br><br>
 
 
 --------------------------------------------------------------------------------
 ### Working With QuerySet & Managers
+
+Django's __Object-relational mapper__ ( __ORM__ ) is a DB abstraction API to create retrieve, update and delete objects easily, compatible with MySQL, PostgreSQL, SQLite, Oracle ( DB of choice should be defined in `DATABASES` in the project's settings file ).
+
+  > `https://docs.djangoproject.com/en/2.0/ref/models/`
+
+The Django ORM is based on QuerySets, a collection of objects from your DB that can have several filters to limit the results. __Each Django model has at least one model manager__, the default being `objects` for DB object retrieval. You get a `QuerySet` object using your model manager.
+
+
+<br><br>
+
+
+Examples: creating objects via the shell
+
+  ```
+  (current_env) …/blog/packtblog$ python manage.py shell
+
+  >>> from django.contrib.auth.models import User
+  >>> from blog.models import Post
+  >>> user = User.objects.get(username='admin')
+  >>> post = Post(
+  >>>     title='New Post object via shell',
+  >>>     slug='new-post-object-via-shell',
+  >>>     body='Post body.',
+  >>>     author=user
+  >>> )
+  >>> post.save()
+  ```
+
+The Post object is in memory and is not persisted to the database until `.save()` is called, which does an `INSERT` statement on the SQL DB. This step can be skipped and the object can be created and persisted in one step by instead calling `Post.objects.create(title=…)`.
+
+The SQL statement ran by calling the `save()` method differs depending on if it's being called on an object that is already existing or a new one. If called on an existing object, a `UPDATE` statement is called instead.
+
+
+<br><br>
+
+
+  > Reminder: changes made to an object are not persisted to the DB until `save()`'ed
+
+
+<br><br>
+
+
+  ```python
+  # create a QuerySet to get one
+  one_post = Post.objects.get(what_to_retrieve='some_id')
+
+  # create a QuerySet to get many
+  all_posts = Post.objects.all()
+  # QuerySets are lazy, this one hasn't been evaulated yet...
+  print(all_posts)  # ...until it's forced to evaulate by something
+  ```
+
+Queries with field lookup methods are built using two underscores:
+
+  ```python
+  # another example QuerySet, using the filter() method
+  Post.objects.filter(publish__year=2018)
+  # or:
+  Post.objects.filter(publish__year=2018, author__username='admin')
+  # which equates to building a QuerySet with chained filters
+  Post.objects.filter(publish__year=2018) \
+              .filter(author__username='admin')
+  ```
+
+
+<br><br>
+
+
+QuerySet filters can be concat'ed as many times as you like, they won't hit the DB until they're evaulated. Cases when QuerySets are actually evaulated, hitting the DB:
+
+  - The first time you iterate over them
+  - When you slice them, for instance, Post.objects.all()[:3]
+  - When you pickle or cache them
+  - When you call repr() or len() on them
+  - When you explicitly call list() on them
+  - When you test them in a statement, such as bool(), or , and, or if
+
+
+<br><br>
+
+
+Custom model managers can be created.
+
+  > `…/blog/packtblog/blog/models.py`
+  >
+  > - Build custom model manager to retrieve all posts with a `published` status.
 
 
 <br><br>
