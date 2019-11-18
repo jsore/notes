@@ -1,2 +1,12 @@
 *.sublime-project
 *.sublime-workspace
+
+# we can recreate this directory automatically at anytime
+blog_env/
+
+# contains the .pyc files generated when Django runs .py files
+__pycache__/
+
+# bad habbit to track changes to the local DB, might accidentally
+# overwrite a live DB when local is pushed to to the server
+*.sqlite3
