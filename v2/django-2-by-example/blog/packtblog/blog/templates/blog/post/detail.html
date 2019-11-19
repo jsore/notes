@@ -1,0 +1,15 @@
+<!-- …/blog/packtblog/blog/templates/blog/post/detail.html -->
+
+{% extends "blog/base.html" %}
+
+{% block title %}
+  {{ post.title }}
+{% endblock title %}
+
+{% block content %}
+  <h1>{{ post.title }}</h1>
+  <p classs="date">
+    Published {{ post.publish }} by {{ post.author }}
+  </p>
+  {{ post.body|linebreaks }}
+{% endblock content %}

@@ -3,7 +3,9 @@
 # data models for blog application in packtblog project
 
 from django.db import models
+# from django.utils import timezone, reverse
 from django.utils import timezone
+from django.urls import reverse
 from django.contrib.auth.models import User
 
 
@@ -102,4 +104,22 @@ class Post(models.Model):
         """Method to set a human-readable representation of this obj."""
 
         return self.title
+
+
+    # return the canonical URL of the Post object
+    #
+    # this method is used in this app's templates to link
+    # to specific posts
+    def get_absolute_url(self):
+
+        # reverse() allows for building URLs by their name
+        return reverse(
+            'blog:post_detail',
+            args=[
+                self.publish.year,
+                self.publish.month,
+                self.publish.day,
+                self.slug
+            ]
+        )
 

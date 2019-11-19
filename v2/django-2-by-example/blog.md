@@ -414,11 +414,11 @@ Queries with field lookup methods are built using two underscores:
 QuerySet filters can be concat'ed as many times as you like, they won't hit the DB until they're evaulated. Cases when QuerySets are actually evaulated, hitting the DB:
 
   - The first time you iterate over them
-  - When you slice them, for instance, Post.objects.all()[:3]
+  - When you slice them, for instance, `Post.objects.all()[:3]`
   - When you pickle or cache them
-  - When you call repr() or len() on them
-  - When you explicitly call list() on them
-  - When you test them in a statement, such as bool(), or , and, or if
+  - When you call `repr()` or `len()` on them
+  - When you explicitly call `list()` on them
+  - When you test them in a statement, such as `bool()`, `or` , `and`, or `if`
 
 
 <br><br>
@@ -436,6 +436,9 @@ Custom model managers can be created.
 
 --------------------------------------------------------------------------------
 ### Building Views, Templates, URLs
+
+
+__Views__
 
 A Django view is just a __Python function that receives a web request and returns a web response__. The logic to return the desired response goes inside the view. Each view will render a template passing variables to it and will reutnr an HTTP response with the rendered output.
 
@@ -457,6 +460,82 @@ Build process:
   >
   > - Map the `post_list` and `post_detail` views to URLs
 
+
+<br><br>
+
+
+__URL Patterns__
+
+URL patterns map URLs to views, comprised of
+
+  - a string pattern
+  - a view
+  - ( optionally ) a name that allows you to name the URL project-wide
+
+Django runs through the list of URL patterns and stops at the first match upon a request. After matching, Django imports the view of the matching URL pattern and executes it passing an instance of the `HttpRequest` class or positional arguments.
+
+  > Using a `urls.py` file for each app is the best way to make apps reusable by other projects
+
+After defining the URLs for this application ( thus far ) here:
+
+```
+…/blog/packtblog/blog/urls.py
+
+app_name = 'blog'
+urlpatterns = [
+    path('', views.post_list, name='post_list'),
+    path(
+        # brackets capture values from URL
+        '<int:year>/<int:month>/<int:day>/<slug:post>',
+        views.post_detail,
+        name='post_detail'
+  ),
+]
+```
+
+Add the app's patterns to the whole project here:
+
+```
+…/blog/packtblog/packtblog/urls.py
+```
+
+Django convention denotes that a `get_absolute_url()` method should be added to the model that returns the canonical URL of the object. The `post_detail` method has just been defined in the preceeding codeblocks, which can be used to build the canonical URL for `Post` objects. The `reverse()` method lets you build URLs by their name ( with optional params ).
+
+  > `…/blog/packtblog/blog/models.py`
+  >
+  > - Update `Post` class to define the `get_absolute_url()` method
+  > - This method is used in this app's templates to link to specific posts
+
+
+<br><br>
+
+
+__Creating the preliminary templates__
+
+As expected, a parent template is used an all the others inherit from it
+
+  ```
+  …/blog/packtblog/blog/templates
+  └── blog
+      ├── base.html
+      └── post
+          ├── detail.html
+          └── list.html
+  ```
+
+
+<br><br>
+
+
+Django has a built in - powerful - __template language__ to specify how data is displayed, including:
+
+  - __template tags__ `{% tagname %}` to control rendering of the template
+  - __template variables__ `{{ variable }}` that are replaced with values when rendered
+  - __template filters__ `{{ variable|filter }}` for modifying displated variables
+
+List of tags and filters: `https://docs.djangoproject.com/en/2.0/ref/templates/builtins/`
+
+Djaneiro ( Sublime ) cheat sheet: `https://packagecontrol.io/packages/Djaneiro`
 
 <br><br>
 

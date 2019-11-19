@@ -1,0 +1,30 @@
+<!-- …/blog/packtblog/blog/templates/blog/base.html -->
+
+<!--
+  bring in tags supplied by django.contrib.staticfiles app
+  files, specified by INSTALLED_APPS setting
+
+  this lets us use { static "" } template filters for
+  including static files ( ex: CSS files )
+-->
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{% block title %}{% endblock title %}</title>
+    <!-- …/blog/packtblog/blog/static/css/blog.css -->
+    <link href="{% static "css/blog.css" %}" rel="stylesheet">
+  </head>
+  <body>
+    <div id="content">
+      {% block content %}
+
+      {% endblock content %}
+    </div>
+    <div id="sidebar">
+      <h2>DJ2 Example Blog</h2>
+      <p>This is a blog of supportive content for 'Django 2 By Example'</p>
+    </div>
+  </body>
+</html>
