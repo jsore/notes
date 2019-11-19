@@ -11,9 +11,13 @@ app_name = 'blog'
 urlpatterns = [
 
     # URL patterns for views for posts
-    #
+
     # doesn't take any args and is mapped to post_list view
-    path('', views.post_list, name='post_list'),
+    #path('', views.post_list, name='post_list'),
+    #
+    # use a class-based view instead for demostration
+    path('', views.PostListView.as_view(), name='post_list'),
+
     # takes four args and is mapped to post_detail view
     path(
         # brackets capture values from URL

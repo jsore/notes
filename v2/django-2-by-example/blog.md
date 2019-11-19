@@ -543,9 +543,25 @@ Djaneiro ( Sublime ) cheat sheet: `https://packagecontrol.io/packages/Djaneiro`
 --------------------------------------------------------------------------------
 ### Pagination in List Views
 
+Example usage: blog grows, need to split the list of posts across pages.
+
+Django has a built-in pagination classe to manage paginated data easily.
+
+  > `…/blog/packtblog/blog/views.py`
+  >
+  > - Edit to include `Paginator` classes
+
+  > `…/blog/packtblog/blog/templates/blog/pagination.html`
+  >
+  > - Pagination template for any template that requires it
 
 <br><br>
 
 
 --------------------------------------------------------------------------------
 ### Django's class-based views
+
+Instead of defining functions for views, use class-based views as Python objects. A view is a callable that takes a web request and returns a response, you can define your views as class methods. Django provides base view classes for this, all inheriting from `View` class, which handles HTTP method dispatching and other common functions. Class based views let you:
+
+  - Organize code by HTTP methods ( `GET`, `POST`, etc ) in separate methods instead of conditional branching
+  - Use multiple inheritance to create reusable view classes ( __mixins__ )
