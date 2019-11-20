@@ -601,10 +601,6 @@ To build standard forms, use the `Form` class, to build a form tied to model ins
   >
   > - Preliminary first form
 
-  > `…/blog/packtblog/blog/views.py`
-  >
-  > - Handle form in a view by creating a new view to validate and send on success
-
 List of all available form field types: `https://docs.djangoproject.com/en/2.0/ref/forms/fields/`
 
 
@@ -629,6 +625,7 @@ If you can't use an SMTP server, add this to `settings.py` instead to pipe all e
   EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
   ```
 
+Now the form just needs a view and template.
 
 
 <br><br>
@@ -637,7 +634,33 @@ If you can't use an SMTP server, add this to `settings.py` instead to pipe all e
 --------------------------------------------------------------------------------
 ### Create Forms & Handling Them in Views
 
+  > `…/blog/packtblog/blog/views.py`
+  >
+  > - Define `post_share()` to handle the `blog/forms.EmailPostForm(form.Form)` class
 
+
+<br><br>
+
+
+__Building a comment system__
+
+Will comprise of the following steps
+
+  1. Create a __model__ to save comments
+
+After creating the model don't forget to migrate to synchronize itself into the DB. Generate the migration to reflect the creation of a new model:
+
+  ```
+  (current_env) …/blog/packtblog$ python manage.py makemigrations blog
+  ```
+
+Then create the related DB schema and apply the changes to the DB
+
+  ```
+  (current_env) …/blog/packtblog$ python manage.py migrate
+  ```
+
+This will create a `blog_comment` table in the DB. Afterwards, add this new model to the administration site to let you manage comments through a simple interface.
 
 
 <br><br>
@@ -646,7 +669,20 @@ If you can't use an SMTP server, add this to `settings.py` instead to pipe all e
 --------------------------------------------------------------------------------
 ### Creating Forms From Models
 
+  2. Create a __form__ to submit comments and validate input data
+  3. Add a __view__ to process the form and save the new comment to the DB
 
+Because we want Django to build a form dynamically from the `Comment` model, use `ModelForm` base class for building this form. To do this, all that's required is to indicate which model to use to build the form in the `Meta` class of the form ( `forms.py` ).
+
+The `Comment` model and `CommentForm` form will be instantiated and handled in `views.post_detail`
+
+
+<br><br>
+
+
+  4. Edit the post detail __template__ to display the list of comments and the add comment form
+
+The template needs to be able to display the total number of comments for a post, display the list of comments and display a form for users to add a new comment.
 
 
 <br><br>

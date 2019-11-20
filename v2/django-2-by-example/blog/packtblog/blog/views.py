@@ -11,8 +11,8 @@ from django.core.mail import send_mail
 from django.views.generic import ListView
 
 
-from .models import Post
-from .forms import EmailPostForm
+from .models import Post, Comment
+from .forms import EmailPostForm, CommentForm
 
 
 def post_list(request):
@@ -91,11 +91,29 @@ def post_detail(request, year, month, day, post):
         publish__day=day
     )
 
+    # QuerySet to retrieve all active comments for this post
+    comments = post.comments.filter(active=True)
+    # instantiate a placeholder for adding a new comment
+    new_comment = None
+    print(f'requested: {request}')
+    # a new comment was POSTed
+    if request.method == 'POST':
+        comment_form = CommentForm(data=request.POST)
+
+        if comment_form.is_valid():
+            # create a Comment object but don't save to DB yet...
+            new_comment = comment_form.save(commit=False)
+            # ...edit comment to assign current post to the it...
+            new_comment.post = post
+            # ...and then we can save it to the DB
+            new_comment.save()
+    else:
+        comment_form = CommentForm()
+
     return render(
         request,
         'blog/post/detail.html',
-        {'post': post}
-    )
+        {'post': post, 'comments': comments, 'new_comment': new_comment, 'comment_form': comment_form})
 
 
 def post_share(request, post_id):
