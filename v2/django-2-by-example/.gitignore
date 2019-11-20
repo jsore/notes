@@ -10,3 +10,5 @@ __pycache__/
 # bad habbit to track changes to the local DB, might accidentally
 # overwrite a live DB when local is pushed to to the server
 *.sqlite3
+
+blog/packtblog/packtblog/etc/
