@@ -2,7 +2,7 @@
 
 My notes covering chapters 1-3 of Django 2 by Example.
 
-<br><br>
+<br><br><br><br>
 
 ## ch1. Building The Basics
 
@@ -565,3 +565,101 @@ Instead of defining functions for views, use class-based views as Python objects
 
   - Organize code by HTTP methods ( `GET`, `POST`, etc ) in separate methods instead of conditional branching
   - Use multiple inheritance to create reusable view classes ( __mixins__ )
+
+
+
+
+<br><br><br><br>
+
+
+
+
+## ch2. Enhancing The Basics
+
+Add advanced features such as:
+
+  - Sharing posts via email
+  - Adding comments
+  - Tagging posts
+  - Retrieve posts by similarity
+
+<br>
+
+
+--------------------------------------------------------------------------------
+### Sending Email With Django
+
+Add functionality to allow users to use a form to share posts via email, using Django's built-in forms framework. The framework lets you:
+
+  - Define fields of the form
+  - Specify how the fields have to be displayed
+  - Indicate how they have to validate input data
+
+To build standard forms, use the `Form` class, to build a form tied to model instances use `ModelForm` class. To abide by standard Django convention, place all forms for each app in a project inside `<project_root>/<app_root>/forms.py`.
+
+  > `…/blog/packtblog/blog/forms.py` ( new file )
+  >
+  > - Preliminary first form
+
+  > `…/blog/packtblog/blog/views.py`
+  >
+  > - Handle form in a view by creating a new view to validate and send on success
+
+List of all available form field types: `https://docs.djangoproject.com/en/2.0/ref/forms/fields/`
+
+
+<br><br>
+
+
+To send mail, a local SMTP server is needed or the configuration of an external SMTP server needs to be defined in `settings.py`. Example usage for gmail:
+
+  ```python
+  EMAIL_HOST = 'smtp.gmail.com'
+  EMAIL_HOST_USER = 'jus.a.sorensen@gmail.com'
+  EMAIL_HOST_PASSWORD = 'password'
+  EMAIL_PORT = 587
+  EMAIL_USE_TLS = True
+  ```
+
+You also might have to enable the 'Allow less secure apps' setting on your account.
+
+If you can't use an SMTP server, add this to `settings.py` instead to pipe all emails to the shell
+
+  ```python
+  EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+  ```
+
+
+
+<br><br>
+
+
+--------------------------------------------------------------------------------
+### Create Forms & Handling Them in Views
+
+
+
+
+<br><br>
+
+
+--------------------------------------------------------------------------------
+### Creating Forms From Models
+
+
+
+
+<br><br>
+
+
+--------------------------------------------------------------------------------
+### Integrating 3rd Party Apps
+
+
+
+
+<br><br>
+
+
+--------------------------------------------------------------------------------
+### Building Complex QuerySets

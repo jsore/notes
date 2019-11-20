@@ -136,3 +136,29 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+# mail settings for external SMTP server ( gmail )
+#
+# bring in gitgnore'ed data
+#
+# example usage in shell, to confirm what data got imported
+#
+#   >>> import packtblog.settings
+#   >>> print(packtblog.settings.EMAIL_HOST)
+with open(f"{os.path.join(BASE_DIR, 'packtblog/etc/p.txt')}") as f:
+    user = f.read().strip()
+#
+# example shell usage tos end an email
+#
+#   >>> from django.core.mail import send_mail
+#   >>> send_mail('subject', 'body', 'sender', ['list', 'of', 'recipients'], fail_silently=False)
+#
+# send_mail() returns a '1' if no errors
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'jus.a.sorensen@gmail.com'
+EMAIL_HOST_PASSWORD = user
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+# or replace all this with the following to spit to console
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
