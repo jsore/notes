@@ -10,16 +10,26 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.mail import send_mail
 from django.views.generic import ListView
 
+from taggit.models import Tag
 
 from .models import Post, Comment
 from .forms import EmailPostForm, CommentForm
 
 
-def post_list(request):
+def post_list(request, tag_slug=None):
     """View to display a list of posts."""
 
     # use custom model manager defined in Post
     object_list = Post.published.all()
+
+    # taggit manager placeholder
+    tag = None
+    # check if there's any tags included in the URL
+    if tag_slug:
+        tag = get_object_or_404(Tag, slug=tag_slug)
+        # filter list of posts by the ones that contain
+        # the given tag
+        object_list = object_list.filter(tags__in=[tag])
 
     # instantiate Paginator class with the number of objects
     # to display per page
@@ -51,7 +61,7 @@ def post_list(request):
         'blog/post/list.html',
         # context variables for template, page number and
         # the retrieved objects
-        {'page': page, 'posts': posts}
+        {'page': page, 'posts': posts, 'tag': tag}
     )
 
 

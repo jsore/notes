@@ -13,11 +13,16 @@ urlpatterns = [
     # URL patterns for views for posts
 
     # doesn't take any args and is mapped to post_list view
-    #path('', views.post_list, name='post_list'),
+    path('', views.post_list, name='post_list'),
     #
     # use a class-based view instead for demostration
-    path('', views.PostListView.as_view(), name='post_list'),
+    #path('', views.PostListView.as_view(), name='post_list'),
 
+    # filter posts by tag
+    #
+    # points to the same view as the pattern for '' but this
+    # one gets named differently
+    path('tag/<slug:tag_slug>/', views.post_list, name='post_list_by_tag'),
     # takes four args and is mapped to post_detail view
     path(
         # brackets capture values from URL

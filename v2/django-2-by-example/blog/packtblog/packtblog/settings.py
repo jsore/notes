@@ -55,6 +55,9 @@ INSTALLED_APPS = [
     #    4   │ class BlogConfig(AppConfig):
     #    5   │     name = 'blog'
     'blog.apps.BlogConfig',  # the app configuration
+
+    # 3rd party integrations
+    'taggit',
 ]
 
 MIDDLEWARE = [

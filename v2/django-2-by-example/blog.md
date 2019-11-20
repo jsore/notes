@@ -691,7 +691,11 @@ The template needs to be able to display the total number of comments for a post
 --------------------------------------------------------------------------------
 ### Integrating 3rd Party Apps
 
+Using the `django-taggit` module, a reusable application that gives a `Tag` model and a manager to add tags to any model. First, install it and add it to your `INSTALLED_APPS`
 
+  ```
+  (current_env) …/blog/packtblog$ pip install django_taggit
+  ```
 
 
 <br><br>
