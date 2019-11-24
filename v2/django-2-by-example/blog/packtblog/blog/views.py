@@ -5,6 +5,9 @@
 # data to the template
 
 
+# Count aggregation function of Django ORM
+from django.db.models import Count  # includes Avg, Max, Min, Count
+
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.mail import send_mail
@@ -120,10 +123,27 @@ def post_detail(request, year, month, day, post):
     else:
         comment_form = CommentForm()
 
+    # list all similar posts
+    #
+    # the values_list() QuerySet returns tuples and specify
+    # we want the list flattened ( a list like [1, 2, 3, …] )
+    post_tags_ids = post.tags.values_list('id', flat=True)
+    # exclude current post from list of retrieved posts
+    similar_posts = Post.published.filter(tags__in=post_tags_ids)\
+            .exclude(id=post.id)
+    # use our Count() aggregrate func to generate a calculated
+    # field ( same_tags ) containing number of tags shared
+    similar_posts = similar_posts.annotate(same_tags=Count('tags'))\
+            .order_by('-same_tags', '-publish')[:4]
+
     return render(
         request,
         'blog/post/detail.html',
-        {'post': post, 'comments': comments, 'new_comment': new_comment, 'comment_form': comment_form})
+        {'post': post,
+         'comments': comments,
+         'new_comment': new_comment,
+         'comment_form': comment_form,
+         'similar_posts': similar_posts})
 
 
 def post_share(request, post_id):

@@ -703,3 +703,32 @@ Using the `django-taggit` module, a reusable application that gives a `Tag` mode
 
 --------------------------------------------------------------------------------
 ### Building Complex QuerySets
+
+Build a functionality to retrieve posts based on similarity. To do this:
+
+  - Retrieve all tags for the current post
+  - Get all posts tagged with any of those tags
+  - Exclude the current post from that list to avoid recommending the same post
+  - Order results by number of tags shared with the current post
+  - Recommend the most recent post for posts that share two or more tags
+  - Limit the query to the number of posts we want to recommend
+
+This all translates into a complex QuerySet that will be included in the `post_detail` view.
+
+
+
+
+<br><br><br><br>
+
+
+
+
+## ch3. Extending The Application
+
+Create custom template tags and filters for the tags, build a custom sitemap, implement a full text search functionality for the blog posts with __PostgreSQL__.
+
+<br>
+
+
+--------------------------------------------------------------------------------
+###

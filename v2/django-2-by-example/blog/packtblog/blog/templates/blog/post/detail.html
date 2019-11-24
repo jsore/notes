@@ -10,7 +10,7 @@
 
   <h1>{{ post.title }}</h1>
 
-  <p classs="date">
+  <p class="date">
     Published {{ post.publish }} by {{ post.author }}
   </p>
 
@@ -21,6 +21,17 @@
       Share this post
     </a>
   </p>
+
+
+  <h2>Similar Posts</h2>
+  {% for post in similar_posts %}
+  <p>
+    <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+  </p>
+  {% empty %}
+    There are no similar posts yet.
+  {% endfor %}
+
 
   <!-- execute a comments.count() QuerySet -->
   <!--
