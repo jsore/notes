@@ -731,4 +731,79 @@ Create custom template tags and filters for the tags, build a custom sitemap, im
 
 
 --------------------------------------------------------------------------------
-###
+### Custom Template Tags & Filters
+
+__Hand-rolled Tags__
+
+Django provides `simple_tag` ( to process data and return a string ) and `inclusion_tag` ( to process data and return a rendered template ) helper functions that allow for you to create your own template tags.
+
+Build your tag using this structure
+
+  ```
+  (current_env) …/blog/packtblog$ ls
+  blog/       db.sqlite3  manage.py   packtblog/
+
+  …
+
+  ├── blog
+  │   ├── __init__.py
+  │   ├── models.py
+  │   …
+  │   └── templatetags      <- new dir
+  │       ├── __init__.py   <- empty file you should create
+  │       └── blog_tags.py  <- name of your new tag to be loaded into your templates
+  …
+  ```
+
+These tags built in `blog_tags` can be used in any template and can be stored in a variable captured by a QuerySet within the template. Example:
+
+  ```html
+  <!-- …/blog/packtblog/blog/templates/blog/base.html -->
+  …
+  <h3>Most commented posts</h3>
+  <!-- store the result of this QuerySet in most_commented_posts -->
+  {% get_most_commented_posts as most_commented_posts %}
+  <ul>
+    {% for post in most_commented_posts %}
+      <li>
+        <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+  ```
+
+
+<br><br>
+
+
+__Hand-rolled Tag Filters__
+
+Filters let you modify variables in templates. These are Python functions that take one or two params...
+
+  - Value of the variable the filter is to be applied to
+  - Optional argument to apply to the filter function
+
+...and return a value that can be displayed or treated by another filter.
+
+  ```html
+  # example_filter.html
+  {{ variable_name|my_filter_to_apply }}
+
+  # example_filter_with_argument.html
+  {{ variable_name|my_filter_to_apply:"some_argument" }}
+
+  # example_with_multiple_filters
+  {{ variable_name|my_filter_to_apply|another_filter_to_apply }}
+  ```
+
+
+<br><br>
+
+
+__Create Custom Filter To Use `.md` In Posts …__
+
+…then convert those contents to HTML in the templates. Turns out Markdown was intended to be converted to HTML. This can be done by installing the Python markdown module via `pip`
+
+  > Author sidenote: dig into this notes repo and see how hard a conversion would be.
+
+

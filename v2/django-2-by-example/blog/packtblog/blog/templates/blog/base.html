@@ -7,6 +7,11 @@
   this lets us use { static "" } template filters for
   including static files ( ex: CSS files )
 -->
+
+<!-- brings in our custom built template tags -->
+{% load blog_tags %}
+
+<!-- brings in static files like CSS, JS, etc -->
 {% load static %}
 
 <!DOCTYPE html>
@@ -24,7 +29,28 @@
     </div>
     <div id="sidebar">
       <h2>DJ2 Example Blog</h2>
-      <p>My notes on "Django 2 By Example"</p>
+      <p>Supplementing my notes on " <code>Django 2 By Example</code> "</p>
+
+      <p class="date">
+        <span style="font-weight: bold">
+          Total posts published so far: {% total_posts %}
+        </span>
+      </p>
+
+      <h3>Latest posts</h3>
+      {% show_latest_posts 3 %}
+
+      <h3>Most commented posts</h3>
+      <!-- store the result of this QuerySet in most_commented_posts -->
+      {% get_most_commented_posts as most_commented_posts %}
+      <ul>
+        {% for post in most_commented_posts %}
+          <li>
+            <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+
     </div>
   </body>
 </html>
