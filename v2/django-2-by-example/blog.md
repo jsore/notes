@@ -806,4 +806,175 @@ __Create Custom Filter To Use `.md` In Posts …__
 
   > Author sidenote: dig into this notes repo and see how hard a conversion would be.
 
+Now the `markdown` module and `django.utils.safestring.mark_safe` function can be used, the latter required in order for Django to not escape HTML returned by our filter in `admin/blog/post/`.
 
+
+<br><br>
+
+
+__Using Django's Sitemap Framework__
+
+Allows for creating sitemaps dynamically. This XML file helps web crawlers index your site's content. Add `django.contrib.sites` ( to allow you to associate objects to particular websites ) and `django.contrib.sitemaps` to your `INSTALLED_APPS` to use it. These let you more easily run multiple sites in a single project. Don't forget to `migrate` afterwards to sync the `sites` application with your DB. You'll use it in `…/blog/packtblog/blog/sitemaps.py`
+
+By default Django uses a `http://example.com` domain in the `<url><loc>` attribute for denoting where the object lives, defined by a `Site` object automatically stored in the DB, which was automatically created when we synced the site's framework with the DB. Review this at `http://localhost:8000/admin/sites/site` where you can change ( to, for example on our local environment: `localhost:8000` )
+
+  ```
+  http://localhost:8000/sitemap.xml
+
+  …
+  <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+    <loc>
+      http://example.com/blog/2019/11/26/post-formatted-markdown
+    </loc>
+  …
+  ```
+
+See comments in `…/blog/packtblog/blog/sitemaps.py` for more details
+
+
+<br><br>
+
+
+__Dynamically Creating RSS Feeds__
+
+Using Django's builtin syndication feed framework. Its basically just a data format that provides users with updated content, accessed/subscribed to using a feed aggregator.
+
+  > `…/blog/packtblog/blog/feeds.py`
+
+Don't forget to add the endpoint for this RSS feed to your application's ( `blog` ) `urls.py` file.
+
+  > Author protip: with `jq` installed use homebrew to install `yq` which contains an executable wrapper around `jq` for parsing XML data into JSON, then hit the RSS endpoint with `curl`.
+
+
+<br><br>
+
+
+__Django's ORM For Matching Operations__
+
+For example: the `contains` filter ( or for case-insensitive: `icontains` )
+
+  ```
+  (current_env) …/blog/packtblog$ python manage.py shell
+  >>> from blog.models import Post
+  >>> # search for posts containing the text 'framework' in its body
+  >>> Post.objects.filter(body__contains='framework')
+  ```
+
+Not ideal for complex search lookups. Instead use Django's search functionality built on top of PostgreSQL ( `django.contrib.postgres` ). This module provides functions offered by PostgreSQL that are not shared with other Django supported DB's.
+
+  ```
+  https://www.postgresql.org/docs/10/textsearch.html
+  ```
+
+
+<br><br>
+
+
+  > Note: Django is still indeed a database-agnostic web framework
+
+
+<br><br>
+
+
+The currently installed SQLite is fine for dev, but doesn't scale up for prod. DL & Install Postgre
+
+  ```
+  https://www.postgresql.org/download/macosx/
+  ```
+
+Then install the Psycopg2 PostgreSQL adapter for Python
+
+  ```
+  (current_env) …/blog/packtblog$ pip install psycopg2
+  ```
+
+...or at least try to. Got an error about Postgre binaries not being found in `PATH`. First, find the binaries
+
+  ```
+  $ find / -name pg_config 2>/dev/null
+  /Library/PostgreSQL/12/debug_symbols/bin/pg_config.dSYM/Contents/Resources/DWARF/pg_config
+  /Library/PostgreSQL/12/bin/pg_config
+  ```
+
+Add them to your PATH
+
+  ```
+  $ export PATH=/usr/local/bin:/Library/PostgreSQL/12/bin/:$PATH
+  ```
+
+Restart your shell, verify the installation and restart a new `virtualenv` environment and install `psycopg2`
+
+  ```
+  …/blog/packtblog$ pg_config --version
+  PostgreSQL 12.1
+
+  …/blog/packtblog$ source ../blog_env/bin/activate
+
+  (current_env) …/blog/packtblog$ pip install psycopg2
+  …
+  Successfully installed psycopg2-2.8.4
+
+  (current_env) …/blog/packtblog$ python manage.py runserver
+  ```
+
+
+<br><br>
+
+
+Once installed, start by creating a  `blog` user for the Postgre DB
+
+  ```
+  (current_env) …/blog/packtblog$ sudo su postgres
+  Password: <password>
+  (current_env) /Users/…/blog/packtblog$
+
+  (current_env) /Users/…/blog/packtblog$ createuser -dP blog
+  Enter password for new role:
+  Enter it again:
+  Password:
+  ```
+
+Then create the `blog` database and assign it to that new `blog` user
+
+  ```
+  (current_env) …/blog/packtblog$ createdb -E utf8 -U blog blog
+  ```
+
+Then add the `django.db.backends.postgresql` engine and attributes to `settings.DATABASES.default` and `migrate` all database migrations.
+
+
+  ```
+  (current_env) …/blog/packtblog$ python manage.py migrate
+  ```
+
+Create a superuser:
+
+  ```
+  (current_env) …/blog/packtblog$ python manage.py createsuperuser
+  Username: postgre_admin
+  ```
+
+Then the development server can be ran again and `localhost:8000/admin` should be accessible with that new super user. Since the DB is empty ( we just finished switching it ) recreate some posts to let you perform searches against the DB.
+
+Remember, you're logged in to the postgre user right now ( `sudo su postgres` ). That user needs to be used to start the development server. Use `login` to log back into another user account, sudo su postgres to switch back ( restart of the virtualenv is needed )
+
+
+<br><br>
+
+
+Postgres then needs to be included in your `INSTALLED_APPS`. Afterwards, simple searches can already be done with the `search` QuerySet lookup
+
+  ```
+  >>> from blog.models import Post
+  >>> # creates a search vector for body field and a search
+  >>> # query for the term django using Postgres
+  >>> Post.objects.filter(body__search='django')
+  ```
+
+Or by defining `SearchVector` to build a vector for searching against multiple fields
+
+  ```
+  >>> from django.contrib.postgres.search import SearchVector
+  >>> Post.objects.annotate(search=SearchVector('title', 'body'),).filter(search='django')
+  ```

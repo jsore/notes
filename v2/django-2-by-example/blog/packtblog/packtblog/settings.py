@@ -34,6 +34,11 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+
+# this ( blog ) site's site ID
+SITE_ID = 1
+
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -41,6 +46,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # to map objects to specific sites
+    'django.contrib.sites',
+    'django.contrib.sitemaps',
+
+    # switching away from SQLite
+    'django.contrib.postgres',
 
     # my apps for Django to activate to let it track the app
     # and create DB tables for its models
@@ -94,10 +106,20 @@ WSGI_APPLICATION = 'packtblog.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
+with open(f"{os.path.join(BASE_DIR, 'packtblog/etc/dp.txt')}") as dbf:
+    d_user = dbf.read().strip()
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+
+        # use PostgreSQL instead for scalability
+        #'ENGINE': 'django.db.backends.sqlite3',
+        #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'blog',
+        'USER': 'blog',
+        'PASSWORD': d_user,
     }
 }
 

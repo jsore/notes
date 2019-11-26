@@ -2,6 +2,7 @@
 
 from django.urls import path
 from . import views
+from .feeds import LatestPostsFeed
 
 
 # define a namespace for URL organization/reference
@@ -22,18 +23,28 @@ urlpatterns = [
     #
     # points to the same view as the pattern for '' but this
     # one gets named differently
-    path('tag/<slug:tag_slug>/', views.post_list, name='post_list_by_tag'),
+    path('tag/<slug:tag_slug>/',
+        views.post_list,
+        name='post_list_by_tag'
+    ),
+
     # takes four args and is mapped to post_detail view
-    path(
-        # brackets capture values from URL
-        #
-        # ex of a SEO-friendly URL built with this pattern:
-        # blog/2019/11/19/post-from-shell-with-published-status
-        '<int:year>/<int:month>/<int:day>/<slug:post>',
+    #
+    # brackets capture values from URL
+    #
+    # ex of a SEO-friendly URL built with this pattern:
+    # blog/2019/11/19/post-from-shell-with-published-status
+    path('<int:year>/<int:month>/<int:day>/<slug:post>',
         views.post_detail,
         name='post_detail'
     ),
 
     # sharing posts via email
-    path('<int:post_id>/share/', views.post_share, name='post_share'),
+    path('<int:post_id>/share/',
+        views.post_share,
+        name='post_share'
+    ),
+
+    # example.com/blog/feed/ to get to this RSS feed
+    path('feed/', LatestPostsFeed(), name='post_feed'),
 ]
