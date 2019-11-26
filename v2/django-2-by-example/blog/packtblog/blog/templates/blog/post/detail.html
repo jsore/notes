@@ -1,6 +1,7 @@
 <!-- …/blog/packtblog/blog/templates/blog/post/detail.html -->
 
 {% extends "blog/base.html" %}
+{% load blog_tags %}
 
 {% block title %}
   {{ post.title }}
@@ -14,7 +15,10 @@
     Published {{ post.publish }} by {{ post.author }}
   </p>
 
-  {{ post.body|linebreaks }}
+  {# {{ post.body|linebreaks }} #}
+  {{ post.body|markdown }}
+
+  <br /><br />
 
   <p>
     <a href='{% url "blog:post_share" post.id %}'>

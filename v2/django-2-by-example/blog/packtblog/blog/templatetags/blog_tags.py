@@ -63,4 +63,18 @@ def get_most_commented_posts(count=5):
 # tag filter to be used when converting markdown to HTML
 @register.filter(name='markdown')
 def markdown_format(text):
+
+    # this function is named 'markdown_format' to avoid
+    # collisions with the 'markdown' module, we name the
+    # filter this function is to represent 'markdown' for
+    # usage in templates, eg: {{ variable_name|markdown }}
+    #
+    # mark_safe is provided by Django to mark the result
+    # of this func as safe HTML to be rendered in templates
+    #
+    # Django doesn't trust HTML code and will escape it by
+    # default before placing it in the output, the only
+    # exceptions being variables that are marked safe
+    # from escaping ( this one )
+
     return mark_safe(markdown.markdown(text))
