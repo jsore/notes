@@ -12,11 +12,11 @@ from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.mail import send_mail
 from django.views.generic import ListView
-
+from django.contrib.postgres.search import SearchVector
 from taggit.models import Tag
 
 from .models import Post, Comment
-from .forms import EmailPostForm, CommentForm
+from .forms import EmailPostForm, CommentForm, SearchForm
 
 
 def post_list(request, tag_slug=None):
@@ -191,4 +191,33 @@ def post_share(request, post_id):
         request,
         'blog/post/share.html',
         {'post': post, 'form': form, 'sent': sent}
+    )
+
+
+def post_search(request):
+
+    # instantiate our form
+    form = SearchForm()
+    query = None
+    results = []
+
+    # submit it with a GET to include the 'query' parameter
+    # in the request.GET dictionary
+    if 'query' in request.GET:
+
+        # now we can instantiate the form with GET data
+        form = SearchForm(request.GET)
+
+        # if the data is valid search for posts with a
+        # custom SearchVector instance and title/body fields
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            results = Post.objects.annotate(
+                search=SearchVector('title', 'body'),
+            ).filter(search=query)
+
+    return render(
+        request,
+        'blog/post/search.html',
+        {'form': form, 'query': query, 'results': results}
     )

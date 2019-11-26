@@ -27,3 +27,8 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ('name', 'email', 'body')
+
+
+# text based searching
+class SearchForm(forms.Form):
+    query = forms.CharField()

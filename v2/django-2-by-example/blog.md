@@ -978,3 +978,5 @@ Or by defining `SearchVector` to build a vector for searching against multiple f
   >>> from django.contrib.postgres.search import SearchVector
   >>> Post.objects.annotate(search=SearchVector('title', 'body'),).filter(search='django')
   ```
+
+This can be accessed publicly using a new `search` view and form.

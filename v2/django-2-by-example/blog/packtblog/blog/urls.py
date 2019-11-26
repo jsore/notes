@@ -47,4 +47,6 @@ urlpatterns = [
 
     # example.com/blog/feed/ to get to this RSS feed
     path('feed/', LatestPostsFeed(), name='post_feed'),
+
+    path('search/', views.post_search, name='post_search'),
 ]
