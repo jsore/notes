@@ -7,12 +7,13 @@
 
 # Count aggregation function of Django ORM
 from django.db.models import Count  # includes Avg, Max, Min, Count
-
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.mail import send_mail
 from django.views.generic import ListView
-from django.contrib.postgres.search import SearchVector
+# DB to replace SQLite
+# from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
+from django.contrib.postgres.search import TrigramSimilarity
 from taggit.models import Tag
 
 from .models import Post, Comment
@@ -212,9 +213,37 @@ def post_search(request):
         # custom SearchVector instance and title/body fields
         if form.is_valid():
             query = form.cleaned_data['query']
+
+            # use stemming and ranking to obtain better
+            # search results and rank them instead
+            #results = Post.objects.annotate(
+            #    search=SearchVector('title', 'body'),
+            #).filter(search=query)
+
+            # weight queries with a preference for results
+            # found in post titles
+            #search_vector = SearchVector('title', 'body')
+
+            #search_vector = SearchVector('title', weight='A') + SearchVector('body', weight='B')
+
+            # SearchQuery translates search terms into
+            # a search query object
+
+            #search_query = SearchQuery(query)
+
+            # results = Post.objects.annotate(
+                # use fuzzy searching instead
+                #search=search_vector,
+                #rank=SearchRank(search_vector, search_query)
+                # similarity=TrigramSimilarity('title', query),
+            #).filter(search=search_query).order_by('-rank')
+            # filter results for matches higher than 0.3 match
+            #).filter(rank__gte=0.3).order_by('-rank')
+            # ).filter(similarity__gt=0.3).order_by('-similarity')
             results = Post.objects.annotate(
-                search=SearchVector('title', 'body'),
-            ).filter(search=query)
+                similarity=TrigramSimilarity('title', query),
+            ).filter(similarity__gt=0.3).order_by('-similarity')
+            # ).order_by('-similarity')
 
     return render(
         request,

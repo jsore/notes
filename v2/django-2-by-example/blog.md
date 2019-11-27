@@ -979,4 +979,23 @@ Or by defining `SearchVector` to build a vector for searching against multiple f
   >>> Post.objects.annotate(search=SearchVector('title', 'body'),).filter(search='django')
   ```
 
-This can be accessed publicly using a new `search` view and form.
+This can be accessed publicly using a new `search` view and form. Django also provides a `SearchQuery` class to translate search terms into a search query object. Those terms are automatically passed through stemming algorithms to help obtain better results. Further, __trigram similarity searching__ is available in Postgres. A trigram is a group of three consecutive characters, to be used to measure similarity of strings by counting the number of trigrams they share ( fuzzy searching )
+
+  ```
+  # connect to your DB
+  (current_env) …/blog/packtblog$ psql blog
+
+  # install the pg_trgm extension
+  (current_env) …/blog/packtblog$ CREATE EXTENSION pg_trgm;
+
+  # then import the module into your view for use
+  ```
+
+Again, more issues with Postgres differing from the book. Shell wasn't recognizing any of the postgres binary commands ( `psql`, `pg_ctl`, etc ). Had to add the Postgres path explicitly in my `.bash_profile` then log completely out of the sesion then open a new one after sourcing the file. This got `pg_ctl` to finally report _something_
+
+  ```
+  $ pg_ctl status
+  pg_ctl: no database directory specified and environment variable PGDATA unset
+  ```
+
+Now the virtualenv can be started and the postgres user can be logged into, `psql` works. Run `pg_isready` as a further sanity check to make sure the Postgres server is connected.
