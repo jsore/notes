@@ -1,0 +1,20 @@
+{# …/project_2/bookmarks/account/templates/base.html #}
+
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{% block title %}{% endblock title %}</title>
+    {# pull in the styles for this app from …bookmarks/account/static #}
+    <link href='{% static "css/base.css" %}' rel="stylesheet">
+  </head>
+  <body>
+    <div id="header">
+      <span class="logo">Bookmarks</span>
+    </div>
+    <div id="content">
+      {% block content %}{% endblock content %}
+    </div>
+  </body>
+</html>
