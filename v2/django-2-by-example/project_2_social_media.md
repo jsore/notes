@@ -186,3 +186,5 @@ Use `django.contrib.auth.authenticate()` to check user credentials against the D
   - Create the app's base template to be extended by `templates/account/login.html`
   - Create a superuser for access to the admin site to manage other users `manage.py createsuperuser`
   - Run the server and test `http://localhost:8000/admin/`, logging in as `bookmarks_admin`
+
+If the last step is successful, you now have a working example of using a custom view for user authentication. As an alternative, Django's auth framework has some pretty sane default forms and views. Django provides class-based views to deal with authentication.
