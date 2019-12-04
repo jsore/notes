@@ -1,0 +1,8 @@
+# can be recreated automatically at any time
+env/
+
+# where Django puts .pyc files at .py runtime
+__pycache__/
+
+# bad practice to commit local test data
+*.sqlite3
