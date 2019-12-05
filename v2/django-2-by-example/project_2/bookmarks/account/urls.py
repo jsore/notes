@@ -5,11 +5,21 @@
 
 
 from django.urls import path
+# Django's baked-in user authorization/management views
+from django.contrib.auth import views as auth_views
+
 from . import views
 
 
 urlpatterns = [
 
     # POST views
-    path('login/', views.user_login, name='login'),
+
+    # hand-rolled view as an example
+    # path('login/', views.user_login, name='login'),
+    # using Django's builtin views, these views expect to
+    # find their templates in a directory called
+    # 'templates/registration' by default
+    path('login/', auth_views.LoginView.as_view(), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
 ]

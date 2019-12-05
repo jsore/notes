@@ -1,0 +1,14 @@
+{# …/project_2/bookmarks/account/templates/registration/login.html #}
+{# template for Django's auth_views.LogoutView #}
+
+{% extends "base.html" %}
+
+{% block title %}Logged out{% endblock title %}
+
+{% block content %}
+  <h1>Logged out</h1>
+  <p>
+    You have been successfully logged out.
+    <a href="{% url 'login' %}">Click here</a>to log back in.
+  </p>
+{% endblock content %}

@@ -9,7 +9,17 @@ Notes covering chapters 4, 5 and 6 of _Django 2 by Example_. The project being b
 
 
 
+
+
+
+
+
 <br><br><br><br>
+
+
+
+
+
 
 
 
@@ -21,8 +31,12 @@ Notes covering chapters 4, 5 and 6 of _Django 2 by Example_. The project being b
 --------------------------------------------------------------------------------
 ### Project Init
 
+Setup the environemnt for the base of this project.
 
-<br>
+
+
+<br><br>
+
 
 
   > Current structure:
@@ -41,7 +55,9 @@ Notes covering chapters 4, 5 and 6 of _Django 2 by Example_. The project being b
   > ```
 
 
-<br>
+
+<br><br>
+
 
 
 Create a virtual environment for this project. Build a home for the environment...
@@ -77,7 +93,9 @@ The `current_env` should be `bookmarks`. Install Django and create a new project
   ```
 
 
+
 <br><br>
+
 
 
 The initial project structure is created by Django. Create a new ( the first custom ) app
@@ -105,7 +123,9 @@ Don't forget to actiavte the new app in the project...
   ```
 
 
+
 <br><br>
+
 
 
 Structure automatically created, in the arbitrary directory `project_2` ( created to organize my notes )
@@ -157,7 +177,15 @@ Structure automatically created, in the arbitrary directory `project_2` ( create
 
 
 
+
+
+
+
 <br><br><br><br>
+
+
+
+
 
 
 
@@ -172,10 +200,14 @@ It's located at `django.contrib.auth` and is included in the default settings wh
 Remember that middleware is a class that are globally executed during the req or res phase.
 
 
+
 <br><br>
 
 
-Example: a login view that should 1. Get the username/password by posting a form 2. Auth the user against data stored in DB 3. Check user's active/inactive status 4. Log user into website and start an authenticated session.
+
+__Login and logout views__
+
+Example: a custom login view that should 1. Get the username/password by posting a form 2. Auth the user against data stored in DB 3. Check user's active/inactive status 4. Log user into website and start an authenticated session.
 
 Use `django.contrib.auth.authenticate()` to check user credentials against the DB, returns a `User` object if credentials were correct regardless of the user account's state. Use `django.contrib.auth.login()` to set the user's current session.
 
@@ -187,4 +219,10 @@ Use `django.contrib.auth.authenticate()` to check user credentials against the D
   - Create a superuser for access to the admin site to manage other users `manage.py createsuperuser`
   - Run the server and test `http://localhost:8000/admin/`, logging in as `bookmarks_admin`
 
-If the last step is successful, you now have a working example of using a custom view for user authentication. As an alternative, Django's auth framework has some pretty sane default forms and views. Django provides class-based views to deal with authentication.
+If the last step is successful, you now have a working example of using a custom view for user authentication. As an alternative, Django's auth framework has some pretty sane default forms and views. Django provides class-based views to deal with authentication should you not want to make a full custom view class:
+
+  > https://docs.djangoproject.com/en/2.0/topics/auth/default/#all-authentication-views
+
+Example usage of Django's builtin login, which by default will use the `Authentication Form` form at `django.contrib.auth.forms`, see:
+
+  > `…/project_2/bookmarks/account/forms.py`
