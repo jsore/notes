@@ -133,3 +133,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+# authentication redirection routes
+
+# URL to redirect user to login (ex: views using login_required)
+LOGIN_URL = 'login'
+# URL to redirect the user to logout
+LOGOUT_URL = 'logout'
+# go here on successful login if no 'next' param defined
+LOGIN_REDIRECT_URL = 'dashboard'

@@ -14,6 +14,36 @@
   <body>
     <div id="header">
       <span class="logo">Bookmarks</span>
+
+      {# current user is set in the HttpRequest object by #}
+      {# the authentication middleware, accessible with #}
+      {# request.user, which will containa User object in #}
+      {# the request regardless of auth status ( if not #}
+      {# auth'ed will be an instace of AnonymousUser ) #}
+      {# note: is_authenticated attribute is read only #}
+      {% if request.user.is_authenticated %}
+        <ul class="menu">
+          <li {% if section == "dashboard" %}class="selected"{% endif %}>
+            <a href="{% url 'dashboard' %}">My dashboard</a>
+          </li>
+          <li {% if section == "images" %}class="selected"{% endif %}>
+            <a href="#">Images</a>
+          </li>
+          <li {% if section == "people" %}class="selected"{% endif %}>
+            <a href="#">People</a>
+          </li>
+        </ul>
+      {% endif %}
+
+      <span class="user">
+        {% if request.user.is_authenticated %}
+          Hello {{ request.user.first_name }}&nbsp; |&nbsp;
+          <a href="{% url 'logout' %}">log out</a>
+        {% else %}
+          <a href="{% url 'login' %}">log in</a>
+        {% endif %}
+      </span>
+
     </div>
     <div id="content">
       {% block content %}{% endblock content %}

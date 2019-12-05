@@ -4,6 +4,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 from .forms import LoginForm
 
 
@@ -43,3 +44,20 @@ def user_login(request):
         form = LoginForm()
 
     return render(request, 'account/login.html', {'form': form})
+
+
+# decorator checks if the current user is authenticated and
+# only executes the decorated view if true, redirects to the
+# login URL with the original requested URL as a GET param
+# named 'next' ( redirects to the URL they tried accessing )
+@login_required
+def dashboard(request):
+    """Display the user's dashboard after they log in."""
+
+    return render(request,
+                  'account/dashboard.html',
+                  # define this variable to track the section
+                  # of the site the user was browsing, a
+                  # simple way to define the section that
+                  # each view corresponds to
+                  {'section': 'dashboard'})
