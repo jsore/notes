@@ -5,7 +5,8 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from .forms import LoginForm
+from django.core.mail import send_mail
+from .forms import LoginForm, PasswordResetEmailForm
 
 
 def user_login(request):
@@ -61,3 +62,23 @@ def dashboard(request):
                   # simple way to define the section that
                   # each view corresponds to
                   {'section': 'dashboard'})
+
+
+def password_reset(request):
+    if request.method == 'POST':
+        form = PasswordResetEmailForm(request.POST)
+        if form.is_valid():
+            clean = form.cleaned_data
+            # email_subject = 'Password reset'
+            send_mail('Password reset',
+                      'Test message body',
+                      'webmaster@localhost'
+                      [clean['email']],
+                      html_message='registration/password_reset_email.html')
+    else:
+        form = PasswordResetEmailForm()
+
+    return render(request,
+                  'registration/password_reset_done.html',
+                  {'form': form})
+

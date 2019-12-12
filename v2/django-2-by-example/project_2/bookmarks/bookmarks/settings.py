@@ -143,3 +143,12 @@ LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
 # go here on successful login if no 'next' param defined
 LOGIN_REDIRECT_URL = 'dashboard'
+
+
+EMAIL_HOST = 'localhost'
+# EMAIL_HOST_USER = 'webmaster'
+# EMAIL_HOST_PASSWORD = user
+EMAIL_PORT = 1025
+# class to log to STDOUT to mimic emailing function for when
+# a user resets their password
+EMAIL_BACKEND = 'django.contrib.mail.backends.console.EmailBackend'

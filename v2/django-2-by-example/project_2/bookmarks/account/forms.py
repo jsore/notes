@@ -12,3 +12,7 @@ class LoginForm(forms.Form):
     username = forms.CharField()
     # include a type="password" attribute
     password = forms.CharField(widget=forms.PasswordInput)
+
+
+class PasswordResetEmailForm(forms.Form):
+    email = forms.EmailField()
