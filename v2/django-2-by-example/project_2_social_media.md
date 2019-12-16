@@ -226,3 +226,5 @@ If the last step is successful, you now have a working example of using a custom
 Example usage of Django's builtin login, which by default will use the `Authentication Form` form at `django.contrib.auth.forms`, see:
 
   > `…/project_2/bookmarks/account/forms.py`
+
+That form tries to auth the user and raises a validation error if unsuccessful.

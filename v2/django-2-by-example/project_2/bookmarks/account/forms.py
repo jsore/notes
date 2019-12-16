@@ -14,5 +14,6 @@ class LoginForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput)
 
 
-class PasswordResetEmailForm(forms.Form):
+# class PasswordResetEmailForm(forms.Form):
+class PwResetEmailForm(forms.Form):
     email = forms.EmailField()

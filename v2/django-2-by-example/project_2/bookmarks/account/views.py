@@ -5,8 +5,9 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from django.core.mail import send_mail
-from .forms import LoginForm, PasswordResetEmailForm
+# from django.core.mail import send_mail
+from django.core import mail
+from .forms import LoginForm, PwResetEmailForm
 
 
 def user_login(request):
@@ -66,19 +67,31 @@ def dashboard(request):
 
 def password_reset(request):
     if request.method == 'POST':
-        form = PasswordResetEmailForm(request.POST)
+        form = PwResetEmailForm(request.POST)
+
         if form.is_valid():
             clean = form.cleaned_data
-            # email_subject = 'Password reset'
-            send_mail('Password reset',
-                      'Test message body',
-                      'webmaster@localhost'
-                      [clean['email']],
-                      html_message='registration/password_reset_email.html')
+            # connection = mail.get_connection()
+            connection = mail.get_connection()
+            connection.open()
+            email_message = mail.EmailMessage(
+                'Hello',
+                'Test body goes here',
+                'webmaster@localhost',
+                [clean['email']],
+                connection=connection,
+            )
+            email_message.send()
+            connection.close()
+
+            return render(request,
+                         'account/password_reset_done.html',
+                         {'clean': clean}
+            )
+
     else:
-        form = PasswordResetEmailForm()
+        form = PwResetEmailForm()
 
     return render(request,
-                  'registration/password_reset_done.html',
+                  'password_reset',
                   {'form': form})
-

@@ -145,10 +145,11 @@ LOGOUT_URL = 'logout'
 LOGIN_REDIRECT_URL = 'dashboard'
 
 
-EMAIL_HOST = 'localhost'
-# EMAIL_HOST_USER = 'webmaster'
-# EMAIL_HOST_PASSWORD = user
-EMAIL_PORT = 1025
+#EMAIL_HOST = 'localhost'
+#EMAIL_HOST_USER = 'webmaster@localhost'
+#EMAIL_HOST_PASSWORD = ''
+#EMAIL_PORT = 1025
+
 # class to log to STDOUT to mimic emailing function for when
 # a user resets their password
-EMAIL_BACKEND = 'django.contrib.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
