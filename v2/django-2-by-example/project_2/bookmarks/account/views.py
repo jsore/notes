@@ -9,6 +9,10 @@ from django.contrib.auth.decorators import login_required
 from django.core import mail
 from .forms import LoginForm, PwResetEmailForm
 
+import logging
+# log = logging.getLogger("mylogger")
+logger = logging.getLogger(__name__)
+
 
 def user_login(request):
     """Render the user login page."""
@@ -84,6 +88,8 @@ def password_reset(request):
             email_message.send()
             connection.close()
 
+            logger.info("Simple info")
+
             return render(request,
                          'account/password_reset_done.html',
                          {'clean': clean}
@@ -95,3 +101,5 @@ def password_reset(request):
     return render(request,
                   'password_reset',
                   {'form': form})
+
+
