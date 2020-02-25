@@ -7,11 +7,12 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 # from django.core.mail import send_mail
 from django.core import mail
-from .forms import LoginForm, PwResetEmailForm
+
+from .forms import LoginForm, PwResetEmailForm, UserRegistrationForm
 
 import logging
-# log = logging.getLogger("mylogger")
 logger = logging.getLogger(__name__)
+
 
 
 def user_login(request):
@@ -52,6 +53,7 @@ def user_login(request):
     return render(request, 'account/login.html', {'form': form})
 
 
+
 # decorator checks if the current user is authenticated and
 # only executes the decorated view if true, redirects to the
 # login URL with the original requested URL as a GET param
@@ -69,6 +71,7 @@ def dashboard(request):
                   {'section': 'dashboard'})
 
 
+
 def password_reset(request):
     if request.method == 'POST':
         form = PwResetEmailForm(request.POST)
@@ -83,8 +86,7 @@ def password_reset(request):
                 'Test body goes here',
                 'webmaster@localhost',
                 [clean['email']],
-                connection=connection,
-            )
+                connection=connection,)
             email_message.send()
             connection.close()
 
@@ -92,8 +94,7 @@ def password_reset(request):
 
             return render(request,
                          'account/password_reset_done.html',
-                         {'clean': clean}
-            )
+                         {'clean': clean})
 
     else:
         form = PwResetEmailForm()
@@ -103,3 +104,28 @@ def password_reset(request):
                   {'form': form})
 
 
+
+def register(request):
+    if request.method == 'POST':
+        user_form = UserRegistrationForm(request.POST)
+
+        # check for forms.ValidationError()'s
+        if user_form.is_valid():
+            # create a new user object but don't save it to
+            # the DB yet, needs a password set with it 1st…
+            new_user = user_form.save(commit=False)
+            # …set the chosen password to the user, using
+            # Django's set_password() to handle encryption…
+            new_user.set_password(user_form.cleaned_data['password'])
+            # …now save it to the DB
+            new_user.save()
+
+            return render(request,
+                          'account/register_done.html',
+                          {'new_user': new_user})
+    else:
+        user_form = UserRegistrationForm()
+
+    return render(request,
+                  'account/register.html',
+                  {'user_form': user_form})

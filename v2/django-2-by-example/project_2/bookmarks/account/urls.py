@@ -31,9 +31,9 @@ urlpatterns = [
     #path('reset/done', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
     #
     # replace all ^ those with include() and auth.urls
-    #
     path('', include('django.contrib.auth.urls')),
 
-
+    # custom views, not using Django's
+    path('register/', views.register, name='register'),
     path('', views.dashboard, name='dashboard'),
 ]
