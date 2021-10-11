@@ -1,7 +1,5 @@
 # Getting Started With Vagrant
 
---
-
 A tool that simplifies the workflow of operating VMs and allows for easy distribution of virtual environments.
 
 
@@ -9,8 +7,6 @@ A tool that simplifies the workflow of operating VMs and allows for easy distrib
 
 
 ## Chapter 1 - Getting Started 
-
---
 
 No matter what virtualization platform you use or how complicated your virtual environment may be, Vagrant boots your VM or VMs with:
 
@@ -25,7 +21,5 @@ Depending on your config file, there's tons of commands that can be ran with `va
 <br>
 
 ### Focusing On WebDev 
-
---
 
 Vagrant is useful for many situations, however, it's predominately ( apparently? ) used within web app development. 
