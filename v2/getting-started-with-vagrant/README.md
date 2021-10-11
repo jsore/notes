@@ -1,6 +1,6 @@
-# Getting Started With Vagrant
+# Pro Vagrant
 
-A tool that simplifies the workflow of operating VMs and allows for easy distribution of virtual environments.
+My notes regarding a tool that simplifies the workflow of operating VMs and allows for easy distribution of virtual environments.
 
 
 <br>
